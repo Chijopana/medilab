@@ -1,5 +1,5 @@
 from django.urls import path
 from . import views
 urlpatterns = [
-    path('', views.E404, name='error_404'),
+    path('', views.error_404, name='error_404'),
 ]

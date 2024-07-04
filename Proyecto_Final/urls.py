@@ -18,12 +18,12 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
+    path('admin/', admin.site.urls),
     path ('',include('Hub.urls')),
-    path ('/Staff',include('Staff.urls')),
-    path ('/Pacientes',include('Pacientes.urls')),
-    path ('/Error_404',include('E404.urls')),
+    path ('Staff/',include('Staff.urls')),
+    path ('Pacientes/',include('Pacientes.urls')),
+    path ('Error_404/',include('E404.urls')),
     # Estas dos últimas no tendrían que ser accesibles, pero si se le añade alguna vista, la ruta está creada.
-    # path ('/Perfiles',include('Perfiles.urls')),
-    # path ('/Enfermedades',include('Enfermedades.urls')),
+    # path ('Perfiles/',include('Perfiles.urls')),
+    # path ('Enfermedades/',include('Enfermedades.urls')),
 ]
