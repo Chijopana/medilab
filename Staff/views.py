@@ -5,7 +5,8 @@ from django.contrib.auth import authenticate, login, logout
 def lobby(request):
     return render(request,'staff/lobby.html')
 
-def lista_pacientes(request):
+def lista_pacientes(request,access_key):
+    staff = get_object_or_404()
     return render(request,'staff/lista_pacientes.html')
 
 def paciente_ind(request):
