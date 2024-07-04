@@ -5,6 +5,12 @@ from django.contrib.auth import authenticate, login, logout
 def hub(request):
     return render(request,'Hub/main_hub.html')
 
+def crear_usuario(request):
+    return render(request,'Hub/crear_usuario')
+
+def crear_staff(request):
+    return render(request,'Hub/crear_staff')
+
 def login(request):
     return render(request,'Hub/login.html')
 
