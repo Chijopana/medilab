@@ -1,11 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
-    <p>Paciente individual</p>
+    <p>{{paciente.nombre}}</p>
+    <ul>
+        {% if paciente.medicacion%}
+        {%for i in paciente.medicacion.all%}
+        <li>
+            <p>{{i.medicina}} de {{i.perfil.nombre}}. Administrado por {{i.medico.perfil.nombre}}</p>
+            <a href="{% url 'staff/paciente_ind_mod_medicacion' paciente.access_key i.pk %}" class="button">Edit</a>
+        </li>
+        {%endfor%}
+        {%endif%}
+    </ul>
+    <a href="{% url 'staff/paciente_ind_edit' paciente.access_key %}" class="button">Edit</a>
+    <a href="{% url 'staff/paciente_ind_nueva_medicacion' paciente.access_key %}" class="button">nueva med</a>
+
 </body>
+
 </html>

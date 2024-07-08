@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 import uuid
 
 # Create your models here.
@@ -12,23 +12,33 @@ class Perfil(models.Model):
     telefono = models.CharField(max_length=12)
     direccion = models.CharField(max_length=255)
     fecha_nacimiento = models.DateField()
-    # numero_seguro_social = models.CharField(max_length=20, unique=True)
+    numero_seguro_social = models.CharField(max_length=20, unique=True, default='')
 
-    def _str_(self):
+    def __str__(self):
         return self.user.username
 
 class Paciente(models.Model):
-    perfil = models.OneToOneField(Perfil, on_delete=models.CASCADE, related_name='Paciente')
-    contacto_emergencia = models.CharField(max_length=255)
-    telefono_emergencia = models.CharField(max_length=12)
+    perfil = models.OneToOneField(Perfil, on_delete=models.CASCADE, related_name='pacientes')
+    contacto_emergencia = models.CharField(max_length=255, blank=True, null=True)
+    telefono_emergencia = models.CharField(max_length=12, blank=True, null=True)
+    medicos = models.ManyToManyField('Medico', related_name='pacientes')
+    
+    def __str__(self):
+        return self.perfil.user.username
+
 
 class Enfermero(models.Model):
-    perfil = models.OneToOneField(Perfil, on_delete=models.CASCADE, related_name='Enfermero')
-    pacientes = models.ManyToManyField(Paciente, related_name='Enfermero')
+    perfil = models.OneToOneField(Perfil, on_delete=models.CASCADE, related_name='enfermero')
+    pacientes = models.ManyToManyField(Paciente, related_name='enfermero', blank=True, null=True)
+
+    def __str__(self):
+        return self.perfil.user.username
+
 class Medico(models.Model):
-    # especialidad = models.ForeignKey(especialidades, on_delete=models.CASCADE,related_name='Medico')
-    pacientes = models.ManyToManyField(Paciente, related_name='Medico')
-    enfermeros = models.ManyToManyField(Enfermero, related_name='Medico')
-    perfil = models.OneToOneField(Perfil, on_delete=models.CASCADE, related_name='Medico')
+    enfermeros = models.ManyToManyField(Enfermero, related_name='medico', blank=True, null=True)
+    perfil = models.OneToOneField(Perfil, on_delete=models.CASCADE, related_name='medico')
+
+    def __str__(self):
+        return self.perfil.user.username
 
 

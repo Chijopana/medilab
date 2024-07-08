@@ -1,19 +1,50 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
+from .forms import UserForm,PerfilGrandeForm
+
 # Create your views here.
 
 def hub(request):
+
     return render(request,'Hub/main_hub.html')
 
 def crear_usuario(request):
-    return render(request,'Hub/crear_usuario')
+    if request.method == 'POST':
+        form1 = UserForm(request.POST)
+        form2 = PerfilGrandeForm(request.POST)
+        if form1.is_valid() and form2.is_valid():
+            usery = form1.save()
+            luz =form2.save(commit=False)
+            luz.user=usery
+            luz.save()
+            return redirect('log_in')
+        else:
+            messages.error(request,'Error. Por favor, intentelo de nuevo')
+    else:
+        form1 = UserForm()
+        form2 = PerfilGrandeForm()
+    return render(request,'Hub/crear_usuario',{'form1':form1,'form2':form2})
+    
 
-def crear_staff(request):
-    return render(request,'Hub/crear_staff')
+# def crear_staff(request):
+#     return render(request,'Hub/crear_staff')
 
-def login(request):
-    return render(request,'Hub/login.html')
+def log_in(request):
+    if request.method=='POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request,user)
+            if request.user.has_perm('auth._Es_Medico') or request.user.has_perm('auth._Es_Enfermero'):
+                return redirect('staff/lobby')
+            else:
+                return redirect('pacientes/pagina_principal')
+        else:
+            messages.error(request,'Usuario invalido o contraseña erronea')
+    return render(request,'Hub/log_in.html')
 
-def logout(request):
+def log_out(request):
     logout(request)
-    return redirect('login')
+    return redirect('log_in')

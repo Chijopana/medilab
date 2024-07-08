@@ -36,12 +36,14 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
+    'django_filters',
     "django.contrib.staticfiles",
     "Hub",
     "Staff",
     "Pacientes",
     "Perfiles",
     "Enfermedades",
+    "E404",
 ]
 
 MIDDLEWARE = [
