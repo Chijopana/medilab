@@ -1,11 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Vacunas</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'Pacientes/styles.css' %}">
 </head>
 <body>
-    <p>vacunas</p>
+    <div class="header">
+        <h1>Vacunas</h1>
+        <nav>
+            <a href="{% url 'pacientes/pagina_principal' %}">Inicio</a>
+            <a href="{% url 'pacientes/visitas' %}">Visitas</a>
+            <a href="{% url 'pacientes/consultas' %}">Consulta</a>
+            <a href="{% url 'pacientes/diagnosticos' %}">Diagnósticos</a>
+        </nav>
+    </div>
+    <div class="container">
+        <h2>Historial de Vacunas</h2>
+        <!-- Contenido de vacunas -->
+    </div>
+    <div class="footer">
+        <p>&copy; 2024 Clínica XYZ</p>
+    </div>
 </body>
 </html>

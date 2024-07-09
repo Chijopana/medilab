@@ -1,5 +1,5 @@
 from django.db import models
-from Perfiles.models import Paciente,Medico
+from Perfiles.models import Paciente,Medico,Enfermero
 
 # Modelo abstracto para Diagnóstico que otros modelos específicos extenderán
 class Diagnostico(models.Model):
@@ -40,3 +40,26 @@ class Cardiaco(models.Model):
     tipo = models.CharField(max_length=50)
     tratamiento = models.TextField(blank=True, null=True)
     fecha_ultima_revision = models.DateField(default='2000-01-01')
+
+
+class Vacuna(models.Model):
+    paciente = models.ForeignKey(Paciente, related_name='Vacuna', on_delete=models.CASCADE)
+    medico = models.ForeignKey(Medico, related_name='Vacuna', on_delete=models.CASCADE)
+    enfermero = models.ForeignKey(Enfermero, related_name='Vacuna', on_delete=models.CASCADE)
+    nombre_vacuna = models.CharField(max_length=255)
+    fecha_administracion = models.DateField()
+    dosis = models.CharField(max_length=50)
+
+    def _str_(self):
+        return f'Vacuna {self.nombre_vacuna} para {self.paciente.perfil.nombre} {self.paciente.perfil.apellido}'
+    
+class Analisis(models.Model):
+    paciente = models.ForeignKey(Paciente, related_name='Analisis', on_delete=models.CASCADE)
+    medico = models.ForeignKey(Medico, related_name='Analisis', on_delete=models.CASCADE)
+    enfermero = models.ForeignKey(Enfermero, related_name='Analisis', on_delete=models.CASCADE)
+    tipo_analisis = models.CharField(max_length=255)
+    fecha_realizacion = models.DateField()
+    resultado = models.TextField()
+
+    def _str_(self):
+        return f'Análisis {self.tipo_analisis} para {self.paciente.perfil.nombre} {self.paciente.perfil.apellido}'

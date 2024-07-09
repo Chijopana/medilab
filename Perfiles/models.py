@@ -21,7 +21,7 @@ class Paciente(models.Model):
     perfil = models.OneToOneField(Perfil, on_delete=models.CASCADE, related_name='pacientes')
     contacto_emergencia = models.CharField(max_length=255, blank=True, null=True)
     telefono_emergencia = models.CharField(max_length=12, blank=True, null=True)
-    medicos = models.ManyToManyField('Medico', related_name='pacientes')
+    medicos = models.ManyToManyField('Medico', related_name='pacientes',blank=True, null=True)
     
     def __str__(self):
         return self.perfil.user.username

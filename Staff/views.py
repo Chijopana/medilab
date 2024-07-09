@@ -20,18 +20,15 @@ def lobby(request):
 # @permission_required(['auth._Es_Medico','auth._Es_Enfermero'], login_url='error_404')
 def lista_pacientes(request):
     perfil = get_object_or_404(Perfil,user=request.user)
-    if request.user.has_perm('auth._Todo'):
-        perfiles = None
+    if request.user.has_perm('auth._Es_Medico'):   
+        pacientes = perfil.medico.pacientes.all()
+        key = [luz.perfil.pk for luz in pacientes]
+    elif request.user.has_perm('auth._Es_Enfermero'):
+        pacientes = perfil.enfermero.pacientes.all()
+        key = [luz.perfil.pk for luz in pacientes]
     else:
-        if request.user.has_perm('auth._Es_Medico'):   
-            pacientes = perfil.medico.pacientes.all()
-            key = [luz.perfil.pk for luz in pacientes]
-        elif request.user.has_perm('auth._Es_Enfermero'):
-            pacientes = perfil.enfermero.pacientes.all()
-            key = [luz.perfil.pk for luz in pacientes]
-        else:
-            key = [-10]
-        perfiles = Perfil.objects.filter(pk__in=key)
+        key = [-10]
+    perfiles = Perfil.objects.filter(pk__in=key)
     filtro_pacientes = PerfilFilter(request.GET, queryset=perfiles)
     paginator = Paginator(filtro_pacientes.qs, 10) # 10 empleados por página
     page_number = request.GET.get('page')

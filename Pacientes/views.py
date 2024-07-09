@@ -16,27 +16,47 @@ def pagina_principal(request):
 # @login_required
 # @permission_required('auth._Es_Paciente', login_url='error_404')
 def analisis(request):
-    # Con qué lo conecto?
-    return render(request,'pacientes/analisis.html')
+    perfil = get_object_or_404(Perfil,user=request.user)
+    analisisx = perfil.pacientes.Analisis.all()
+    return render(request,'pacientes/analisis.html',{'analisis':analisisx})
 
 # @login_required
 # @permission_required('auth._Es_Paciente', login_url='error_404')
 def vacunas(request):
-    # Con qué lo conecto?
-    return render(request,'pacientes/vacunas.html')
+    perfil = get_object_or_404(Perfil,user=request.user)
+    vacunax = perfil.pacientes.Vacuna.all()
+    return render(request,'pacientes/vacunas.html',{'vacuna':vacunax})
 
 # @login_required
 # @permission_required('auth._Es_Paciente', login_url='error_404')
 def diagnosticos(request):
     perfil = get_object_or_404(Perfil,user=request.user)
-    diag = perfil.diagnosticos.all()
+    paciente=get_object_or_404(Paciente,perfil=perfil)
+    try:
+        diagnos = get_object_or_404(Diagnostico,paciente=paciente)
+        diag = dict()
+        diag['cancer_mama']=diagnos.cancer_mama.all(),
+        diag['diabetes']=diagnos.diabetes.all(),
+        diag['pneumonia']=diagnos.pneumonia.all(),
+        diag['lunares']=diagnos.lunares.all(),
+        diag['cardiaco']=diagnos.cardiaco.all(),
+    except:
+        diag = dict()
+        diag['cancer_mama']='',
+        diag['diabetes']='',
+        diag['pneumonia']='',
+        diag['lunares']='',
+        diag['cardiaco']='',
+        # return redirect('error_404')
+        'cancer_mama', 'diabetes', 'pneumonia', 'lunares', 'cardiaco'
     return render(request,'pacientes/diagnosticos.html', {'diagnosticos':diag})
 
 # @login_required
 # @permission_required('auth._Es_Paciente', login_url='error_404')
 def visitas(request):
     perfil = get_object_or_404(Perfil,user=request.user)
-    visitax = perfil.pacientes.visita.all()
+    paciente = get_object_or_404(Paciente,perfil=perfil)        
+    visitax = paciente.visita.all()
 
     return render(request,'pacientes/visitas.html',{'visitas':visitax})
 
