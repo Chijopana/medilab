@@ -20,29 +20,23 @@ def lobby(request):
 # @permission_required(['auth._Es_Medico','auth._Es_Enfermero'], login_url='error_404')
 def lista_pacientes(request):
     perfil = get_object_or_404(Perfil,user=request.user)
-    if request.user.has_perm('auth._Todo'):
-        perfiles = None
+    if request.user.has_perm('auth._Es_Medico'):   
+        pacientes = perfil.medico.pacientes.all()
+        key = [luz.perfil.pk for luz in pacientes]
+    elif request.user.has_perm('auth._Es_Enfermero'):
+        pacientes = perfil.enfermero.pacientes.all()
+        key = [luz.perfil.pk for luz in pacientes]
     else:
-        if request.user.has_perm('auth._Es_Medico'):   
-            pacientes = perfil.medico.pacientes.all()
-            key = [luz.perfil.pk for luz in pacientes]
-        elif request.user.has_perm('auth._Es_Enfermero'):
-            pacientes = perfil.enfermero.pacientes.all()
-            key = [luz.perfil.pk for luz in pacientes]
-        else:
-            key = [-10]
-        perfiles = Perfil.objects.filter(pk__in=key)
+        key = [-10]
+    perfiles = Perfil.objects.filter(pk__in=key)
     filtro_pacientes = PerfilFilter(request.GET, queryset=perfiles)
-    paginator = Paginator(filtro_pacientes.qs, 10) # 10 empleados por página
-    page_number = request.GET.get('page')
-    page_obj=paginator.get_page(page_number)
-    return render(request,'staff/lista_pacientes.html',{'filter':filtro_pacientes, 'page_obj':page_obj})
+    return render(request,'staff/lista_pacientes.html',{'filter':filtro_pacientes, 'perfiles':perfiles,'medico':perfil},)
 
 # @login_required
 # @permission_required(['auth._Es_Medico','auth._Es_Enfermero'], login_url='error_404')
-def paciente_ind(request,access_key):
-    indiv = get_object_or_404(Perfil,access_key=access_key)
-    return render(request,'staff/paciente_ind.html',{'paciente':indiv})
+# def paciente_ind(request,access_key):
+#     indiv = get_object_or_404(Perfil,access_key=access_key)
+#     return render(request,'staff/paciente_ind.html',{'paciente':indiv})
 
 # @login_required
 # @permission_required(['auth._Es_Medico','auth._Es_Enfermero'], login_url='error_404')
@@ -171,10 +165,3 @@ def sf_mod_perfil(request,access_key):
 # def lista_enfermedades(request):
 #     return render(request,'staff/lista_enfermedades.html')
 
-# @login_required
-# @permission_required(['auth._Es_Medico','auth._Es_Enfermero'], login_url='error_404')
-def inbox(request):
-    perfil = get_object_or_404(Perfil, user = request.user)
-    medic = get_object_or_404(Medico,perfil=perfil)
-    resultados  = medic.resultados_pruebas.all()
-    return render(request,'staff/inbox.html',{'resultados':resultados})

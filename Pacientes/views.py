@@ -29,7 +29,24 @@ def vacunas(request):
 # @permission_required('auth._Es_Paciente', login_url='error_404')
 def diagnosticos(request):
     perfil = get_object_or_404(Perfil,user=request.user)
-    diag = perfil.diagnosticos.all()
+    paciente=get_object_or_404(Paciente,perfil=perfil)
+    try:
+        diagnos = get_object_or_404(Diagnostico,paciente=paciente)
+        diag = dict()
+        diag['cancer_mama']=diagnos.cancer_mama.all(),
+        diag['diabetes']=diagnos.diabetes.all(),
+        diag['pneumonia']=diagnos.pneumonia.all(),
+        diag['lunares']=diagnos.lunares.all(),
+        diag['cardiaco']=diagnos.cardiaco.all(),
+    except:
+        diag = dict()
+        diag['cancer_mama']='',
+        diag['diabetes']='',
+        diag['pneumonia']='',
+        diag['lunares']='',
+        diag['cardiaco']='',
+        # return redirect('error_404')
+        'cancer_mama', 'diabetes', 'pneumonia', 'lunares', 'cardiaco'
     return render(request,'pacientes/diagnosticos.html', {'diagnosticos':diag})
 
 # @login_required

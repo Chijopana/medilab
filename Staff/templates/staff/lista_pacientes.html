@@ -2,45 +2,82 @@
 <html lang="en">
 
 <head>
+    {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+    <title>Documento</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <link rel="stylesheet" href="{% static 'staff/css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body>
-    <form method="get">
-        <div>
-            {{ filter.form.as_p }}
-            <button type="submit" class="button">Search</button>
+    <div id="nav">{% block nav %}
+        <div class="bumper_1">
+            <div id="redes">
+                <i class="fa-brands fa-instagram"></i>
+                <i class="fa-brands fa-linkedin" id="icono"></i>
+                <i class="fa-brands fa-x-twitter"></i>
+            </div>
+            <div id="idioma">
+                <i class="fa-solid fa-e"></i>
+                <i class="fa-solid fa-i"></i>
+            </div>
+            <label class="ui-switch">
+                <input type="checkbox" class="box">
+                <div class="slider">
+                    <div class="circle"></div>
+                </div>
+            </label>
         </div>
-    </form>
-    <ul>
-        {% for i in page_obj%}
-        <li>
-            <p>{{ i.nombre }} {{ i.apellido }} : {{i.numero_seguro_social}}</p>
-            <a href="{% url 'staff/paciente_ind' i.access_key %}" class="button">Edit</a>
-        </li>
-        {% endfor%}
-    </ul>
-    <div class="pagination">
-        <span class="step-links">
-            {% if page_obj.has_previous %}
-            <a href="?page=1{% if filter.form.data %}&{{ filter.form.data.urlencode }}{% endif %}">&laquo;
-                first</a>
-            <a
-                href="?page={{ page_obj.previous_page_number }}{% if filter.form.data %}&{{filter.form.data.urlencode }}{% endif %}">previous</a>
-            {% endif %}
-            <span class="current">
-                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-            </span>
-            {% if page_obj.has_next %}
-            <a
-                href="?page={{ page_obj.next_page_number }}{% if filter.form.data %}&{{filter.form.data.urlencode }}{% endif %}">next</a>
-            <a
-                href="?page={{ page_obj.paginator.num_pages }}{% if filter.form.data %}&{{filter.form.data.urlencode }}{% endif %}">last&raquo;</a>
-            {% endif %}
-        </span>
+        <div class="bumper_2" id="bumper_2">
+            <div id="texto">
+                <i onclick="scrollToTop()">INICIO</i>
+                <i onclick="scrollToPosition(500)">PACIENTES</i>
+            </div>
+        </div>
+        {% endblock %}
     </div>
+    <div id="bumper_3">{% block content %}
+        <div id="container_medico">
+            texto ejemplo
+            {{ medico.nombre }} {{ medico.apellido }} {{ medico.numero_seguridad_social }}
+        </div>
+        <div id="container_paciente">
+            <div id="subcontainer_paciente">
+                <div class="form__group field">
+                    <input type="input" class="form__field" placeholder="Name" required="">
+                    <label for="name" class="form__label">Buscar</label>
+                </div>
+                <div class="buttons">
+                    <button class="btn"><span></span>
+                        <p data-start="+ Info" data-text="Paciente" data-title="Añadir"></p>
+                    </button>
+                </div>
+            </div>
+            <div id="lista">
+                <div id="linea"></div>
+                <div id="info">
+                    {% for i in perfiles %}
+                    <li>
+                        <p>{{ i.nombre }} {{ i.apellido }} : {{i.numero_seguridad_social}} : {{i.dni}}</p>
+                    </li>
+                    <button><a href="{% url 'staff/paciente_ind' i.access_key %}" class="button"></a></button>
+                    <div id="linea"></div>
+                    {% endfor %}
+                </div>
+                <div id="linea"></div>
+            </div>
+        </div>
+        {% endblock %}
+    </div>
+    <div id="footer">
+        <p>&copy; 2024 Nombre. Todos los derechos reservados.</p>
+    </div>
+    <script src="{% static 'staff/js/script.js' %}"></script>
 </body>
 
 </html>

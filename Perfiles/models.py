@@ -8,6 +8,8 @@ class Perfil(models.Model):
     access_key = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
     nombre = models.CharField(max_length=255)
     apellido = models.CharField(max_length=255)
+    # Modificar el max del dni. Y todo lo del regex si puedes. 
+    dni = models.CharField(max_length=20, default= '0000000F')
     email = models.EmailField()
     telefono = models.CharField(max_length=12)
     direccion = models.CharField(max_length=255)

@@ -1,0 +1,484 @@
+  *,
+  *::before,
+  *::after {
+    box-sizing: inherit;
+  }
+
+  html {
+    box-sizing: border-box;
+    font-size: 100%;
+  }
+
+  body {
+    margin: 0;
+    font-family: sans-serif;
+  }
+
+  /* ---------------------------------------contenido del body---------------------------------- */
+  /* ------------------------------------el nav 1 y su contenido--------------------------------------------- */
+  #nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: transparent;
+    /* Puedes ajustar el color de fondo según tu diseño */
+  }
+
+  .bumper_1 {
+    height: 30px;
+    text-align: center;
+    background-color: #efefef;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+  }
+
+  #logo {
+    width: 100px;
+  }
+
+  #redes {
+    width: 900px;
+    display: flex;
+    justify-content: center;
+  }
+
+  #redes #icono {
+    margin: 0 15px 0 15px;
+  }
+  
+  #idioma{
+    height: 10px;
+  }
+
+  .fa-solid {
+    color: #0d4fa0;
+    margin: 0 15px 0 15px;
+  }
+
+  /* --------dark mode---------- */
+  .ui-switch {
+    /* switch */
+    margin: 0 20px 0 10px;
+    --switch-bg: rgb(135, 150, 165);
+    --switch-width: 40px;
+    --switch-height: 12px;
+    /* circle */
+    --circle-diameter: 24px;
+    --circle-bg: rgb(232, 89, 15);
+    --circle-inset: calc((var(--circle-diameter) - var(--switch-height)) / 2);
+  }
+
+  .ui-switch input {
+    display: none;
+  }
+
+  .slider {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: var(--switch-width);
+    height: var(--switch-height);
+    background: var(--switch-bg);
+    border-radius: 999px;
+    position: relative;
+    cursor: pointer;
+  }
+
+  .slider .circle {
+    top: calc(var(--circle-inset) * -1);
+    left: 0;
+    width: var(--circle-diameter);
+    height: var(--circle-diameter);
+    position: absolute;
+    background: var(--circle-bg);
+    border-radius: inherit;
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjAiIHdpZHRoPSIyMCIgdmlld0JveD0iMCAwIDIwIDIwIj4KICAgIDxwYXRoIGZpbGw9IiNmZmYiCiAgICAgICAgZD0iTTkuMzA1IDEuNjY3VjMuNzVoMS4zODlWMS42NjdoLTEuMzl6bS00LjcwNyAxLjk1bC0uOTgyLjk4Mkw1LjA5IDYuMDcybC45ODItLjk4Mi0xLjQ3My0xLjQ3M3ptMTAuODAyIDBMMTMuOTI3IDUuMDlsLjk4Mi45ODIgMS40NzMtMS40NzMtLjk4Mi0uOTgyek0xMCA1LjEzOWE0Ljg3MiA0Ljg3MiAwIDAwLTQuODYyIDQuODZBNC44NzIgNC44NzIgMCAwMDEwIDE0Ljg2MiA0Ljg3MiA0Ljg3MiAwIDAwMTQuODYgMTAgNC44NzIgNC44NzIgMCAwMDEwIDUuMTM5em0wIDEuMzg5QTMuNDYyIDMuNDYyIDAgMDExMy40NzEgMTBhMy40NjIgMy40NjIgMCAwMS0zLjQ3MyAzLjQ3MkEzLjQ2MiAzLjQ2MiAwIDAxNi41MjcgMTAgMy40NjIgMy40NjIgMCAwMTEwIDYuNTI4ek0xLjY2NSA5LjMwNXYxLjM5aDIuMDgzdi0xLjM5SDEuNjY2em0xNC41ODMgMHYxLjM5aDIuMDg0di0xLjM5aC0yLjA4NHpNNS4wOSAxMy45MjhMMy42MTYgMTUuNGwuOTgyLjk4MiAxLjQ3My0xLjQ3My0uOTgyLS45ODJ6bTkuODIgMGwtLjk4Mi45ODIgMS40NzMgMS40NzMuOTgyLS45ODItMS40NzMtMS40NzN6TTkuMzA1IDE2LjI1djIuMDgzaDEuMzg5VjE2LjI1aC0xLjM5eiIgLz4KPC9zdmc+");
+    background-repeat: no-repeat;
+    background-position: center center;
+    -webkit-transition: left 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, -webkit-transform 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    -o-transition: left 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, transform 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    transition: left 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, transform 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, -webkit-transform 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+    ;
+  }
+
+  .slider .circle::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.75);
+    border-radius: inherit;
+    -webkit-transition: all 500ms;
+    -o-transition: all 500ms;
+    transition: all 500ms;
+    opacity: 0;
+  }
+
+  /* actions */
+
+  .ui-switch input:checked+.slider .circle {
+    left: calc(100% - var(--circle-diameter));
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjAiIHdpZHRoPSIyMCIgdmlld0JveD0iMCAwIDIwIDIwIj4KICAgIDxwYXRoIGZpbGw9IiNmZmYiCiAgICAgICAgZD0iTTQuMiAyLjVsLS43IDEuOC0xLjguNyAxLjguNy43IDEuOC42LTEuOEw2LjcgNWwtMS45LS43LS42LTEuOHptMTUgOC4zYTYuNyA2LjcgMCAxMS02LjYtNi42IDUuOCA1LjggMCAwMDYuNiA2LjZ6IiAvPgo8L3N2Zz4=");
+    background-color: rgb(0, 56, 146);
+  }
+
+  .ui-switch input:active+.slider .circle::before {
+    -webkit-transition: 0s;
+    -o-transition: 0s;
+    transition: 0s;
+    opacity: 1;
+    width: 0;
+    height: 0;
+  }
+
+  /* -------------------------------el nav 2 y su contenido------------------------------------ */
+  .bumper_2 {
+    height: 45px;
+    background-color: #a6aab0;
+    box-shadow: 0 10px 4px rgba(77, 130, 217, 0.5);
+    /* Opcional: añadir una sombra para resaltar */
+    display: flex;
+    justify-content: right;
+  }
+
+  #logo {
+    padding: 0 80px 0 20px;
+  }
+
+  #texto {
+    width: 500px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    color: #0f436d;
+  }
+
+  #login {
+    position: relative;
+    display: inline-block;
+    margin: 5px;
+    padding: 5px 15px;
+    text-align: center;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-decoration: none;
+    color: #041625;
+    background: transparent;
+    cursor: pointer;
+    transition: ease-out 0.5s;
+    border: 2px solid #0f436d;
+    border-radius: 5px;
+    box-shadow: inset 0 0 0 0 #0f436d;
+  }
+
+  #login:hover {
+    color: white;
+    box-shadow: inset 0 -100px 0 0 #a1c8e8;
+  }
+
+  #login:active {
+    transform: scale(0.9);
+  }
+
+  /* -------------------------------------portada, pestaña de entrada---------------------------------------------- */
+  .bumper_3 {
+    height: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .bumper_3 h2 {
+    width: 680px;
+    color: rgb(39, 85, 160);
+    font-size: 35px;
+  }
+
+  /* ------------------------------------pestañas de especialidades--------------------------------------- */
+  .container {
+    position: relative;
+    width: 100%;
+    min-height: 80vh;
+  }
+
+  .space-holder {
+    position: relative;
+    width: 100%;
+    height: 80vh;
+  }
+
+  .sticky {
+    position: sticky;
+    top: 0;
+    height: 80vh;
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  .horizontal {
+    position: absolute;
+    height: 100%;
+    will-change: transform;
+  }
+
+  .cards {
+    position: relative;
+    height: 100%;
+    padding: 150px 0 0 150px;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  .sample-card-inv {
+    position: relative;
+    height: 300px;
+    width: 600px;
+    background-color: transparent;
+    padding: 50px;
+    font-size: 10px;
+    margin-right: 75px;
+    flex-shrink: 0;
+  }
+
+  .sample-card {
+    position: relative;
+    height: 300px;
+    width: 600px;
+    background-color: #0d4fa0;
+    color: white;
+    padding: 50px;
+    font-size: 10px;
+    margin-right: 75px;
+    flex-shrink: 0;
+  }
+
+  .sample-card2 {
+    position: relative;
+    height: 300px;
+    width: 600px;
+    background-color: #a6aab0;
+    color: black;
+    padding: 50px;
+    font-size: 10px;
+    margin-right: 75px;
+    flex-shrink: 0;
+  }
+
+  /* ------------------------------footer------------------------------ */
+  .bumper_4 {
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #colaboracion {
+    display: flex;
+    justify-content: space-around;
+    height: 250px;
+  }
+
+  #colaboracion img {
+    width: 120px;
+    height: fit-content;
+    margin-left: 10px;
+  }
+
+  #footer {
+    height: 50px;
+  }
+
+  /* ---------------------------------transformaciones del darkmode-------------------------------- */
+  #bumper_2.active {
+    background-color: #0d4fa0;
+  }
+
+  #texto.active {
+    color: white;
+  }
+
+  #login.active {
+    border: 2px solid #719cc0;
+    color: white;
+  }
+
+  #uno.active {
+    background-color: #041625;
+  }
+  #tres.active {
+    background-color: #041625;
+  }
+  #cinco.active {
+    background-color: #041625;
+  }
+  #dos.active {
+    background-color: #064a81;
+  }
+  #cuatro.active {
+    background-color: #064a81;
+  }
+  /* ------------------------------resposive-------------------------------------- */
+
+  /* General responsive styling */
+body {
+  margin: 0;
+  font-family: sans-serif;
+}
+
+/* Responsive styling for tablets (min-width: 768px) */
+@media (max-width: 1024px) {
+  .bumper_1 {
+      justify-content: center;
+  }
+
+  #redes {
+      width: 100%;
+      margin-left: 150px;
+  }
+
+  #idioma{
+    display: flex;
+    height: 20px;
+  }
+
+  .ui-switch {
+      --switch-width: 30px;
+      --switch-height: 10px;
+      --circle-diameter: 20px;
+  }
+
+  .slider .circle {
+      background-size: 15px 15px;
+  }
+
+  .bumper_2 {
+      height: 40px;
+  }
+
+  #texto {
+      width: auto;
+  }
+  #texto i{
+    margin-right: 10px;
+  }
+
+  .bumper_3 h2 {
+      width: 90%;
+      font-size: 30px;
+      text-align: center;
+  }
+
+
+  .cards {
+      padding: 100px 0 0 100px;
+  }
+
+  .sample-card,
+  .sample-card2,
+  .sample-card-inv {
+      width: 80%;
+      margin-right: 50px;
+  }
+
+  #colaboracion img {
+      width: 100px;
+  }
+}
+
+/* Responsive styling for mobile (max-width: 768px) */
+@media (max-width: 768px) {
+  .bumper_1 {
+      flex-direction: column;
+      align-items: center;
+      height: auto;
+  }
+
+  #redes {
+      justify-content: center;
+      margin-bottom: 10px;
+  }
+
+  .ui-switch {
+      --switch-width: 25px;
+      --switch-height: 8px;
+      --circle-diameter: 16px;
+      margin: 0;
+  }
+
+  .slider .circle {
+      background-size: 12px 12px;
+  }
+
+  .bumper_2 {
+      flex-direction: column;
+      align-items: center;
+      height: auto;
+  }
+
+  #texto {
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+  }
+
+  #login {
+      width: 80%;
+      margin: 10px 0;
+  }
+
+  .bumper_3 {
+      height: auto;
+  }
+
+  .bumper_3 h2 {
+      width: 90%;
+      font-size: 25px;
+      text-align: center;
+  }
+
+  .container {
+      padding: 0;
+  }
+
+  .cards {
+      padding: 50px 0 0 50px;
+  }
+
+  .sample-card,
+  .sample-card2,
+  .sample-card-inv {
+      width: 90%;
+      margin-right: 20px;
+  }
+
+  #colaboracion {
+      flex-direction: column;
+      align-items: center;
+      height: auto;
+  }
+
+  #colaboracion img {
+      width: 80px;
+      margin: 10px 0;
+  }
+
+  #footer {
+      text-align: center;
+  }
+}
