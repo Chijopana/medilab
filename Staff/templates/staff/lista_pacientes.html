@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="es">
 <head>
     {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<<<<<< HEAD
     <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
     <title>Documento</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
@@ -12,9 +12,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
         integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+=======
+    <title>Lista de Pacientes</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'staff/styles.css' %}">
+>>>>>>> temporal
 </head>
-
 <body>
+<<<<<<< HEAD
     <div id="nav">{% block nav %}
         <div class="bumper_1">
             <div id="redes">
@@ -40,6 +45,22 @@
             </div>
         </div>
         {% endblock %}
+=======
+    <div class="header">
+        <h1>Lista de Pacientes</h1>
+        <nav>
+            <a href="{% url 'staff/lobby' %}">Lobby</a>
+            <a href="{% url 'staff/mod_consultas' %}">Lista de consultas</a>
+            <a href="{% url 'staff/inbox' %}">Inbox</a>
+        </nav>
+    </div>
+    <div class="container">
+        <h2>Pacientes</h2>
+        <!-- Contenido de la lista de pacientes -->
+    </div>
+    <div class="footer">
+        <p>&copy; 2024 Clínica XYZ</p>
+>>>>>>> temporal
     </div>
     <div id="bumper_3">{% block content %}
         <div id="container_medico">
@@ -79,5 +100,4 @@
     </div>
     <script src="{% static 'staff/js/script.js' %}"></script>
 </body>
-
 </html>

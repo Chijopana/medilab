@@ -16,14 +16,16 @@ def pagina_principal(request):
 # @login_required
 # @permission_required('auth._Es_Paciente', login_url='error_404')
 def analisis(request):
-    # Con qué lo conecto?
-    return render(request,'pacientes/analisis.html')
+    perfil = get_object_or_404(Perfil,user=request.user)
+    analisisx = perfil.pacientes.Analisis.all()
+    return render(request,'pacientes/analisis.html',{'analisis':analisisx})
 
 # @login_required
 # @permission_required('auth._Es_Paciente', login_url='error_404')
 def vacunas(request):
-    # Con qué lo conecto?
-    return render(request,'pacientes/vacunas.html')
+    perfil = get_object_or_404(Perfil,user=request.user)
+    vacunax = perfil.pacientes.Vacuna.all()
+    return render(request,'pacientes/vacunas.html',{'vacuna':vacunax})
 
 # @login_required
 # @permission_required('auth._Es_Paciente', login_url='error_404')
@@ -53,7 +55,8 @@ def diagnosticos(request):
 # @permission_required('auth._Es_Paciente', login_url='error_404')
 def visitas(request):
     perfil = get_object_or_404(Perfil,user=request.user)
-    visitax = perfil.pacientes.visita.all()
+    paciente = get_object_or_404(Paciente,perfil=perfil)        
+    visitax = paciente.visita.all()
 
     return render(request,'pacientes/visitas.html',{'visitas':visitax})
 

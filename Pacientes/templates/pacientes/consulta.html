@@ -1,11 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Consulta</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'Pacientes/styles.css' %}">
 </head>
 <body>
-    <p>consulta con chat bot</p>
+    <div class="header">
+        <h1>Consulta</h1>
+        <nav>
+            <a href="{% url 'pacientes/pagina_principal' %}">Inicio</a>
+            <a href="{% url 'pacientes/visitas' %}">Visitas</a>
+            <a href="{% url 'pacientes/diagnosticos' %}">Diagnósticos</a>
+            <a href="{% url 'pacientes/medicacion' %}">Medicación</a>
+        </nav>
+    </div>
+    <div class="container">
+        <h2>Detalles de la Consulta</h2>
+        <!-- Contenido de consulta -->
+    </div>
+    <div class="footer">
+        <p>&copy; 2024 Clínica XYZ</p>
+    </div>
 </body>
 </html>

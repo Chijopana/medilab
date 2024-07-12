@@ -1,15 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Lobby</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'staff/styles.css' %}">
 </head>
-
 <body>
-    <p>Staff</p>
-
+    <div class="header">
+        <h1>Lobby</h1>
+        <nav>
+            <a href="{% url 'staff/lista_pacientes' %}">Lista de Pacientes</a>
+            <a href="{% url 'staff/lista_consultas' %}">Lista de Consultas</a>
+            <a href="{% url 'staff/inbox' %}">Inbox</a>
+        </nav>
+    </div>
+    <div class="container">
+        <h2>Bienvenido al Lobby</h2>
+        <!-- Contenido del lobby -->
+    </div>
+    <div class="footer">
+        <p>&copy; 2024 Clínica XYZ</p>
+    </div>
 </body>
-
 </html>
