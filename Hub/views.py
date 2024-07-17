@@ -6,7 +6,6 @@ from django.contrib.auth.models import Group, User
 # Create your views here.
 
 def hub(request):
-
     return render(request,'Hub/main_hub.html')
 
 def crear_usuario(request):
@@ -33,10 +32,6 @@ def crear_usuario(request):
         form2 = PerfilGrandeForm()
         form3 = PacienteGrandeForm()
     return render(request,'Hub/crear_usuario',{'form1':form1,'form2':form2,'form3':form3})
-    
-
-# def crear_staff(request):
-#     return render(request,'Hub/crear_staff')
 
 def log_in(request):
     if request.method=='POST':

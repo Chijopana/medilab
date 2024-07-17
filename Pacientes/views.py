@@ -1,137 +1,24 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, permission_required
-from Perfiles.models import *
-from Enfermedades.models import *
-from Staff.models import *
-from Staff.forms import *
-from Pacientes.forms import *
 
-# Create your views here.
-# @login_required
-# @permission_required('auth._Es_Paciente', login_url='error_404')
 def pagina_principal(request):
     return render(request,'pacientes/pagina_principal.html')
 
-# @login_required
-# @permission_required('auth._Es_Paciente', login_url='error_404')
-def analisis(request):
-    perfil = get_object_or_404(Perfil,user=request.user)
-    analisisx = perfil.pacientes.Analisis.all()
-    return render(request,'pacientes/analisis.html',{'analisis':analisisx})
+def historial_medico(request):
+    return render(request,'pacientes/historial_medico.html')
 
-# @login_required
-# @permission_required('auth._Es_Paciente', login_url='error_404')
-def vacunas(request):
-    perfil = get_object_or_404(Perfil,user=request.user)
-    vacunax = perfil.pacientes.Vacuna.all()
-    return render(request,'pacientes/vacunas.html',{'vacuna':vacunax})
-
-# @login_required
-# @permission_required('auth._Es_Paciente', login_url='error_404')
-def diagnosticos(request):
-    perfil = get_object_or_404(Perfil,user=request.user)
-    paciente=get_object_or_404(Paciente,perfil=perfil)
-    try:
-        diagnos = get_object_or_404(Diagnostico,paciente=paciente)
-        diag = dict()
-        diag['cancer_mama']=diagnos.cancer_mama.all(),
-        diag['diabetes']=diagnos.diabetes.all(),
-        diag['pneumonia']=diagnos.pneumonia.all(),
-        diag['lunares']=diagnos.lunares.all(),
-        diag['cardiaco']=diagnos.cardiaco.all(),
-    except:
-        diag = dict()
-        diag['cancer_mama']='',
-        diag['diabetes']='',
-        diag['pneumonia']='',
-        diag['lunares']='',
-        diag['cardiaco']='',
-        # return redirect('error_404')
-        'cancer_mama', 'diabetes', 'pneumonia', 'lunares', 'cardiaco'
-    return render(request,'pacientes/diagnosticos.html', {'diagnosticos':diag})
-
-# @login_required
-# @permission_required('auth._Es_Paciente', login_url='error_404')
 def visitas(request):
-    perfil = get_object_or_404(Perfil,user=request.user)
-    paciente = get_object_or_404(Paciente,perfil=perfil)        
-    visitax = paciente.visita.all()
+    return render(request,'pacientes/visitas.html')
 
-    return render(request,'pacientes/visitas.html',{'visitas':visitax})
+def del_visita(request):
+    return render(request,'pacientes/del_visitas.html')
 
-# @login_required
-# @permission_required('auth._Es_Paciente', login_url='error_404')
-def agendar_visita(request):
-    perfil = get_object_or_404(Perfil,user=request.user)
-    ppk = perfil.pacientes.pk
-    pacientex = get_object_or_404(Paciente,pk=ppk)
-    if request.method=='POST':
-        form = VisitaFormPaciente(request.POST)
-        if form.is_valid():
-            visita = form.save(commit=False)
-            visita.paciente = pacientex
-            visita.save()
-            return redirect('pacientes/visitas')
-    else:
-        form = VisitaFormPaciente()
-    return render(request,'pacientes/agendar_visita.html',{'form':form})
+def nueva_visita(request):
+    return render(request,'pacientes/nueva_visita.html')
 
-# @login_required
-# @permission_required('auth._Es_Paciente', login_url='error_404')
-def mod_visitas(request,pk):
-    visitax = get_object_or_404(Visita,pk=pk)
-    if request.method=='POST':
-        form = VisitaFormPaciente(request.POST,instance=visitax)
-        if form.is_valid():
-            form.save()
-            return redirect('pacientes/visitas')
-    else:
-        form = VisitaFormPaciente(instance=visitax)
-    return render(request, 'pacientes/mod_visitas.html',{'form':form})
-
-# @login_required
-# @permission_required('auth._Es_Paciente', login_url='error_404')
-def del_visitas(request,pk):
-    visitax = get_object_or_404(Visita,pk=pk)
-    if request.method=='POST':
-        visitax.delete()
-        return redirect('pacientes/visitas')
-    return render(request,'pacientes/del_visita.html')
-
-# @login_required
-# @permission_required('auth._Es_Paciente', login_url='error_404')
-def perfil(request):
-    perfilx = get_object_or_404(Perfil,user=request.user)
-    return render(request, 'pacientes/perfil.html',{'perfil':perfilx})
-
-# @login_required
-# @permission_required('auth._Es_Paciente', login_url='error_404')
-def mod_perfil(request):
-    ind_perfil = get_object_or_404(Perfil,user=request.user)
-    ppk = ind_perfil.pacientes.pk
-    ind_pac = get_object_or_404(Paciente, pk = ppk)
-    if request.method == 'POST':
-        form1 = PerfilForm(request.POST,instance=ind_perfil)
-        form2 = PacienteForm(request.POST, instance=ind_pac)
-        if form1.is_valid() and form2.is_valid():
-            form1.save()
-            form2.save()  
-            return redirect('pacientes/perfil')
-    else:
-        form1 = PerfilForm(instance = ind_perfil)
-        form2 = PacienteForm(instance = ind_pac)
-    return render(request, 'pacientes/mod_perfil.html',{'form1':form1,'form2':form2,'paciente':ind_perfil})
-
-# @login_required
-# @permission_required('auth._Es_Paciente', login_url='error_404')
-def medicacion(request):
-    perfil = get_object_or_404(Perfil,user=request.user)
-    medicar = perfil.medicacion.all()
-    return render(request,'pacientes/medicacion.html',{'medicacion':medicar})
-
-# @login_required
-# @permission_required('auth._Es_Paciente', login_url='error_404')
 def consultas(request):
-    # bot
     return render(request,'pacientes/consultas.html')
+
+def perfil(request):
+    return render(request,'pacientes/perfil.html')
