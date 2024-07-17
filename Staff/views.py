@@ -57,12 +57,12 @@ def paciente_paciente(request,access_key):
             form.save()
     return {'form_paciente':form}
 
-def paciente_informe(request,pk):
-    informe = get_object_or_404(Informe,pk=pk)
-    if request.method=='POST':
-    else:
-        form = InformeForm(instance= informe)
-    return
+# def paciente_informe(request,pk):
+#     informe = get_object_or_404(Informe,pk=pk)
+#     if request.method=='POST':
+#     else:
+#         form = InformeForm(instance= informe)
+#     return
 
 def paciente_visita(request,pk):
     return  
