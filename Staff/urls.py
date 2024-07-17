@@ -7,6 +7,10 @@ urlpatterns = [
     path('lista_pacientes/<uuid:access_key>',views.paciente_ind,name='staff/paciente_ind'),
     path('lista_pacientes/<uuid:access_key>/edit',views.paciente_ind_edit,name='staff/paciente_ind_edit'),
     path('lista_pacientes/<uuid:access_key>/del',views.paciente_ind_del,name='staff/paciente_ind_del'),
+    path('lista_pacientes/<uuid:access_key>/form_perfil',views.paciente_perfil,name='staff/paciente_perfil'),
+    path('lista_pacientes/<uuid:access_key>/form_paciente',views.paciente_paciente,name='staff/paciente_paciente'),
+    path('lista_pacientes/<int:pk>/form_informe',views.paciente_informe,name='staff/paciente_informe'),
+    path('lista_pacientes/<int:pk>/form_visita',views.paciente_visita,name='staff/paciente_visita'),
 
     path('lista_consultas/',views.lista_consultas,name='staff/lista_consultas'),
     path('lista_consultas/nueva_consulta',views.nueva_consulta,name='staff/nueva_consulta'),
@@ -15,6 +19,5 @@ urlpatterns = [
     path('inbox/',views.inbox,name='staff/inbox'),
 
     path('perfil',views.perfil,name='staff/perfil'),
-
 
 ]
