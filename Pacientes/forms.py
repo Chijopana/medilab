@@ -5,3 +5,13 @@ class VisitaForm(forms.ModelForm):
     class Meta:
         model = Visita
         fields = ['paciente','medico','hora_fecha','descripcion_problema']
+
+class VisitaFormPaciente(forms.ModelForm):
+    class Meta:
+        model = Visita
+        fields = ['medico','descripcion_problema']
+
+class VisitaFormMedico(forms.ModelForm):
+    class Meta:
+        model = Visita
+        fields = ['paciente','hora_fecha','descripcion_problema']
