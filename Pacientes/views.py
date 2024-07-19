@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, permission_required
@@ -5,6 +6,29 @@ from Perfiles.models import *
 from Perfiles.forms import *
 from Pacientes.forms import *
 from Pacientes.models import *
+
+def detectar_enfermedad(request,pk):
+    if request.method == 'GET':
+        # perfil = get_object_or_404(Perfil,user=request.user)
+        # ppk = perfil.pacientes.pk
+        # paciente = get_object_or_404(Paciente, pk = ppk)
+        exp = get_object_or_404(Expediente,pk=pk)
+        # if exp.paciente != paciente:
+            # return JsonResponse({'error': 'Acceso denegado'}, status=403)
+        enfermedades = {'CancerMama':CancerMama,
+                        'Diabetes':Diabetes,
+                        'Pneumonia':Pneumonia,
+                        'Lunares':Lunares,
+                        'Cardiaco':Cardiaco
+                        }
+        if exp.especialidad in enfermedades:
+            modelo = enfermedades[exp.especialidad]
+            resultado = modelo.objects.filter(expediente=exp)
+            resultado_json = list(resultado.values())
+            return JsonResponse({'resultado':resultado_json})
+        else:
+            return JsonResponse({'error': 'Especialidad no válida'}, status=400)
+    return JsonResponse({'error': 'Método no permitido'}, status=405)
 
 
 def pagina_principal(request):
