@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     "Perfiles",
     "Enfermedades",
     "E404",
+    "expedientes",
+    "media",
 ]
 
 MIDDLEWARE = [

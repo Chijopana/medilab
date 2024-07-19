@@ -9,7 +9,7 @@ class VisitaForm(forms.ModelForm):
 class VisitaFormPaciente(forms.ModelForm):
     class Meta:
         model = Visita
-        fields = ['medico','descripcion_problema']
+        fields = ['medico','hora_fecha','descripcion_problema']
 
 class VisitaFormMedico(forms.ModelForm):
     class Meta:

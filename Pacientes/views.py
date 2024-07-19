@@ -59,7 +59,7 @@ def perfil(request):
 
 def medicacion(request):
     perfil = get_object_or_404(Perfil,user = request.user)
-    medicacion = perfil.medicacion.all()
+    medicacion = perfil.paciente.medicacion.all()
     return render(request,'pacientes/medicacion.html',{'medicacion':medicacion})
 
 def consultas(request):

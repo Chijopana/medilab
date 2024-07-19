@@ -8,9 +8,8 @@ class Perfil(models.Model):
     access_key = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
     nombre = models.CharField(max_length=255)
     apellido = models.CharField(max_length=255)
-    # Modificar el max del dni. Y todo lo del regex si puedes. 
-    dni = models.CharField(max_length=20, default= '0000000F')
     email = models.EmailField()
+    dni = models.CharField(max_length=9)
     telefono = models.CharField(max_length=12)
     direccion = models.CharField(max_length=255)
     fecha_nacimiento = models.DateField()
@@ -29,15 +28,7 @@ class Paciente(models.Model):
         return self.perfil.user.username
 
 
-class Enfermero(models.Model):
-    perfil = models.OneToOneField(Perfil, on_delete=models.CASCADE, related_name='enfermero')
-    pacientes = models.ManyToManyField(Paciente, related_name='enfermero', blank=True, null=True)
-
-    def __str__(self):
-        return self.perfil.user.username
-
 class Medico(models.Model):
-    enfermeros = models.ManyToManyField(Enfermero, related_name='medico', blank=True, null=True)
     perfil = models.OneToOneField(Perfil, on_delete=models.CASCADE, related_name='medico')
 
     def __str__(self):

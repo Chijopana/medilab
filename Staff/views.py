@@ -1,10 +1,36 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, permission_required
+from django.urls import reverse
 from Perfiles.models import *
 from Perfiles.forms import *
 from Pacientes.forms import *
+from Staff.forms import *
 from Pacientes.models import *
+from Enfermedades.models import *
+
+def detectar_enfermedad(request,pk):
+    if request.method == 'GET':
+        perfil = get_object_or_404(Perfil,user=request.user)
+        ppk = perfil.medico.pk
+        medico = get_object_or_404(Medico, pk = ppk)
+        exp = get_object_or_404(Expediente,pk=pk)
+        if exp.doctor != medico:
+            return redirect('error_404')
+        enfermedades = {'CancerMama':CancerMama,
+                        'Diabetes':Diabetes,
+                        'Pneumonia':Pneumonia,
+                        'Lunares':Lunares,
+                        'Cardiaco':Cardiaco
+                        }
+        if exp.especialidad in enfermedades:
+            modelo = enfermedades[exp.especialidad]
+            resultado = modelo.objects.filter(expediente=exp)
+            return {'resultado':resultado}
+        else:
+            return redirect('error_404')
+    return redirect('error_404')
+
 
 
 def lobby(request):
@@ -19,7 +45,10 @@ def paciente_ind(request,access_key):
     perfil = get_object_or_404(Perfil,access_key=access_key)
     expedientes = perfil.pacientes.expediente.all()
     visitas = perfil.pacientes.visita.all()
-    return render(request,'staff/paciente_ind.html',{'perfil':perfil,'expedientes':expedientes,'visitas':visitas})
+    medicacion = perfil.pacientes.medicacion.all()
+    return render(request,'staff/paciente_ind.html',{'perfil':perfil,'expedientes':expedientes,'visitas':visitas,'medicacion':medicacion})
+# se ha de hacer una llamada api a una url para obtener la enfermedad del expediente.
+
 
 def paciente_ind_edit(request,access_key):
     perfil = get_object_or_404(Perfil,access_key=access_key)
@@ -27,6 +56,7 @@ def paciente_ind_edit(request,access_key):
     paciente = get_object_or_404(Paciente, pk = ppk)
     expedientes = perfil.pacientes.expediente.all()
     visitas = perfil.pacientes.visita.all()
+    medicacion = perfil.pacientes.medicacion.all()
     form1 = PerfilForm(instance = perfil)
     form2 = PacienteForm(instance = paciente)
     return render(request,'staff/paciente_ind_edit.html',{'form_perfil':form1,'form_paciente':form2,'paciente':perfil,'expedientes':expedientes,'visitas':visitas})
@@ -60,6 +90,35 @@ def paciente_visita(request,pk):
         form = VisitaForm(instance=visita)
     return  {'form_visita':form}
 
+def paciente_medicacion(request,pk):
+    medicacion = get_object_or_404(Medicacion,pk=pk)
+    if request.method=='POST':
+        form = MedicacionForm(request.POST,instance=medicacion)
+        if form.is_valid():
+            form.save()
+            return {'form_medicacion':form}
+    else:
+        form = MedicacionForm(instance=medicacion)
+    return {'form_medicacion':form}
+
+def paciente_nueva_medicacion(request,access_key):
+    perfil_med = get_object_or_404(Perfil,user=request.user)
+    perfil_pac = get_object_or_404(Perfil,access_key=access_key)
+    ppk1 = perfil_med.medico.pk
+    ppk2 = perfil_pac.pacientes.pk
+    medico = get_object_or_404(Medico,pk=ppk1)
+    paciente = get_object_or_404(Paciente,pk=ppk2)
+    if request.method == 'POST':
+        form = MedicacionFormCreacion(request.POST)
+        if form.is_valid():
+            med = form.save(commit=False)
+            med.paciente=paciente
+            med.medico=medico
+            med.save()
+            return redirect(reverse('staff/paciente_ind', kwargs={'access_key': access_key}))
+    else:
+        form = MedicacionFormCreacion()
+    return render(request,'staff/nueva_med.html',{'form':form})
 
 def lista_consultas(request):
     perfil = get_object_or_404(Perfil,user=request.user)

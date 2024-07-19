@@ -9,6 +9,7 @@ urlpatterns = [
     path('lista_pacientes/<uuid:access_key>/form_perfil',views.paciente_perfil,name='staff/paciente_perfil'),
     path('lista_pacientes/<uuid:access_key>/form_paciente',views.paciente_paciente,name='staff/paciente_paciente'),
     path('lista_pacientes/<int:pk>/form_visita',views.paciente_visita,name='staff/paciente_visita'),
+    path('lista_pacientes/<int:pk>/form_medicacion',views.paciente_medicacion,name='staff/paciente_medicacion'),
 
     path('lista_consultas/',views.lista_consultas,name='staff/lista_consultas'),
     path('lista_consultas/<int:pk>/',views.consulta_ind,name='staff/constulta_ind'),

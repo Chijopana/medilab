@@ -13,8 +13,3 @@ class PacienteForm(forms.ModelForm):
     class Meta:
         model = Paciente
         fields = ['contacto_emergencia','telefono_emergencia']
-
-class MedicacionForm(forms.ModelForm):
-    class Meta:
-        model = Medicacion
-        fields = ['medico','medicina','fecha_inicio','fecha_final']

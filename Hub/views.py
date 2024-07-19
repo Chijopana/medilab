@@ -1,7 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .forms import UserForm,PerfilGrandeForm,PacienteGrandeForm
+from .forms import UserForm
+from Perfiles.forms import *
 from django.contrib.auth.models import Group, User
 # Create your views here.
 
@@ -12,8 +13,8 @@ def crear_usuario(request):
     grupo = get_object_or_404(Group, name='Pacientes')
     if request.method == 'POST':
         form1 = UserForm(request.POST)
-        form2 = PerfilGrandeForm(request.POST)
-        form3 = PacienteGrandeForm(request.POST)
+        form2 = PerfilForm(request.POST)
+        form3 = PacienteForm(request.POST)
 
         if form1.is_valid() and form2.is_valid() and form3.is_valid():
             usery = form1.save()
@@ -29,9 +30,9 @@ def crear_usuario(request):
             messages.error(request,'Error. Por favor, intentelo de nuevo')
     else:
         form1 = UserForm()
-        form2 = PerfilGrandeForm()
-        form3 = PacienteGrandeForm()
-    return render(request,'Hub/crear_usuario',{'form1':form1,'form2':form2,'form3':form3})
+        form2 = PerfilForm()
+        form3 = PacienteForm()
+    return render(request,'Hub/crear_usuario.html',{'form1':form1,'form2':form2,'form3':form3})
 
 def log_in(request):
     if request.method=='POST':
