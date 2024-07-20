@@ -75,7 +75,6 @@ def perfil(request):
         if form1.is_valid() and form2.is_valid():
             form1.save()
             form2.save()  
-            return {'form1':form1,'form2':form2}
     else:
         form1 = PerfilForm(instance = perfil)
         form2 = PacienteForm(instance = paciente)
