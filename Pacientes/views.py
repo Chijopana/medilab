@@ -44,6 +44,17 @@ def visitas(request):
     visitas = perfil.pacientes.visita.all()
     return render(request,'pacientes/visitas.html',{'visitas':visitas})
 
+def mod_visita(request,pk):
+    visita = get_object_or_404(Visita,pk=pk)
+    if request.method=='POST':
+        form = VisitaFormPaciente(request.POST, instance=visita)
+        if form.is_valid():
+            form.save()
+            return redirect('pacientes/visitas')
+    else:
+        form = VisitaFormPaciente(instance=visita)
+    return render(request,'pacientes/modificar_visita.html',{'form':form,'visita':visita})
+
 def del_visita(request,pk):
     visita = get_object_or_404(Visita,pk=pk)
     if request.method=='POST':

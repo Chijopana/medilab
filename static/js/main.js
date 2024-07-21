@@ -182,10 +182,6 @@
   window.addEventListener('load', navmenuScrollspy);
   document.addEventListener('scroll', navmenuScrollspy);
 
-
-
-  // Pruebas para ver si mi codigo es el que funciona
+  
 
 })();
-
-

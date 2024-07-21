@@ -73,7 +73,7 @@ def paciente_ind_edit(request,access_key):
         form2 = PacienteForm(request.POST,instance = paciente)
         visita_lista = {visita.pk:VisitaForm(request.POST,instance=visita) for visita in visitas}
         medicacion_lista = {medic.pk:MedicacionForm(request.POST,instance=medic) for medic in medicacion}
-        if form1.is_valid() and form2.is_valid() and all(form.is_valid() for form in visita_lista.values()) and all(form.is_valid() for form in medicacion_lista.values()):
+        if form1.is_valid() and form2.is_valid() and all(form.is_valid() for form in visita_lista.values()) and all(form.is_valid() for form in medicacion_lista.values()): 
             form1.save()
             form2.save()
             for form in visita_lista.values():

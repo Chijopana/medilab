@@ -1,0 +1,14 @@
+<div>
+    <h2>Configuración</h2>
+    <form action="{% url 'pacientes/perfil' %}" method="post" class="php-email-form">
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" placeholder="Ingrese su email">
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Contraseña</label>
+            <input type="password" class="form-control" id="password" placeholder="Ingrese su contraseña">
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+    </form>
+</div>

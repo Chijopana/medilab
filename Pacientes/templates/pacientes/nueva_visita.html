@@ -1,0 +1,18 @@
+<div>
+    <h2>Crear Visita</h2>
+    <form action="{% url 'pacientes/nueva_visita' %}" method="post" class="php-email-form">
+        <div class="mb-3">
+            <label for="fecha" class="form-label">Fecha</label>
+            <input type="date" class="form-control" id="fecha">
+        </div>
+        <div class="mb-3">
+            <label for="motivo" class="form-label">Motivo</label>
+            <input type="text" class="form-control" id="motivo" placeholder="Ingrese el motivo de la visita">
+        </div>
+        <div class="mb-3">
+            <label for="doctor" class="form-label">Doctor</label>
+            <input type="text" class="form-control" id="doctor" placeholder="Ingrese el nombre del doctor">
+        </div>
+        <button type="submit" class="btn btn-primary">Crear</button>
+    </form>
+</div>

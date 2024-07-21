@@ -1,0 +1,23 @@
+<div>
+    <h2>Visitas</h2>
+    <button class="btn btn-primary mb-3" hx-get="{% url 'crear_visita' %}" hx-target="#content" hx-swap="innerHTML">Crear Visita</button>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Motivo</th>
+                <th>Doctor</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>15/03/2024</td>
+                <td>Consulta General</td>
+                <td>Dr. Pérez</td>
+                <td><button class="btn btn-warning btn-sm" hx-get="{% url 'pacientes/mod_visita' visita.id %}" hx-target="#content" hx-swap="innerHTML">Modificar</button></td>
+            </tr>
+            <!-- Agregar más filas según sea necesario -->
+        </tbody>
+    </table>
+</div>

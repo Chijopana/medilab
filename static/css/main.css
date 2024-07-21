@@ -1726,3 +1726,141 @@ section,
 .starter-section {
   /* Add your styles here */
 }
+
+.card {
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 85%);
+  border-radius: 0.5rem;
+  background-color: var(--surface-color);
+  box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+
+}
+
+.card-title {
+  font-family: var(--heading-font);
+  color: var(--heading-color);
+  font-size: 1.5rem;
+}
+
+.nav-tabs .nav-link {
+  color: var(--default-color);
+  border: 1px solid transparent;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+  font-size: 1rem;
+}
+
+.nav-tabs .nav-link:hover {
+  border-color: var(--accent-color) var(--accent-color) var(--surface-color);
+  color: var(--accent-color);
+}
+
+.nav-tabs .nav-link.active {
+  background-color: var(--accent-color);
+  color: var(--contrast-color);
+  border-color: var(--accent-color) var(--accent-color) var(--surface-color);
+}
+
+.btn-primary {
+  background-color: var(--accent-color);
+  border: none;
+  border-radius: 50px;
+  padding: 10px 20px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: color-mix(in srgb, var(--accent-color), transparent 20%);
+}
+
+.form-control {
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 80%);
+  border-radius: 0.25rem;
+  padding: 10px;
+  font-size: 14px;
+}
+
+.form-control:focus {
+  border-color: var(--accent-color);
+  box-shadow: none;
+}
+
+/* Estilos para la barra lateral */
+.list-group-item {
+  border: none;
+  border-left: 5px solid transparent;
+  border-radius: 0;
+  padding: 15px 20px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+  transition: all 0.3s ease;
+}
+
+.list-group-item:hover, .list-group-item.active {
+  background-color: var(--accent-color);
+  color: #fff;
+  border-left: 5px solid var(--accent-color);
+}
+
+/* Estilos para el área de contenido */
+#content {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#content h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+/* Estilos para el buscador de pacientes */
+#search-nombre,
+#search-apellidos,
+#search-dni {
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    font-size: 14px;
+}
+
+/* Estilos para la tabla de pacientes */
+.table {
+    margin-top: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.table thead th {
+    background-color: var(--accent-color);
+    color: #fff;
+    text-align: center;
+    padding: 15px;
+}
+
+.table tbody tr {
+    text-align: center;
+}
+
+.table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.table tbody tr:hover {
+    background-color: #eaeaea;
+}
+
+.table td, .table th {
+    padding: 12px;
+    vertical-align: middle;
+}
+
+.table .btn {
+    padding: 5px 10px;
+    font-size: 12px;
+    border-radius: 4px;
+}

@@ -1,0 +1,18 @@
+<div>
+    <h2>Modificar Visita</h2>
+    <form action="{% url 'pacientes/mod_visita' visita.id %}" method="post" class="php-email-form">
+        <div class="mb-3">
+            <label for="fecha" class="form-label">Fecha</label>
+            <input type="date" class="form-control" id="fecha" value="2024-03-15">
+        </div>
+        <div class="mb-3">
+            <label for="motivo" class="form-label">Motivo</label>
+            <input type="text" class="form-control" id="motivo" value="Consulta General">
+        </div>
+        <div class="mb-3">
+            <label for="doctor" class="form-label">Doctor</label>
+            <input type="text" class="form-control" id="doctor" value="Dr. Pérez">
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+    </form>
+</div>

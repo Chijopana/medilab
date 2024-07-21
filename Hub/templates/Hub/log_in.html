@@ -1,0 +1,67 @@
+{% extends 'Hub/base.html'%}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h2 class="card-title text-center mb-4">Login</h2>
+                    <ul class="nav nav-tabs mb-4" id="loginTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="patient-tab" data-bs-toggle="tab" data-bs-target="#patient" type="button" role="tab" aria-controls="patient" aria-selected="true">Paciente</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="doctor-tab" data-bs-toggle="tab" data-bs-target="#doctor" type="button" role="tab" aria-controls="doctor" aria-selected="false">Médico</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="loginTabContent">
+                        <div class="tab-pane fade show active" id="patient" role="tabpanel" aria-labelledby="patient-tab">
+                            <form action="{% url 'log_in' %}" method="post" class="php-email-form">
+                                <div class="form-group mb-3">
+                                    <label for="patient-username">Username</label>
+                                    <input type="text" name="username" class="form-control" id="patient-username" required>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="patient-password">Password</label>
+                                    <input type="password" name="password" class="form-control" id="patient-password" required>
+                                </div>
+                                <div class="form-group text-center">
+                                    <button type="submit" class="btn btn-primary btn-block">Login</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="tab-pane fade" id="doctor" role="tabpanel" aria-labelledby="doctor-tab">
+                            <form action="{% url 'log_in' %}" method="post" class="php-email-form">
+                                <div class="form-group mb-3">
+                                    <label for="doctor-username">Username</label>
+                                    <input type="text" name="username" class="form-control" id="doctor-username" required>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="doctor-password">Password</label>
+                                    <input type="password" name="password" class="form-control" id="doctor-password" required>
+                                </div>
+                                <div class="form-group text-center">
+                                    <button type="submit" class="btn btn-primary btn-block">Login</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+<footer id="footer" class="footer light-background">
+    <div class="container copyright text-center mt-4">
+        <p>© <span>Copyright</span> <strong class="px-1 sitename">Medilab</strong> <span>All Rights Reserved</span></p>
+        <div class="credits">
+            Designed by <a href="https://fundacionesplai.org/">IPIA</a>
+        </div>
+    </div>
+</footer>
+{% endblock %}

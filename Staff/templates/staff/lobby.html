@@ -1,0 +1,33 @@
+{% extends 'Hub/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-lg-3">
+            <div class="list-group">
+                <a href="{% url 'pacientes_view' %}" class="list-group-item list-group-item-action" hx-get="{% url 'pacientes_view' %}" hx-target="#content" hx-swap="innerHTML">Lista de Pacientes</a>
+                <a href="{% url 'visitas_view' %}" class="list-group-item list-group-item-action" hx-get="{% url 'visitas_view' %}" hx-target="#content" hx-swap="innerHTML">Lista de Visitas</a>
+                <a href="{% url 'inbox_view' %}" class="list-group-item list-group-item-action" hx-get="{% url 'inbox_view' %}" hx-target="#content" hx-swap="innerHTML">Inbox</a>
+                <a href="{% url 'perfil_view' %}" class="list-group-item list-group-item-action" hx-get="{% url 'perfil_view' %}" hx-target="#content" hx-swap="innerHTML">Perfil de Médico</a>
+            </div>
+        </div>
+        <!-- Content Area -->
+        <div class="col-lg-9">
+            <div id="content">
+                <!-- Contenido que cambiará según el enlace seleccionado -->
+                <h2>Bienvenido, seleccione una opción del menú</h2>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+<footer id="footer" class="footer light-background">
+    <div class="container copyright text-center mt-4">
+        <p>© <span>Copyright</span> <strong class="px-1 sitename">Medilab</strong> <span>All Rights Reserved</span></p>
+    </div>
+</footer>
+{% endblock %}
