@@ -41,7 +41,7 @@ def log_in(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request,user)
-            if request.user.has_perm('auth._Es_Medico') or request.user.has_perm('auth._Es_Enfermero'):
+            if request.user.has_perm('auth._Es_Medico'):
                 return redirect('staff/lobby')
             else:
                 return redirect('pacientes/pagina_principal')

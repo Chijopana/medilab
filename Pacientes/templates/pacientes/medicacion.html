@@ -3,19 +3,22 @@
     <table class="table table-bordered">
         <thead>
             <tr>
+                <th>Medico</th>
                 <th>Medicamento</th>
-                <th>Dosis</th>
-                <th>Frecuencia</th>
+                <th>Fecha inicio</th>
+                <th>Fecha final</th>
                 <!-- <th>Acciones</th> -->
             </tr>
         </thead>
         <tbody>
+            {%for medica in medicacion%}
             <tr>
-                <td>Ibuprofeno</td>
-                <td>200 mg</td>
-                <td>2 veces al día</td>
-                <!-- <td><button class="btn btn-warning btn-sm">Modificar</button></td> -->
+                <td>{{medica.medico}}</td>
+                <td>{{medica.medicina}}</td>
+                <td>{{medica.fecha_inicio}}</td>
+                <td>{{medica.fecha_final}}</td>
             </tr>
+            {% endfor%}
             <!-- Agregar más filas según sea necesario -->
         </tbody>
     </table>

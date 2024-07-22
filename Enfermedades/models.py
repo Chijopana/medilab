@@ -4,14 +4,14 @@ from expedientes.models import Expediente
 
 
 class CancerMama(models.Model):
-    expediente = models.OneToOneField(Expediente, on_delete=models.CASCADE)
+    expediente = models.OneToOneField(Expediente, on_delete=models.DO_NOTHING)
     imagen = models.ImageField(upload_to='cancer_mama_images/', blank=True) 
 
     def __str__(self):
         return f'Cancer de Mama - Expediente {self.expediente}'
     
 class Diabetes(models.Model):
-    expediente = models.OneToOneField(Expediente, on_delete=models.CASCADE)
+    expediente = models.OneToOneField(Expediente, on_delete=models.DO_NOTHING)
     genero = models.CharField(max_length=6)  
     edad = models.DecimalField(max_digits=5, decimal_places=2)
     hipertension = models.IntegerField()  
@@ -27,21 +27,21 @@ class Diabetes(models.Model):
         return f'Diabetes - Expediente {self.expediente}'
 
 class Pneumonia(models.Model):
-    expediente = models.OneToOneField(Expediente, on_delete=models.CASCADE)
+    expediente = models.OneToOneField(Expediente, on_delete=models.DO_NOTHING)
     imagen = models.ImageField(upload_to='pneumonia_images/', blank=True, null=True)
    
     def __str__(self):
         return f'Pneumonia - Expediente {self.expediente}'
 
 class Lunares(models.Model):
-    expediente = models.OneToOneField(Expediente, on_delete=models.CASCADE)
+    expediente = models.OneToOneField(Expediente, on_delete=models.DO_NOTHING)
     imagen = models.ImageField(upload_to='lunares_images/', blank=True, null=True)
     
     def __str__(self):
         return f'Lunares - Expediente {self.expediente}'
 
 class Cardiaco(models.Model):
-    expediente = models.OneToOneField(Expediente, on_delete=models.CASCADE)
+    expediente = models.OneToOneField(Expediente, on_delete=models.DO_NOTHING)
     estado_salud = models.IntegerField()  
     revision_medica = models.IntegerField()
     ejercicio = models.IntegerField()

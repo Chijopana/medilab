@@ -7,10 +7,10 @@
         <!-- Sidebar -->
         <div class="col-lg-3">
             <div class="list-group">
-                <a href="{% url 'pacientes_view' %}" class="list-group-item list-group-item-action" hx-get="{% url 'pacientes_view' %}" hx-target="#content" hx-swap="innerHTML">Lista de Pacientes</a>
-                <a href="{% url 'visitas_view' %}" class="list-group-item list-group-item-action" hx-get="{% url 'visitas_view' %}" hx-target="#content" hx-swap="innerHTML">Lista de Visitas</a>
-                <a href="{% url 'inbox_view' %}" class="list-group-item list-group-item-action" hx-get="{% url 'inbox_view' %}" hx-target="#content" hx-swap="innerHTML">Inbox</a>
-                <a href="{% url 'perfil_view' %}" class="list-group-item list-group-item-action" hx-get="{% url 'perfil_view' %}" hx-target="#content" hx-swap="innerHTML">Perfil de Médico</a>
+                <a href="{% url 'staff/lista_pacientes' %}" class="list-group-item list-group-item-action" hx-get="{% url 'staff/lista_pacientes' %}" hx-target="#content" hx-swap="innerHTML">Lista de Pacientes</a>
+                <a href="{% url 'staff/lista_consultas' %}" class="list-group-item list-group-item-action" hx-get="{% url 'staff/lista_consultas' %}" hx-target="#content" hx-swap="innerHTML">Lista de Visitas</a>
+                <a href="{% url 'staff/inbox' %}" class="list-group-item list-group-item-action" hx-get="{% url 'staff/inbox' %}" hx-target="#content" hx-swap="innerHTML">Inbox</a>
+                <a href="{% url 'staff/perfil' %}" class="list-group-item list-group-item-action" hx-get="{% url 'staff/perfil' %}" hx-target="#content" hx-swap="innerHTML">Perfil de Médico</a>
             </div>
         </div>
         <!-- Content Area -->

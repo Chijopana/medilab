@@ -117,14 +117,18 @@ def lista_consultas(request):
     ppk = perfil.medico.pk
     medico=get_object_or_404(Medico,pk=ppk)
     visitas = medico.visita.all()
+    return render(request,'staff/lista_consultas.html',{'visitas':visitas})
+
+def consulta(request,pk):
+    visita = get_object_or_404(Visita,pk=pk)
     if request.method == 'POST':
-        lista_visitas = {visita.pk:VisitaForm(request.POST,instance=visita) for visita in visitas}
-        if all(form.is_valid() for form in lista_visitas.values()):
-            for form in lista_visitas.values():
-                form.save()
+        form = VisitaForm(request.POST,instance=visita)
+        if form.is_valid():
+            form.save()
+            return redirect('staff/lobby')
     else:
-        lista_visitas = {visita.pk:VisitaForm(instance=visita) for visita in visitas}
-    return render(request,'staff/lista_consultas.html',{'visitas':lista_visitas})
+        form = VisitaForm(instance=visita)
+    return render(request,'staff/consulta_ind.html',{'form':form,'visita':visita})
 
 
 def nueva_consulta(request):

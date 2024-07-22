@@ -9,43 +9,23 @@
                             <th>Paciente</th>
                             <th>Fecha</th>
                             <th>Hora</th>
-                            <th>Doctor</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody id="visits-table-body">
-                        <!-- Aquí se insertarán las filas de visitas -->
+                        {%for visita in visitas%}
+                        <tr>
+                            <td>{{visita.paciente}}</td>
+                            <td>{{visita.hora_fecha}}</td>
+                            <td>{{visita.descripcion_problema}}</td>
+                            <td><button class="btn btn-primary btn-sm"
+                                    hx-get="{% url 'staff/mod_visita' visita.id%}" hx-target="#content"
+                                    hx-swap="innerHTML">Ver</button></td>
+                        </tr>
+                        {%endfor%}
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const visits = [
-            { paciente: "Juan Pérez", fecha: "2023-07-20", hora: "10:00", doctor: "Dr. Smith" },
-            { paciente: "Ana García", fecha: "2023-07-21", hora: "11:00", doctor: "Dr. Johnson" },
-            { paciente: "Luis Martínez", fecha: "2023-07-22", hora: "12:00", doctor: "Dr. Brown" },
-        ];
-
-        const tableBody = document.getElementById("visits-table-body");
-
-        function renderTable() {
-            tableBody.innerHTML = "";
-            visits.forEach(visit => {
-                const row = document.createElement("tr");
-                row.innerHTML = `
-                    <td>${visit.paciente}</td>
-                    <td>${visit.fecha}</td>
-                    <td>${visit.hora}</td>
-                    <td>${visit.doctor}</td>
-                    <td><button class="btn btn-primary btn-sm">Ver</button></td>
-                `;
-                tableBody.appendChild(row);
-            });
-        }
-
-        renderTable();
-    });
-</script>

@@ -47,19 +47,19 @@ def visitas(request):
 def mod_visita(request,pk):
     visita = get_object_or_404(Visita,pk=pk)
     if request.method=='POST':
-        form = VisitaFormPaciente(request.POST, instance=visita)
+        form = VisitaForm(request.POST, instance=visita)
         if form.is_valid():
             form.save()
-            return redirect('pacientes/visitas')
+            return redirect('pacientes/pagina_principal')
     else:
-        form = VisitaFormPaciente(instance=visita)
+        form = VisitaForm(instance=visita)
     return render(request,'pacientes/modificar_visita.html',{'form':form,'visita':visita})
 
 def del_visita(request,pk):
     visita = get_object_or_404(Visita,pk=pk)
     if request.method=='POST':
         visita.delete()
-    return redirect('pacientes/visitas')
+    return redirect('pacientes/pagina_principal')
     
 def nueva_visita(request):
     perfil = get_object_or_404(Perfil,user=request.user)
@@ -71,7 +71,7 @@ def nueva_visita(request):
             visita = form.save(commit=False)
             visita.paciente = pacientex
             visita.save()
-            return redirect('pacientes/visitas')
+            return redirect('pacientes/pagina_principal')
     else:
         form = VisitaFormPaciente()
     return render(request,'pacientes/nueva_visita.html',{'form':form})
@@ -85,7 +85,8 @@ def perfil(request):
         form2 = PacienteForm(request.POST, instance=paciente)
         if form1.is_valid() and form2.is_valid():
             form1.save()
-            form2.save()  
+            form2.save()
+            return redirect('pacientes/pagina_principal')
     else:
         form1 = PerfilForm(instance = perfil)
         form2 = PacienteForm(instance = paciente)
@@ -93,7 +94,7 @@ def perfil(request):
 
 def medicacion(request):
     perfil = get_object_or_404(Perfil,user = request.user)
-    medicacion = perfil.paciente.medicacion.all()
+    medicacion = perfil.pacientes.medicacion.all()
     return render(request,'pacientes/medicacion.html',{'medicacion':medicacion})
 
 def consultas(request):

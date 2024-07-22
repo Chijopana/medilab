@@ -12,6 +12,7 @@ urlpatterns = [
     path('lista_consultas/',views.lista_consultas,name='staff/lista_consultas'),
     path('lista_consultas/nueva_consulta',views.nueva_consulta,name='staff/nueva_consulta'),
     path('lista_consultas/<int:pk>/del',views.del_consulta,name='staff/del_consulta'),
+    path('lista_consultas/<int:pk>/mod',views.consulta,name='staff/mod_visita'),
 
     path('inbox/',views.inbox,name='staff/inbox'),
     path('inbox/<int:pk>/formulario',views.formulario,name='staff/formulario'),

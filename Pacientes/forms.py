@@ -1,5 +1,6 @@
 from django import forms
 from .models import *
+from Perfiles.models import *
 
 class VisitaForm(forms.ModelForm):
     class Meta:

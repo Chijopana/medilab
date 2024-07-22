@@ -10,24 +10,35 @@
                     <h2 class="card-title text-center mb-4">Login</h2>
                     <ul class="nav nav-tabs mb-4" id="loginTab" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="patient-tab" data-bs-toggle="tab" data-bs-target="#patient" type="button" role="tab" aria-controls="patient" aria-selected="true">Paciente</button>
+                            <button class="nav-link active" id="patient-tab" data-bs-toggle="tab"
+                                data-bs-target="#patient" type="button" role="tab" aria-controls="patient"
+                                aria-selected="true">Paciente</button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="doctor-tab" data-bs-toggle="tab" data-bs-target="#doctor" type="button" role="tab" aria-controls="doctor" aria-selected="false">Médico</button>
+                            <button class="nav-link" id="doctor-tab" data-bs-toggle="tab" data-bs-target="#doctor"
+                                type="button" role="tab" aria-controls="doctor" aria-selected="false">Médico</button>
                         </li>
                     </ul>
                     <div class="tab-content" id="loginTabContent">
-                        <div class="tab-pane fade show active" id="patient" role="tabpanel" aria-labelledby="patient-tab">
-                            <form action="{% url 'log_in' %}" method="post" class="php-email-form">
+                        <div class="tab-pane fade show active" id="patient" role="tabpanel"
+                            aria-labelledby="patient-tab">
+                            <form action="{% url 'log_in' %}" method="post">
+                                <!--  class="php-email-form" -->
+                                {% csrf_token %}
                                 <div class="form-group mb-3">
                                     <label for="patient-username">Username</label>
-                                    <input type="text" name="username" class="form-control" id="patient-username" required>
+                                    <input type="text" name="username" class="form-control" id="patient-username"
+                                        required>
                                 </div>
                                 <div class="form-group mb-3">
                                     <label for="patient-password">Password</label>
-                                    <input type="password" name="password" class="form-control" id="patient-password" required>
+                                    <input type="password" name="password" class="form-control" id="patient-password"
+                                        required>
                                 </div>
                                 <div class="form-group text-center">
+                                    <div class="loading">Cargando</div>
+                                    <div class="error-message"></div>
+                                    <div class="sent-message">Tú mensaje se ha enviado, Gracias!</div>
                                     <button type="submit" class="btn btn-primary btn-block">Login</button>
                                 </div>
                             </form>
@@ -36,11 +47,13 @@
                             <form action="{% url 'log_in' %}" method="post" class="php-email-form">
                                 <div class="form-group mb-3">
                                     <label for="doctor-username">Username</label>
-                                    <input type="text" name="username" class="form-control" id="doctor-username" required>
+                                    <input type="text" name="username" class="form-control" id="doctor-username"
+                                        required>
                                 </div>
                                 <div class="form-group mb-3">
                                     <label for="doctor-password">Password</label>
-                                    <input type="password" name="password" class="form-control" id="doctor-password" required>
+                                    <input type="password" name="password" class="form-control" id="doctor-password"
+                                        required>
                                 </div>
                                 <div class="form-group text-center">
                                     <button type="submit" class="btn btn-primary btn-block">Login</button>
