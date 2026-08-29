@@ -1,0 +1,247 @@
+{
+    "intents": [
+        {
+            "tag": "saludo",
+            "patterns": [
+                "Hola",
+                "Hey",
+                "¿Hay alguien ahí?",
+                "Buenas",
+                "Hola, ¿cómo estás?",
+                "Buenos días",
+                "Buenas tardes",
+                "Buenas noches",
+                "¡Hey! ¿Qué tal?"
+            ],
+            "responses": [
+                "¡Hola!",
+                "¡Hey! ¿Cómo estás?",
+                "Hola, ¿en qué puedo ayudarte?",
+                "¡Hola! ¿Cómo te va?",
+                "¡Buenas! ¿Cómo estás?"
+            ]
+        },
+        {
+            "tag": "despedida",
+            "patterns": [
+                "Adiós",
+                "Nos vemos",
+                "Hasta luego",
+                "Me tengo que ir",
+                "Hasta la próxima",
+                "Chao",
+                "Cuídate",
+                "Que estés bien"
+            ],
+            "responses": [
+                "¡Hasta luego!",
+                "¡Que tengas un buen día!",
+                "¡Adiós! Vuelve pronto",
+                "¡Nos vemos! Cuídate",
+                "¡Chao! Que estés bien",
+                "¡Hasta la próxima!"
+            ]
+        },
+        {
+            "tag": "agradecimiento",
+            "patterns": [
+                "Gracias",
+                "Muchas gracias",
+                "Te lo agradezco",
+                "Gracias por la ayuda",
+                "Mil gracias",
+                "Eres muy amable",
+                "Gracias por tu tiempo"
+            ],
+            "responses": [
+                "¡De nada!",
+                "¡Feliz de ayudarte!",
+                "¡Cualquier cosa, aquí estoy!",
+                "¡Es un placer ayudarte!",
+                "¡Eres bienvenido!",
+                "¡Con gusto!",
+                "¡Para eso estamos!"
+            ]
+        },
+        {
+            "tag": "acerca_de",
+            "patterns": [
+                "¿Quién eres?",
+                "¿Qué eres?",
+                "¿Quién eres tú?",
+                "Cuéntame sobre ti",
+                "¿Cuál es tu función?",
+                "¿Qué haces?"
+            ],
+            "responses": [
+                "Soy Roberta, tu asistente virtual",
+                "Me llamo Roberta, soy un bot de inteligencia artificial",
+                "Soy Roberta, aquí para asistirte en lo que necesites",
+                "Estoy aquí para ayudarte con cualquier consulta que tengas"
+            ]
+        },
+        {
+            "tag": "nombre",
+            "patterns": [
+                "¿Cuál es tu nombre?",
+                "¿Cómo te llamas?",
+                "¿Cómo debo llamarte?",
+                "¿Tienes nombre?",
+                "¿Quién eres tú?",
+                "¿Cuál es tu nombre completo?"
+            ],
+            "responses": [
+                "Puedes llamarme Roberta.",
+                "Soy Roberts.",
+                "Mi nombre es Roberts, encantada de conocerte",
+                "Me llamo Roberta, a tu servicio"
+            ]
+        },
+        {
+            "tag": "ayuda",
+            "patterns": [
+                "¿Puedes ayudarme?",
+                "Necesito ayuda",
+                "¿Me das una mano?",
+                "¿Qué puedes hacer por mí?",
+                "Necesito soporte",
+                "Ayúdame por favor",
+                "Tengo un problema",
+                "¿Puedes asistirme?",
+                "Requiero asistencia"
+            ],
+            "responses": [
+                "Dime, ¿cómo puedo asistirte?",
+                "Cuéntame tu problema para poder ayudarte",
+                "Claro, ¿cómo puedo apoyarte?",
+                "Estoy aquí para ayudarte, dime qué necesitas",
+                "Dime en qué necesitas ayuda y veré qué puedo hacer"
+            ]
+        },
+        {
+            "tag": "crear_cuenta",
+            "patterns": [
+                "Necesito crear una cuenta nueva",
+                "¿Cómo abro una cuenta nueva?",
+                "Quiero crear una cuenta",
+                "¿Puedes crear una cuenta para mí?",
+                "¿Cómo se crea una cuenta nueva?",
+                "Quiero registrarme",
+                "¿Cómo me registro?",
+                "Ayúdame a crear una cuenta"
+            ],
+            "responses": [
+                "Puedes crear una cuenta nueva fácilmente desde nuestro sitio web",
+                "Solo ve a nuestro sitio web y sigue las instrucciones para crear una cuenta nueva",
+                "Visita nuestro sitio y sigue los pasos para registrarte",
+                "Para crear una cuenta, visita nuestro sitio y completa el formulario de registro"
+            ]
+        },
+        {
+            "tag": "queja",
+            "patterns": [
+                "Tengo una queja",
+                "Quiero poner una queja",
+                "Hay un problema con el servicio",
+                "Deseo reportar una queja",
+                "No estoy satisfecho con el servicio",
+                "Quiero hacer una reclamación",
+                "Hay algo que no me gusta"
+            ],
+            "responses": [
+                "Por favor, proporciona tu queja para poder asistirte",
+                "Menciona tu queja y nos pondremos en contacto contigo. Lamentamos cualquier inconveniente",
+                "Déjanos saber tu queja y trabajaremos para resolverla lo antes posible",
+                "Lamentamos escuchar eso, por favor cuéntanos más sobre tu problema para poder ayudarte"
+            ]
+        },
+        {
+            "tag": "informacion_general",
+            "patterns": [
+                "Dame información general",
+                "Quiero saber más sobre ustedes",
+                "¿Qué servicios ofrecen?",
+                "Cuéntame sobre su empresa",
+                "¿Qué hacen?",
+                "¿A qué se dedican?"
+            ],
+            "responses": [
+                "Somos una empresa dedicada a proporcionar soluciones tecnológicas avanzadas",
+                "Ofrecemos una variedad de servicios para mejorar la eficiencia de su negocio",
+                "Nos especializamos en desarrollar software personalizado",
+                "Proveemos servicios de consultoría y soporte técnico"
+            ]
+        },
+        {
+            "tag": "soporte_tecnico",
+            "patterns": [
+                "Necesito soporte técnico",
+                "Mi dispositivo no funciona",
+                "Tengo un problema técnico",
+                "Ayuda con un problema técnico",
+                "El sistema no responde",
+                "Tengo un error en la aplicación"
+            ],
+            "responses": [
+                "Por favor, describe el problema técnico que estás experimentando",
+                "Dime más sobre el problema técnico para que pueda asistirte",
+                "Nuestro equipo de soporte técnico está aquí para ayudarte, por favor proporciona más detalles",
+                "Estamos aquí para ayudarte con cualquier problema técnico que tengas"
+            ]
+        },
+        {
+            "tag": "inteligencia_artificial",
+            "patterns": [
+                "¿Qué es la inteligencia artificial?",
+                "Háblame sobre la inteligencia artificial",
+                "¿Qué puedes decirme sobre la IA?",
+                "¿Cómo funciona la inteligencia artificial?",
+                "Explica la inteligencia artificial",
+                "Definición de inteligencia artificial"
+            ],
+            "responses": [
+                "La inteligencia artificial (IA) es la simulación de procesos de inteligencia humana por parte de máquinas, especialmente sistemas informáticos.",
+                "La IA incluye aprendizaje automático, razonamiento y autocorrección.",
+                "La inteligencia artificial se utiliza en diversas aplicaciones como asistentes virtuales, reconocimiento de voz y facial, y vehículos autónomos.",
+                "La IA permite a las máquinas aprender de la experiencia, adaptarse a nueva información y realizar tareas similares a las humanas."
+            ]
+        },
+        {
+            "tag": "aplicaciones_ia",
+            "patterns": [
+                "¿Dónde se utiliza la inteligencia artificial?",
+                "Aplicaciones de la inteligencia artificial",
+                "Ejemplos de inteligencia artificial",
+                "¿Para qué sirve la IA?",
+                "Usos de la inteligencia artificial"
+            ],
+            "responses": [
+                "La IA se utiliza en numerosos campos, incluyendo la medicina para el diagnóstico de enfermedades, en la industria para la automatización de procesos, en la seguridad para el reconocimiento facial, y en los servicios financieros para la detección de fraudes.",
+                "Ejemplos de aplicaciones de la IA incluyen asistentes virtuales como Siri y Alexa, vehículos autónomos, y sistemas de recomendación en plataformas como Netflix y Amazon.",
+                "La inteligencia artificial también se usa en el análisis de grandes volúmenes de datos para encontrar patrones y hacer predicciones."
+            ]
+        },
+        {
+            "tag": "chistes",
+            "patterns": [
+                "Cuéntame un chiste",
+                "Dime un chiste",
+                "¿Tienes algún chiste?",
+                "Quiero escuchar un chiste",
+                "Chiste corto"
+            ],
+            "responses": [
+                "¿Por qué los pájaros no usan Facebook? Porque ya tienen Twitter.",
+                "¿Qué le dice una iguana a su hermana gemela? Somos iguanitas.",
+                "¿Cómo se dice pañuelo en japonés? Saka-moko.",
+                "¿Qué hace una abeja en el gimnasio? Zum-ba.",
+                "¿Por qué los esqueletos no pelean entre ellos? Porque no tienen agallas.",
+                "¿Cómo se llama un perro mago? ¡Ladracadabra!",
+                "¿Qué le dice una pared a otra pared? Nos vemos en la esquina.",
+                "¿Cuál es el colmo de Aladdín? Tener mal genio.",
+                "¿Por qué el libro de matemáticas está triste? Porque tiene muchos problemas.",
+                "¿Qué hace una abeja en el gimnasio? ¡Zum-ba!"
+            ]
+        }
+    ]
+}

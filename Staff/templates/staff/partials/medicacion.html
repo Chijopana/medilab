@@ -1,0 +1,41 @@
+<div class="container mt-4">
+    <button class="btn btn-secondary mb-3" hx-get="{% url 'staff/paciente_ind' perfil.access_key %}" hx-target="#content" hx-swap="innerHTML">
+        <i class="bi bi-arrow-left"></i> Volver
+    </button>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Lista de Medicaciones</h3>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Nombre de la Medicina</th>
+                                <th>Fecha de Inicio</th>
+                                <th>Fecha de Finalización</th>
+                                <th>Instrucciones</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for medicacion_item in medicacion %}
+                                <tr>
+                                    <td>{{ medicacion_item.medicina }}</td>
+                                    <td>{{ medicacion_item.fecha_inicio }}</td>
+                                    <td>{{ medicacion_item.fecha_final }}</td>
+                                    <td>{{ medicacion_item.instrucciones }}</td>
+                                    <td>
+                                        <button class="btn btn-primary btn-sm">Ver</button>
+                                        <button class="btn btn-secondary btn-sm">Editar</button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

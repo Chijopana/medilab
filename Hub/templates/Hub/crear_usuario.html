@@ -1,0 +1,81 @@
+{% extends 'Hub/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h2 class="card-title text-center mb-4">Crear Usuario</h2>
+                    <ul class="nav nav-tabs mb-4" id="registerTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="patient-register-tab" data-bs-toggle="tab" data-bs-target="#patient-register" type="button" role="tab" aria-controls="patient-register" aria-selected="true">Paciente</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="doctor-register-tab" data-bs-toggle="tab" data-bs-target="#doctor-register" type="button" role="tab" aria-controls="doctor-register" aria-selected="false">Médico</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="registerTabContent">
+                        <div class="tab-pane fade show active" id="patient-register" role="tabpanel" aria-labelledby="patient-register-tab">
+                            <form action="{% url 'crear_usuario' %}" method="post" class="php-email-form">
+                                {% csrf_token %}
+                                <div class="form-group mb-3">
+                                    <label for="patient-register-username">Username</label>
+                                    <input type="text" name="username" class="form-control" id="patient-register-username" required>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="patient-register-email">Email</label>
+                                    <input type="email" name="email" class="form-control" id="patient-register-email" required>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="patient-register-dni">DNI</label>
+                                    <input type="dni" name="dni" class="form-control" id="patient-register-dni" required>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="patient-register-password">Password</label>
+                                    <input type="password" name="password" class="form-control" id="patient-register-password" required>
+                                </div>
+                                <div class="form-group text-center">
+                                    <div class="loading">Cargando</div>
+                                    <div class="error-message"></div>
+                                    <div class="sent-message">Tú mensaje se ha enviado, Gracias!</div>
+                                    <button type="submit" class="btn btn-primary btn-block">Crear Cuenta</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="tab-pane fade" id="doctor-register" role="tabpanel" aria-labelledby="doctor-register-tab">
+                            <form action="/doctor-register-endpoint/" method="post" class="php-email-form">
+                                {% csrf_token %}
+                                <div class="form-group mb-3">
+                                    <label for="doctor-register-username">Username</label>
+                                    <input type="text" name="username" class="form-control" id="doctor-register-username" required>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="doctor-register-email">Email</label>
+                                    <input type="email" name="email" class="form-control" id="doctor-register-email" required>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="doctor-register-password">Password</label>
+                                    <input type="password" name="password" class="form-control" id="doctor-register-password" required>
+                                </div>
+                                <div class="form-group text-center">
+                                    <button type="submit" class="btn btn-primary btn-block">Crear Cuenta</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+<footer id="footer" class="footer light-background">
+    <div class="container copyright text-center mt-4">
+        <p>© <span>Copyright</span> <strong class="px-1 sitename">Medilab</strong> <span>All Rights Reserved</span></p>
+    </div>
+</footer>
+{% endblock %}

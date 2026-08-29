@@ -1,0 +1,53 @@
+{% extends 'Hub/base.html' %}
+{% load static %}
+{% block content %}
+ 
+<div style="max-width:720px; margin:40px auto 60px; padding:0 32px;">
+ 
+    <div style="font-family:'JetBrains Mono', monospace; font-size:0.72rem; letter-spacing:0.08em; color:var(--teal); text-transform:uppercase; display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+        <span style="width:7px; height:7px; border-radius:50%; background:var(--pulse); display:inline-block;"></span>
+        Diagnóstico con IA
+    </div>
+    <h1 style="font-size:2rem; margin-bottom:8px;">Sube una imagen para analizar</h1>
+    <p style="color:var(--ink-soft); margin-bottom:28px;">El modelo da un resultado preliminar. No sustituye la valoración de un profesional médico.</p>
+ 
+    <div class="card">
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+ 
+                <label class="form-label">Tipo de análisis</label>
+                <select name="especialidad" class="form-select" style="margin-bottom:18px;">
+                    {% for clave, info in especialidades.items %}
+                    <option value="{{ clave }}" {% if clave == especialidad %}selected{% endif %}>{{ info.nombre_visible }}</option>
+                    {% endfor %}
+                </select>
+ 
+                <label class="form-label">Imagen</label>
+                <input type="file" name="imagen" accept="image/*" class="form-control" required style="margin-bottom:22px;">
+ 
+                <button type="submit" class="btn btn-primary" style="width:100%;">Analizar imagen</button>
+            </form>
+        </div>
+    </div>
+ 
+    {% if resultado %}
+    <div class="card" style="margin-top:22px; border-color: {% if resultado.positivo %}var(--pulse){% else %}var(--teal){% endif %};">
+        <div class="card-body">
+            <div style="font-family:'JetBrains Mono', monospace; font-size:0.72rem; letter-spacing:0.06em; text-transform:uppercase; color: var(--ink-soft); margin-bottom:8px;">
+                Resultado
+            </div>
+            <h3 style="color: {% if resultado.positivo %}var(--pulse){% else %}var(--teal-deep){% endif %}; margin-bottom:6px;">
+                {{ resultado.diagnostico }}
+            </h3>
+            <p style="color:var(--ink-soft); margin:0;">
+                Confianza del modelo: <strong style="font-family:'JetBrains Mono', monospace;">{{ resultado.confianza }}%</strong>
+            </p>
+        </div>
+    </div>
+    {% endif %}
+ 
+</div>
+ 
+{% endblock %}
+ 

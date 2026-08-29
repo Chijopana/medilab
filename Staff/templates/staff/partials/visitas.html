@@ -1,0 +1,42 @@
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-12">
+                <button class="btn btn-secondary mb-3" hx-get="{% url 'staff/paciente_ind' perfil.access_key %}" hx-target="#content" hx-swap="innerHTML">
+                    &larr; Volver
+                </button>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Lista de Visitas</h3>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Nombre del Paciente</th>
+                                    <th>Fecha</th>
+                                    <th>Nombre del Doctor</th>
+                                    <th>Descripción</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for visita in visitas %}
+                                    <tr>
+                                        <td>{{ visita.paciente.perfil.nombre }}</td>
+                                        <td>{{ visita.hora_fecha }}</td>
+                                        <td>{{ visita.medico.perfil.nombre }}</td>
+                                        <td>{{ visita.descripcion_problema|truncatewords:10 }}</td>
+                                        <td>
+                                            <a href=# class="btn btn-primary btn-sm">Ver</a>
+                                            <a href=# class="btn btn-secondary btn-sm">Editar</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

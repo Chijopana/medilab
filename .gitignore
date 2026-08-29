@@ -1,0 +1,25 @@
+# Entorno virtual (NUNCA se sube, se recrea con requirements.txt)
+venv/
+.venv/
+ 
+# Python
+__pycache__/
+*.pyc
+*.pyo
+ 
+# Django
+db.sqlite3
+staticfiles/
+media/
+ 
+# Modelos de IA (pesan mucho, se descargan con el script del README)
+expedientes/modelos_ia/
+ 
+# Logs
+logs/
+ 
+# Variables de entorno
+.env
+ 
+# Editor
+.vscode/
