@@ -1,0 +1,104 @@
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Paciente</h3>
+                </div>
+                <div class="card-body">
+                    <form>
+                        <!-- <div class="paciente_boton mb-3 text-center">
+                                <button class="btn btn-primary">Guardar</button>
+                        </div> -->
+
+                        <div class="datos_personales mb-4">
+                            <div class="parte_superior mb-3">
+                                <p>Nombre: {{ perfil.pacientes }}</p>
+                                <p>Apellido: {{ perfil.apellido }}</p>
+                                <p>DNI: {{ perfil.dni }}</p>
+                            </div>
+                            <div class="parte_central">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p>Email: {{ perfil.email }}</p>
+                                        <p>Teléfono: {{ perfil.telefono }}</p>
+                                        <p>Fecha de nacimiento: {{ perfil.fecha_nacimiento }}</p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>Número del seguro social: {{ perfil.numero_seguro_social }}</p>
+                                        <p>Contacto de emergencia: {{ perfil.contacto_emergencia }}</p>
+                                        <p>Teléfono de emergencia: {{ perfil.telefono_emergencia }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="triple_seccion">
+                            <div class="botones mb-3 text-center">
+                                <button href="{% url 'staff/visitas' perfil.access_key %}" id="boton_visita" class="btn btn-secondary boton_edicion"
+                                        hx-get="{% url 'staff/visitas' perfil.access_key %}"
+                                        hx-target="#content" hx-swap="innerHTML">
+                                    Visitas
+                                </button>
+                                <button href="{% url 'staff/expedientes' perfil.access_key %}" id="boton_expediente" class="btn btn-secondary boton_edicion"
+                                        hx-get="{% url 'staff/expedientes' perfil.access_key %}"
+                                        hx-target="#content" hx-swap="innerHTML">
+                                    Expediente
+                                </button>
+                                <button href="{% url 'staff/medicacion' perfil.access_key %}" id="boton_medicacion" class="btn btn-secondary boton_edicion"
+                                        hx-get="{% url 'staff/medicacion' perfil.access_key %}"
+                                        hx-target="#content" hx-swap="innerHTML">
+                                    Medicacion
+                                </button>
+                                <a href="{% url 'staff/paciente_ind_edit' perfil.access_key %}"
+                                   class="btn btn-primary boton_edicion"
+                                   hx-get="{% url 'staff/paciente_ind_edit' perfil.access_key %}" hx-target="#content"
+                                   hx-swap="innerHTML">
+                                    Editar
+                                </a>
+                            </div>
+                    
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const botonVisita = document.getElementById('boton_visita');
+    const botonExpediente = document.getElementById('boton_expediente');
+    const botonMedicacion = document.getElementById('boton_medicacion');
+    const vistaVisitas = document.getElementById('visitas');
+    const vistaExpediente = document.getElementById('expedientes');
+    const vistaMedicacion = document.getElementById('medicacion');
+
+    botonVisita.addEventListener('click', () => {
+        vistaVisitas.classList.toggle('hidden', !vistaVisitas.classList.contains('hidden'));
+        vistaExpediente.classList.add('hidden');
+        vistaMedicacion.classList.add('hidden');
+    });
+
+    botonExpediente.addEventListener('click', () => {
+        vistaVisitas.classList.add('hidden');
+        vistaExpediente.classList.toggle('hidden', !vistaExpediente.classList.contains('hidden'));
+        vistaMedicacion.classList.add('hidden');
+    });
+
+    botonMedicacion.addEventListener('click', () => {
+        vistaVisitas.classList.add('hidden');
+        vistaExpediente.classList.add('hidden');
+        vistaMedicacion.classList.toggle('hidden', !vistaMedicacion.classList.contains('hidden'));
+    });
+</script>
+
+<style>
+    p {
+        margin: 0;
+        padding: 0;
+    }
+
+    .hidden {
+        display: none;
+    }
+</style>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Medilab</title>
+    <script src="https://unpkg.com/htmx.org@1.7.0"></script>
+ 
+    <!-- Favicons -->
+    <link href="{% static 'img/favicon.png' %}" rel="icon">
+    <link href="{% static 'img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+ 
+    <!-- Bootstrap: necesario para tabs, forms, tablas, grid -->
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+ 
+    <!-- Nuevo tema app: SIEMPRE el último -->
+    <link href="{% static 'css/app-theme.css' %}" rel="stylesheet">
+ 
+    <!--
+      NOTA: 'css/main.css' (el CSS del template de hospital original) se ha quitado
+      a propósito. Sus reglas globales (ul, .container, etc.) chocaban con Bootstrap
+      y rompían los tabs de Login/Crear Usuario. Si alguna página vieja lo necesitaba
+      para algo puntual, dímelo y lo resolvemos de forma más quirúrgica.
+    -->
+</head>
+ 
+<body class="index-page">
+ 
+    {% block header %}
+    <header class="app-header">
+        <a href="{% url 'hub' %}" class="app-logo">
+            <svg width="26" height="26" viewBox="0 0 28 28" fill="none">
+                <circle cx="14" cy="14" r="13" stroke="#146B6E" stroke-width="2"/>
+                <path d="M6 14 L10 14 L12 9 L16 19 L18 14 L22 14" stroke="#FF6A4D" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Medilab
+        </a>
+        <div class="app-header-actions">
+            {% if user.is_authenticated %}
+                {% if is_paciente %}
+                    <a class="app-btn" href="{% url 'pacientes/pagina_principal' %}">Mis expedientes</a>
+                {% elif is_medico %}
+                    <a class="app-btn" href="{% url 'staff/lobby' %}">Panel médico</a>
+                {% endif %}
+                <a class="app-btn" href="{% url 'log_out' %}">Salir</a>
+            {% else %}
+                <a class="app-btn" href="{% url 'log_in' %}">Iniciar sesión</a>
+                <a class="app-btn solid" href="{% url 'crear_usuario' %}">Crear cuenta</a>
+            {% endif %}
+        </div>
+    </header>
+    {% endblock %}
+ 
+    {% if messages %}
+    <div style="max-width:720px; margin:16px auto 0; padding:0 32px;">
+        {% for message in messages %}
+        <div style="background:{% if message.tags == 'error' %}#FDEDEA{% else %}#EAF3F2{% endif %}; color:{% if message.tags == 'error' %}#C0392B{% else %}#0C4A4C{% endif %}; border:1px solid {% if message.tags == 'error' %}#F5C6C0{% else %}#146B6E{% endif %}; border-radius:10px; padding:12px 16px; margin-bottom:10px; font-size:0.9rem;">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+ 
+    {% block content %}{% endblock %}
+ 
+    {% block footer %}
+    <footer class="app-footer">
+        <span>© Medilab</span>
+        <div style="display:flex; gap:18px;">
+            <a href="{% url 'hub' %}">Inicio</a>
+            <a href="mailto:info@example.com">Contacto</a>
+        </div>
+    </footer>
+ 
+    {% include 'chatbot/chatbot.html' %}
+ 
+    {% endblock %}
+ 
+    <!-- Bootstrap JS: necesario para las tabs de login/crear usuario -->
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+ 
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var isMedico = "{{ is_medico }}";
+            var staffPacientesBtn = document.getElementById("staff-pacientes-btn");
+            if (staffPacientesBtn && isMedico === "True") {
+                staffPacientesBtn.style.display = "none";
+            }
+        });
+    </script>
+ 
+</body>
+</html>
+ 

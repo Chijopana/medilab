@@ -1,0 +1,56 @@
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Editar Datos del Paciente</h3>
+                </div>
+                
+                <div class="card-body">
+                    <form method="POST" action="{% url 'staff/paciente_ind_edit' paciente.access_key %}">
+                        {% csrf_token %}
+                        <div class="form-group mb-3">
+                            <label for="nombre">Nombre:</label>
+                            <input type="text" id="nombre" name="nombre" class="form-control" value="{{ paciente.perfil.nombre }}" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="apellido">Apellido:</label>
+                            <input type="text" id="apellido" name="apellido" class="form-control" value="{{ paciente.perfil.apellido }}" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="dni">DNI:</label>
+                            <input type="text" id="dni" name="dni" class="form-control" value="{{ paciente.perfil.dni }}" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="email">Email:</label>
+                            <input type="email" id="email" name="email" class="form-control" value="{{ paciente.perfil.email }}" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="telefono">Teléfono:</label>
+                            <input type="text" id="telefono" name="telefono" class="form-control" value="{{ paciente.perfil.telefono }}" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="fecha_nacimiento">Fecha de nacimiento:</label>
+                            <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" class="form-control" value="{{ paciente.perfil.fecha_nacimiento }}" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="numero_seguro_social">Número del seguro social:</label>
+                            <input type="text" id="numero_seguro_social" name="numero_seguro_social" class="form-control" value="{{ paciente.perfil.numero_seguro_social }}" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="contacto_emergencia">Contacto de emergencia:</label>
+                            <input type="text" id="contacto_emergencia" name="contacto_emergencia" class="form-control" value="{{ paciente.contacto_emergencia }}" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="telefono_emergencia">Teléfono de emergencia:</label>
+                            <input type="text" id="telefono_emergencia" name="telefono_emergencia" class="form-control" value="{{ paciente.telefono_emergencia }}" required>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,31 @@
+<div>
+    <h2>Lista de Visitas</h2>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Paciente</th>
+                            <th>Fecha</th>
+                            <th>Hora</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="visits-table-body">
+                        {%for visita in visitas%}
+                        <tr>
+                            <td>{{visita.paciente}}</td>
+                            <td>{{visita.hora_fecha}}</td>
+                            <td>{{visita.descripcion_problema}}</td>
+                            <td><button class="btn btn-primary btn-sm"
+                                    hx-get="{% url 'staff/mod_visita' visita.id%}" hx-target="#content"
+                                    hx-swap="innerHTML">Ver</button></td>
+                        </tr>
+                        {%endfor%}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

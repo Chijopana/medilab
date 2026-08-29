@@ -1,0 +1,56 @@
+<div>
+    <h2>Lista de Pacientes</h2>
+    <div class="container mt-4">
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <input type="text" class="form-control" id="search-nombre" placeholder="Buscar por Nombre">
+            </div>
+            <div class="col-md-4">
+                <input type="text" class="form-control" id="search-apellidos" placeholder="Buscar por Apellidos">
+            </div>
+            <div class="col-md-4">
+                <input type="text" class="form-control" id="search-dni" placeholder="Buscar por DNI">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Apellidos</th>
+                            <th>DNI</th>
+                            <th>Edad</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="patients-table-body">
+                        {% for paciente in pacientes %}
+                        <tr>
+                            <td>{{ paciente.perfil.nombre }}</td>
+                            <td>{{ paciente.perfil.apellido }}</td>
+                            <td>{{ paciente.perfil.dni }}</td>
+                            <td>{{ paciente.perfil.fecha_nacimiento }}</td>
+                            <td>
+                                <button class="btn btn-primary btn-sm" 
+                                        hx-get="{% url 'staff/paciente_ind' paciente.perfil.access_key %}" 
+                                        hx-target="#content" 
+                                        hx-swap="innerHTML">
+                                    Ver
+                                </button>
+
+                                <button class="btn btn-primary btn-sm" 
+                                        hx-get="{% url 'staff/paciente_ind_edit' paciente.perfil.access_key %}" 
+                                        hx-target="#content" 
+                                        hx-swap="innerHTML">
+                                    Editar
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
