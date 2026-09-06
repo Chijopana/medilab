@@ -1,130 +1,107 @@
 """
-Sistema de logging para auditoría de cambios en datos sensibles.
+Auditoría de accesos y cambios sobre datos sensibles (historia clínica).
+
+Todo lo que se registra aquí acaba en `logs/audit.log` (ver LOGGING en settings).
+El middleware `AuditoriaMiddleware` deja rastro automático de las operaciones de
+escritura sobre las rutas clínicas; para eventos concretos (ver un expediente,
+denegar un acceso) se usa `AuditLog` directamente desde las vistas.
 """
 import logging
-from django.contrib.auth.models import User
-from datetime import datetime
-import json
 
-# Configurar logger
 logger = logging.getLogger(__name__)
 
 
 class AuditLog:
-    """Clase para registrar cambios en datos sensibles de la aplicación."""
-    
+    """Registro de acciones sobre datos sensibles de la aplicación."""
+
     ACCIONES = {
         'LOGIN': 'Inicio de sesión',
+        'LOGIN_FALLIDO': 'Intento de inicio de sesión fallido',
         'LOGOUT': 'Cierre de sesión',
         'CREAR_USUARIO': 'Crear usuario',
         'CREAR_EXPEDIENTE': 'Crear expediente',
         'MODIFICAR_EXPEDIENTE': 'Modificar expediente',
         'ELIMINAR_EXPEDIENTE': 'Eliminar expediente',
         'VER_EXPEDIENTE': 'Ver expediente',
+        'DESCARGAR_EXPEDIENTE': 'Descargar expediente en PDF',
+        'DIAGNOSTICO_IA': 'Ejecutar diagnóstico por IA',
+        'MODIFICAR_PACIENTE': 'Modificar datos de paciente',
+        'CREAR_VISITA': 'Crear visita',
+        'MODIFICAR_VISITA': 'Modificar visita',
+        'ELIMINAR_VISITA': 'Eliminar visita',
         'CREAR_MEDICACION': 'Crear medicación',
         'ELIMINAR_MEDICACION': 'Eliminar medicación',
         'ACCESO_DENEGADO': 'Acceso denegado',
+        'OPERACION_HTTP': 'Operación HTTP sobre datos clínicos',
     }
-    
+
     @staticmethod
-    def registrar_accion(usuario, accion, descripcion='', objeto_id=None):
-        """
-        Registra una acción en el log de auditoría.
-        
-        Args:
-            usuario: Usuario que realiza la acción
-            accion: Código de la acción (ver ACCIONES)
-            descripcion: Descripción adicional de la acción
-            objeto_id: ID del objeto afectado (expediente, medicación, etc)
+    def _ip(request):
+        if request is None:
+            return 'desconocida'
+        reenviada = request.META.get('HTTP_X_FORWARDED_FOR')
+        if reenviada:
+            return reenviada.split(',')[0].strip()
+        return request.META.get('REMOTE_ADDR', 'desconocida')
+
+    @staticmethod
+    def registrar(usuario, accion, descripcion='', objeto_id=None, request=None):
+        """Escribe una línea en el log de auditoría.
+
+        `usuario` puede ser un User o None (usuario anónimo).
         """
         try:
-            timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            nombre_usuario = getattr(usuario, 'username', None) or 'anónimo'
             nombre_accion = AuditLog.ACCIONES.get(accion, accion)
-            
-            # Obtener IP si está disponible
-            ip = 'desconocida'
-            
-            # Crear mensaje de log
-            log_message = (
-                f"[{timestamp}] Usuario: {usuario.username} | "
-                f"Acción: {nombre_accion} | "
-                f"IP: {ip} | "
-                f"Descripción: {descripcion}"
-            )
-            
-            if objeto_id:
-                log_message += f" | Objeto ID: {objeto_id}"
-            
-            # Registrar en el logger
-            if accion == 'ACCESO_DENEGADO':
-                logger.warning(log_message)
+
+            partes = [
+                f"Usuario: {nombre_usuario}",
+                f"Acción: {nombre_accion}",
+                f"IP: {AuditLog._ip(request)}",
+            ]
+            if descripcion:
+                partes.append(f"Descripción: {descripcion}")
+            if objeto_id is not None:
+                partes.append(f"Objeto ID: {objeto_id}")
+
+            mensaje = ' | '.join(partes)
+
+            if accion in ('ACCESO_DENEGADO', 'LOGIN_FALLIDO'):
+                logger.warning(mensaje)
             else:
-                logger.info(log_message)
-                
-        except Exception as e:
-            logger.error(f"Error al registrar auditoría: {str(e)}")
-    
+                logger.info(mensaje)
+        except Exception:
+            # La auditoría nunca debe tumbar una petición.
+            logger.exception('Error al registrar la auditoría')
+
     @staticmethod
-    def registrar_acceso_denegado(usuario, vista, razon=''):
-        """Registra un intento de acceso denegado."""
+    def acceso_denegado(usuario, vista, razon='', request=None):
         descripcion = f"Acceso denegado a: {vista}"
         if razon:
             descripcion += f" - Razón: {razon}"
-        
-        AuditLog.registrar_accion(
-            usuario,
-            'ACCESO_DENEGADO',
-            descripcion
-        )
-    
-    @staticmethod
-    def registrar_cambio_expediente(usuario, expediente, accion, cambios_dict=None):
-        """
-        Registra cambios en un expediente.
-        
-        Args:
-            usuario: Usuario que hace el cambio
-            expediente: Objeto expediente
-            accion: Crear/Modificar/Eliminar
-            cambios_dict: Dict con los cambios realizados
-        """
-        descripcion = f"Expediente del paciente: {expediente.paciente.perfil.nombre}"
-        
-        if cambios_dict:
-            cambios_json = json.dumps(cambios_dict, ensure_ascii=False)
-            descripcion += f" - Cambios: {cambios_json}"
-        
-        AuditLog.registrar_accion(
-            usuario,
-            accion,
-            descripcion,
-            objeto_id=expediente.id
-        )
+        AuditLog.registrar(usuario, 'ACCESO_DENEGADO', descripcion, request=request)
 
 
-class LoggerMiddleware:
-    """Middleware para registrar acciones HTTP importantes."""
-    
+class AuditoriaMiddleware:
+    """Deja rastro de las escrituras sobre las rutas que manejan datos clínicos."""
+
+    RUTAS_AUDITADAS = ('/Pacientes/', '/Staff/', '/expedientes/', '/admin/')
+    METODOS_AUDITADOS = ('POST', 'PUT', 'PATCH', 'DELETE')
+
     def __init__(self, get_response):
         self.get_response = get_response
-        self.rutas_auditadas = [
-            '/Pacientes/',
-            '/Staff/',
-            '/expedientes/',
-            '/admin/',
-        ]
-    
+
     def __call__(self, request):
-        # Registrar si la ruta es auditada
-        if any(request.path.startswith(ruta) for ruta in self.rutas_auditadas):
-            if request.user.is_authenticated:
-                if request.method in ['POST', 'PUT', 'DELETE']:
-                    accion = f"{request.method} {request.path}"
-                    AuditLog.registrar_accion(
-                        request.user,
-                        'OPERACION_HTTP',
-                        f"Operación: {accion}"
-                    )
-        
         response = self.get_response(request)
+
+        if (request.method in self.METODOS_AUDITADOS
+                and request.path.startswith(self.RUTAS_AUDITADAS)):
+            usuario = getattr(request, 'user', None)
+            if usuario is not None and usuario.is_authenticated:
+                AuditLog.registrar(
+                    usuario,
+                    'OPERACION_HTTP',
+                    f"{request.method} {request.path} -> {response.status_code}",
+                    request=request,
+                )
         return response
