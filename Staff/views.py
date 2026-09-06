@@ -1,232 +1,306 @@
+"""
+Panel del personal médico.
+
+Todas las vistas exigen el rol de médico y, cuando actúan sobre un paciente
+concreto, comprueban además que exista relación asistencial (`Medico.atiende`).
+Sin esa segunda comprobación, conocer el `access_key` de un paciente bastaría
+para leer su historia clínica.
+"""
 from django.contrib import messages
-from django.http import JsonResponse
-from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required, permission_required
+from django.core.paginator import Paginator
+from django.db.models import Q
+from django.http import Http404, JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
-from Perfiles.models import *
-from Perfiles.forms import *
-from Pacientes.forms import *
-from Staff.forms import *
-from Pacientes.models import Visita
-from Enfermedades.models import *
+from django.utils import timezone
+from django.views.decorators.http import require_POST
+
+from Enfermedades.models import Cardiaco, CancerMama, Diabetes, Lunares, Pneumonia
 from expedientes.models import Expediente
-from Hub.decorators import medico_requerido, staff_requerido
+from Hub.audit import AuditLog
+from Hub.decorators import medico_requerido
+from Pacientes.forms import VisitaForm, VisitaFormMedico
+from Pacientes.models import Visita
+from Perfiles.forms import PacienteForm, PerfilForm
+from Perfiles.models import Paciente, Perfil
+from Staff.forms import MedicacionForm
+
+# Modelos de datos clínicos consultables desde la API de detección.
+MODELOS_ENFERMEDAD = {
+    'CancerMama': CancerMama,
+    'Diabetes': Diabetes,
+    'Pneumonia': Pneumonia,
+    'Lunares': Lunares,
+    'Cardiaco': Cardiaco,
+}
 
 
-# Vista para visitas
-@medico_requerido
-def visitas(request, access_key):
+def _paciente_del_medico(request, access_key):
+    """Obtiene el paciente por access_key comprobando la relación asistencial.
+
+    Devuelve 404 (no 403) si el médico no le atiende: así no se confirma
+    siquiera que ese access_key exista.
+    """
     perfil = get_object_or_404(Perfil, access_key=access_key)
-    paciente, created = Paciente.objects.get_or_create(perfil=perfil)
-    visitas = paciente.visita.all()
-    return render(request, 'staff/partials/visitas.html', {'visitas': visitas, 'perfil': perfil})
-
-# Vista para expedientes
-@medico_requerido
-def expedientes(request, access_key):
-    perfil = get_object_or_404(Perfil, access_key=access_key)
-    paciente, created = Paciente.objects.get_or_create(perfil=perfil)
-    expedientes = paciente.expediente.all()
-    return render(request, 'staff/partials/expedientes.html', {'expedientes': expedientes, 'perfil': perfil})
-
-# Vista para medicación
-@medico_requerido
-def medicacion(request, access_key):
-    perfil = get_object_or_404(Perfil, access_key=access_key)
-    paciente, created = Paciente.objects.get_or_create(perfil=perfil)
-    medicacion = paciente.medicacion.all()
-    return render(request, 'staff/partials/medicacion.html', {'medicacion': medicacion, 'perfil': perfil})
+    paciente = Paciente.objects.filter(perfil=perfil).first()
+    if paciente is None or not request.medico.atiende(paciente):
+        AuditLog.acceso_denegado(request.user, 'panel médico',
+                                 f'paciente {access_key}', request=request)
+        raise Http404
+    return paciente
 
 
-@login_required
-def editar_perfil_medico(request):
-    medico = get_object_or_404(Medico, perfil__user=request.user)
-    doctor_profile, created = Perfil.objects.get_or_create(medico=medico)
-    
-    if request.method == 'POST':
-        form = PerfilForm(request.POST, instance=doctor_profile)
-        if form.is_valid():
-            form.save()
-            return redirect('perfil_medico')
-    else:
-        form = PerfilForm(instance=doctor_profile)
-    
-    # Detectar si la solicitud es de HTMX y devolver un fragmento
-    if request.headers.get('HX-Request') == 'true':
-        return render(request, 'staff/editar_perfil_fragment.html', {'form': form})
-    
-    return render(request, 'staff/editar_perfil.html', {'form': form})
-
-@medico_requerido
-def prueba(request, access_key):
-    perfil = get_object_or_404(Perfil, access_key=access_key)
-    paciente, created = Paciente.objects.get_or_create(perfil=perfil)
-    visitas = paciente.visita.all()
-
-    contexto = {
-        'perfil': range(10),
-        'medicacion': range(10),
-        'visitas': range(15),
-        'expediente': range(10)
-    }
-    return render(request, 'staff/prueba.html', {'paciente': paciente, 'perfil': perfil, 'visitas': visitas})
-
-@medico_requerido
-def detectar_enfermedad(request,pk):
-    if request.method == 'GET':
-        # perfil = get_object_or_404(Perfil,user=request.user)
-        # ppk = perfil.medico.pk
-        # medico = get_object_or_404(Medico, pk = ppk)
-        exp = get_object_or_404(Expediente,pk=pk)
-        # if exp.doctor != medico:
-            # return JsonResponse({'error': 'Acceso denegado'}, status=403)
-        enfermedades = {'CancerMama':CancerMama,
-                        'Diabetes':Diabetes,
-                        'Pneumonia':Pneumonia,
-                        'Lunares':Lunares,
-                        'Cardiaco':Cardiaco
-                        }
-        if exp.especialidad in enfermedades:
-            modelo = enfermedades[exp.especialidad]
-            resultado = modelo.objects.filter(expediente=exp)
-            resultado_json = list(resultado.values())
-            return JsonResponse({'resultado':resultado_json})
-        else:
-            return JsonResponse({'error': 'Especialidad no válida'}, status=400)
-    return JsonResponse({'error': 'Método no permitido'}, status=405)
-
-
+# ---------------------------------------------------------------------------
+# Panel principal
+# ---------------------------------------------------------------------------
 @medico_requerido
 def lobby(request):
-    return render(request,'staff/lobby.html')
+    medico = request.medico
+    ahora = timezone.now()
+    proximas = (Visita.objects
+                .filter(medico=medico, hora_fecha__gte=ahora)
+                .select_related('paciente__perfil')
+                .order_by('hora_fecha')[:5])
+    contexto = {
+        'total_pacientes': medico.pacientes.count(),
+        'visitas_pendientes': Visita.objects.filter(
+            medico=medico, hora_fecha__gte=ahora,
+            estado=Visita.Estado.PENDIENTE).count(),
+        'total_expedientes': Expediente.objects.filter(doctor=medico).count(),
+        'proximas_visitas': proximas,
+        'seccion': 'inicio',
+    }
+    return render(request, 'staff/lobby.html', contexto)
 
+
+# ---------------------------------------------------------------------------
+# Pacientes
+# ---------------------------------------------------------------------------
 @medico_requerido
 def lista_pacientes(request):
-    perfil = get_object_or_404(Perfil, user=request.user)
-    medico, created = Medico.objects.get_or_create(perfil=perfil)
-    pacientes = medico.pacientes.all()
-    return render(request, 'staff/lista_pacientes.html', {'pacientes': pacientes})
+    busqueda = request.GET.get('q', '').strip()
+    pacientes = (request.medico.pacientes
+                 .select_related('perfil')
+                 .order_by('perfil__apellido', 'perfil__nombre'))
+    if busqueda:
+        pacientes = pacientes.filter(
+            Q(perfil__nombre__icontains=busqueda)
+            | Q(perfil__apellido__icontains=busqueda)
+            | Q(perfil__dni__icontains=busqueda)
+        )
+    pagina = Paginator(pacientes, 15).get_page(request.GET.get('page'))
+    return render(request, 'staff/lista_pacientes.html',
+                  {'pagina': pagina, 'busqueda': busqueda, 'seccion': 'pacientes'})
 
+
+@medico_requerido
 def paciente_ind(request, access_key):
-    perfil = get_object_or_404(Perfil, access_key=access_key)
-    paciente, created = Paciente.objects.get_or_create(perfil=perfil)
-    expedientes = paciente.expediente.all()
-    visitas = paciente.visita.all()
-    medicacion = paciente.medicacion.all()
-    return render(request, 'staff/paciente_ind.html', {'perfil': perfil, 'expedientes': expedientes, 'visitas': visitas, 'medicacion': medicacion})
-# se ha de hacer una llamada api a una url para obtener la enfermedad del expediente.
+    paciente = _paciente_del_medico(request, access_key)
+    return render(request, 'staff/paciente_ind.html', {
+        'perfil': paciente.perfil,
+        'paciente': paciente,
+        'expedientes': paciente.expediente.select_related('doctor__perfil')[:5],
+        'visitas': paciente.visita.select_related('medico__perfil')[:5],
+        'medicacion': paciente.medicacion.select_related('medico__perfil')[:5],
+        'seccion': 'pacientes',
+    })
 
 
+@medico_requerido
 def paciente_ind_edit(request, access_key):
-    perfil = get_object_or_404(Perfil, access_key=access_key)
-    paciente, created = Paciente.objects.get_or_create(perfil=perfil)
-    expedientes = paciente.expediente.all()
-    visitas = paciente.visita.all().order_by('-hora_fecha')
-    medicacion = paciente.medicacion.all()
+    paciente = _paciente_del_medico(request, access_key)
+    perfil = paciente.perfil
+
     if request.method == 'POST':
-        form1 = PerfilForm(request.POST, instance=perfil)
-        form2 = PacienteForm(request.POST, instance=paciente)
-        visita_lista = {visita.pk: VisitaForm(request.POST, instance=visita) for visita in visitas}
-        medicacion_lista = {medic.pk: MedicacionForm(request.POST, instance=medic) for medic in medicacion}
-        if form1.is_valid() and form2.is_valid() and all(form.is_valid() for form in visita_lista.values()) and all(form.is_valid() for form in medicacion_lista.values()):
-            form1.save()
-            form2.save()
-            for form in visita_lista.values():
-                form.save()
-            for form in medicacion_lista.values():
-                form.save()
+        form_perfil = PerfilForm(request.POST, instance=perfil)
+        form_paciente = PacienteForm(request.POST, instance=paciente)
+        if form_perfil.is_valid() and form_paciente.is_valid():
+            form_perfil.save()
+            form_paciente.save()
+            AuditLog.registrar(request.user, 'MODIFICAR_PACIENTE',
+                               f'Paciente {perfil.nombre_completo}',
+                               objeto_id=paciente.pk, request=request)
+            messages.success(request, 'Datos del paciente actualizados.')
             return redirect(reverse('staff/paciente_ind', kwargs={'access_key': access_key}))
-        else:
-            messages.error(request, "Error al actualizar los datos. Por favor, revisa los formularios.")
+        messages.error(request, 'Revisa los campos marcados en rojo.')
     else:
-        form1 = PerfilForm(instance=perfil)
-        form2 = PacienteForm(instance=paciente)
-        visita_lista = {visita.pk: VisitaForm(instance=visita) for visita in visitas}
-        medicacion_lista = {medic.pk: MedicacionForm(instance=medic) for medic in medicacion}
-    return render(request, 'staff/paciente_ind_edit.html', {'form_perfil': form1, 'form_paciente': form2, 'paciente': perfil, 'expediente': expedientes, 'visitas': visita_lista, 'medicacion': medicacion_lista})
+        form_perfil = PerfilForm(instance=perfil)
+        form_paciente = PacienteForm(instance=paciente)
+
+    return render(request, 'staff/paciente_ind_edit.html', {
+        'form_perfil': form_perfil,
+        'form_paciente': form_paciente,
+        'perfil': perfil,
+        'seccion': 'pacientes',
+    })
 
 
+@medico_requerido
+def visitas(request, access_key):
+    paciente = _paciente_del_medico(request, access_key)
+    return render(request, 'staff/partials/visitas.html', {
+        'visitas': paciente.visita.select_related('medico__perfil', 'paciente__perfil'),
+        'perfil': paciente.perfil,
+        'seccion': 'pacientes',
+    })
 
 
-def paciente_nueva_medicacion(request, access_key):
-    perfil_med = get_object_or_404(Perfil, user=request.user)
-    medico, created = Medico.objects.get_or_create(perfil=perfil_med)
-    perfil_pac = get_object_or_404(Perfil, access_key=access_key)
-    paciente, created = Paciente.objects.get_or_create(perfil=perfil_pac)
+@medico_requerido
+def expedientes(request, access_key):
+    paciente = _paciente_del_medico(request, access_key)
+    return render(request, 'staff/partials/expedientes.html', {
+        'expedientes': paciente.expediente.select_related('doctor__perfil'),
+        'perfil': paciente.perfil,
+        'seccion': 'pacientes',
+    })
+
+
+@medico_requerido
+def medicacion(request, access_key):
+    paciente = _paciente_del_medico(request, access_key)
+    return render(request, 'staff/partials/medicacion.html', {
+        'medicacion': paciente.medicacion.select_related('medico__perfil'),
+        'perfil': paciente.perfil,
+        'seccion': 'pacientes',
+    })
+
+
+@medico_requerido
+def nueva_medicacion(request, access_key):
+    paciente = _paciente_del_medico(request, access_key)
+
     if request.method == 'POST':
-        form = MedicacionFormCreacion(request.POST)
+        form = MedicacionForm(request.POST)
         if form.is_valid():
             med = form.save(commit=False)
             med.paciente = paciente
-            med.medico = medico
+            med.medico = request.medico
             med.save()
-            return redirect(reverse('staff/paciente_ind', kwargs={'access_key': access_key}))
+            AuditLog.registrar(request.user, 'CREAR_MEDICACION', med.medicina,
+                               objeto_id=med.pk, request=request)
+            messages.success(request, f'Tratamiento «{med.medicina}» prescrito.')
+            return redirect(reverse('staff/medicacion', kwargs={'access_key': access_key}))
     else:
-        form = MedicacionFormCreacion()
-    return render(request, 'staff/nueva_med.html', {'form': form})
+        form = MedicacionForm()
 
+    return render(request, 'staff/nueva_medicacion.html',
+                  {'form': form, 'perfil': paciente.perfil, 'seccion': 'pacientes'})
+
+
+# ---------------------------------------------------------------------------
+# Visitas
+# ---------------------------------------------------------------------------
+@medico_requerido
 def lista_consultas(request):
-    perfil = get_object_or_404(Perfil, user=request.user)
-    medico, created = Medico.objects.get_or_create(perfil=perfil)
-    visitas = medico.visita.all()
-    return render(request, 'staff/lista_consultas.html', {'visitas': visitas})
+    visitas_qs = (request.medico.visita
+                  .select_related('paciente__perfil')
+                  .order_by('-hora_fecha'))
+    estado = request.GET.get('estado')
+    if estado in Visita.Estado.values:
+        visitas_qs = visitas_qs.filter(estado=estado)
+    pagina = Paginator(visitas_qs, 15).get_page(request.GET.get('page'))
+    return render(request, 'staff/lista_consultas.html',
+                  {'pagina': pagina, 'estado': estado,
+                   'estados': Visita.Estado.choices, 'seccion': 'visitas'})
 
-def consulta(request,pk):
-    visita = get_object_or_404(Visita,pk=pk)
+
+@medico_requerido
+def consulta(request, pk):
+    visita = get_object_or_404(Visita.objects.select_related('paciente__perfil'),
+                               pk=pk, medico=request.medico)
     if request.method == 'POST':
-        form = VisitaForm(request.POST,instance=visita)
+        form = VisitaForm(request.POST, instance=visita)
         if form.is_valid():
             form.save()
-            return redirect('staff/lobby')
+            AuditLog.registrar(request.user, 'MODIFICAR_VISITA', objeto_id=visita.pk,
+                               request=request)
+            messages.success(request, 'Visita actualizada.')
+            return redirect('staff/lista_consultas')
     else:
         form = VisitaForm(instance=visita)
-    return render(request,'staff/consulta_ind.html',{'form':form,'visita':visita})
+    return render(request, 'staff/consulta_ind.html',
+                  {'form': form, 'visita': visita, 'seccion': 'visitas'})
 
 
+@medico_requerido
 def nueva_consulta(request):
-    perfil = get_object_or_404(Perfil, user=request.user)
-    medico, created = Medico.objects.get_or_create(perfil=perfil)
     if request.method == 'POST':
         form = VisitaFormMedico(request.POST)
         if form.is_valid():
             visita = form.save(commit=False)
-            visita.medico = medico
+            visita.medico = request.medico
             visita.save()
+            AuditLog.registrar(request.user, 'CREAR_VISITA', objeto_id=visita.pk,
+                               request=request)
+            messages.success(request, 'Visita creada.')
             return redirect('staff/lista_consultas')
     else:
         form = VisitaFormMedico()
-    return render(request, 'staff/nueva_consulta.html', {'form': form})
+    # Solo se pueden citar pacientes propios.
+    form.fields['paciente'].queryset = request.medico.pacientes.select_related('perfil')
+    return render(request, 'staff/nueva_consulta.html',
+                  {'form': form, 'seccion': 'visitas'})
 
-def del_consulta(request,pk):
-    consulta = get_object_or_404(Visita,pk=pk)
-    if request.method == 'POST':
-        consulta.delete()
+
+@medico_requerido
+@require_POST
+def del_consulta(request, pk):
+    visita = get_object_or_404(Visita, pk=pk, medico=request.medico)
+    AuditLog.registrar(request.user, 'ELIMINAR_VISITA', objeto_id=visita.pk, request=request)
+    visita.delete()
+    messages.success(request, 'Visita eliminada.')
     return redirect('staff/lista_consultas')
 
+
+# ---------------------------------------------------------------------------
+# Bandeja de expedientes pendientes de firmar
+# ---------------------------------------------------------------------------
+@medico_requerido
+def inbox(request):
+    borradores = (request.medico.temporal_expediente
+                  .select_related('paciente__perfil')
+                  .order_by('-fecha_hora'))
+    return render(request, 'staff/inbox.html',
+                  {'borradores': borradores, 'seccion': 'inbox'})
+
+
+# ---------------------------------------------------------------------------
+# Perfil del profesional
+# ---------------------------------------------------------------------------
+@medico_requerido
 def perfil(request):
-    perfil = get_object_or_404(Perfil,user=request.user)
     if request.method == 'POST':
-        form = PerfilForm(request.POST,instance=perfil)
+        form = PerfilForm(request.POST, instance=request.perfil)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Perfil actualizado.')
+            return redirect('staff/perfil')
+        messages.error(request, 'Revisa los campos marcados en rojo.')
     else:
-        form = PerfilForm(instance=perfil)
-    return render(request,'staff/perfil.html',{'form':form,'perfil':perfil})
+        form = PerfilForm(instance=request.perfil)
+    return render(request, 'staff/perfil.html',
+                  {'form': form, 'perfil': request.perfil, 'seccion': 'perfil'})
 
 
+# ---------------------------------------------------------------------------
+# API interna
+# ---------------------------------------------------------------------------
+@medico_requerido
+def detectar_enfermedad(request, pk):
+    """Devuelve los datos clínicos asociados a un expediente, en JSON."""
+    if request.method != 'GET':
+        return JsonResponse({'error': 'Método no permitido'}, status=405)
 
-def inbox(request):
-    perfil = get_object_or_404(Perfil, user=request.user)
-    medico, created = Medico.objects.get_or_create(perfil=perfil)
-    temporal = medico.temporal_expediente.all()
-    return render(request, 'staff/inbox.html', {'temporal': temporal})
+    expediente = get_object_or_404(Expediente, pk=pk)
+    if not request.medico.atiende(expediente.paciente) \
+            and expediente.doctor_id != request.medico.pk:
+        AuditLog.acceso_denegado(request.user, 'detectar_enfermedad',
+                                 f'expediente {pk}', request=request)
+        return JsonResponse({'error': 'Acceso denegado'}, status=403)
 
-def formulario(request,pk):
-    return render(request,'staff/formulario.html')
+    modelo = MODELOS_ENFERMEDAD.get(expediente.especialidad)
+    if modelo is None:
+        return JsonResponse({'error': 'Especialidad no válida'}, status=400)
 
-def resultado(request,pk):
-    return render(request,'staff/resultado.html')
-
-# En el paso medio entre formulario y resultado, hacer que se guarde el expediente, se borre el temporal y que 
-# solo se pueda acceder al resultado si eres el medico. En caso contrario, e404 personalizado.
+    return JsonResponse({'resultado': list(modelo.objects.filter(
+        expediente=expediente).values())})
