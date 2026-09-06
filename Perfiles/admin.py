@@ -1,9 +1,27 @@
 from django.contrib import admin
-from django.contrib.auth.models import Permission
-from .models import Perfil, Paciente, Medico
 
-# Registrar los modelos en el admin
-admin.site.register(Permission)
-admin.site.register(Perfil)
-admin.site.register(Paciente)
-admin.site.register(Medico)
+from .models import Medico, Paciente, Perfil
+
+
+@admin.register(Perfil)
+class PerfilAdmin(admin.ModelAdmin):
+    list_display = ('nombre', 'apellido', 'dni', 'email', 'telefono', 'user')
+    search_fields = ('nombre', 'apellido', 'dni', 'email', 'user__username')
+    list_filter = ('user__groups',)
+    readonly_fields = ('access_key',)
+
+
+@admin.register(Paciente)
+class PacienteAdmin(admin.ModelAdmin):
+    list_display = ('perfil', 'contacto_emergencia', 'telefono_emergencia')
+    search_fields = ('perfil__nombre', 'perfil__apellido', 'perfil__dni')
+    filter_horizontal = ('medicos',)
+    autocomplete_fields = ('perfil',)
+
+
+@admin.register(Medico)
+class MedicoAdmin(admin.ModelAdmin):
+    list_display = ('perfil', 'especialidad', 'numero_colegiado')
+    search_fields = ('perfil__nombre', 'perfil__apellido', 'numero_colegiado')
+    list_filter = ('especialidad',)
+    autocomplete_fields = ('perfil',)
