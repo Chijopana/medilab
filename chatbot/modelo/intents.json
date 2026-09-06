@@ -1,787 +1,599 @@
 {
-    "intents": [
-        {
-            "tag": "saludo",
-            "patterns": [
-                "Hola",
-                "Hey",
-                "¿Hay alguien ahí?",
-                "Buenas",
-                "Hola, ¿cómo estás?",
-                "Buenos días",
-                "Buenas tardes",
-                "Buenas noches",
-                "¡Hey! ¿Qué tal?"
-            ],
-            "responses": [
-                "¡Hola!",
-                "¡Hey! ¿Cómo estás?",
-                "Hola, ¿en qué puedo ayudarte?",
-                "¡Hola! ¿Cómo te va?",
-                "¡Buenas! ¿Cómo estás?"
-            ]
-        },
-        {
-            "tag": "despedida",
-            "patterns": [
-                "Adiós",
-                "Nos vemos",
-                "Hasta luego",
-                "Me tengo que ir",
-                "Hasta la próxima",
-                "Chao",
-                "Cuídate",
-                "Que estés bien",
-                "bye",
-                "adios"
-            ],
-            "responses": [
-                "¡Hasta luego!",
-                "¡Que tengas un buen día!",
-                "¡Adiós! Vuelve pronto",
-                "¡Nos vemos! Cuídate",
-                "¡Chao! Que estés bien",
-                "¡Hasta la próxima!"
-            ]
-        },
-        {
-            "tag": "agradecimiento",
-            "patterns": [
-                "Gracias",
-                "Muchas gracias",
-                "Te lo agradezco",
-                "Gracias por la ayuda",
-                "Mil gracias",
-                "Eres muy amable",
-                "Gracias por tu tiempo"
-            ],
-            "responses": [
-                "¡De nada!",
-                "¡Feliz de ayudarte!",
-                "¡Cualquier cosa, aquí estoy!",
-                "¡Es un placer ayudarte!",
-                "¡Eres bienvenido!",
-                "¡Con gusto!",
-                "¡Para eso estamos!"
-            ]
-        },
-        {
-            "tag": "acerca_de",
-            "patterns": [
-                "¿Quién eres?",
-                "¿Qué eres?",
-                "¿Quién eres tú?",
-                "Cuéntame sobre ti",
-                "¿Cuál es tu función?",
-                "¿Qué haces?"
-            ],
-            "responses": [
-                "Soy Luzmi, tu asistente virtual",
-                "Me llamo Luzmi, soy un bot de inteligencia artificial",
-                "Soy Luzmi, aquí para asistirte en lo que necesites",
-                "Estoy aquí para ayudarte con cualquier consulta que tengas"
-            ]
-        },
-        {
-            "tag": "nombre",
-            "patterns": [
-                "¿Cuál es tu nombre?",
-                "¿Cómo te llamas?",
-                "¿Cómo debo llamarte?",
-                "¿Tienes nombre?",
-                "¿Quién eres tú?",
-                "¿Cuál es tu nombre completo?"
-            ],
-            "responses": [
-                "Puedes llamarme Luzmi.",
-                "Soy Luzmi.",
-                "Mi nombre es Luzmi, encantada de conocerte",
-                "Me llamo Luzmi, a tu servicio"
-            ]
-        },
-        {
-            "tag": "ayuda",
-            "patterns": [
-                "¿Puedes ayudarme?",
-                "Necesito ayuda",
-                "¿Me das una mano?",
-                "¿Qué puedes hacer por mí?",
-                "Necesito soporte",
-                "Ayúdame por favor",
-                "Tengo un problema",
-                "¿Puedes asistirme?",
-                "Requiero asistencia"
-            ],
-            "responses": [
-                "Dime, ¿cómo puedo asistirte?",
-                "Cuéntame tu problema para poder ayudarte",
-                "Claro, ¿cómo puedo apoyarte?",
-                "Estoy aquí para ayudarte, dime qué necesitas",
-                "Dime en qué necesitas ayuda y veré qué puedo hacer"
-            ]
-        },
-        {
-            "tag": "crear_cuenta",
-            "patterns": [
-                "Necesito crear una cuenta nueva",
-                "¿Cómo abro una cuenta nueva?",
-                "Quiero crear una cuenta",
-                "¿Puedes crear una cuenta para mí?",
-                "¿Cómo se crea una cuenta nueva?",
-                "Quiero registrarme",
-                "¿Cómo me registro?",
-                "Ayúdame a crear una cuenta"
-            ],
-            "responses": [
-                "Puedes crear una cuenta nueva fácilmente desde nuestro sitio web",
-                "Solo ve a nuestro sitio web y sigue las instrucciones para crear una cuenta nueva",
-                "Visita nuestro sitio y sigue los pasos para registrarte",
-                "Para crear una cuenta, visita nuestro sitio y completa el formulario de registro"
-            ]
-        },
-        {
-            "tag": "informacion_general",
-            "patterns": [
-                "Dame información general",
-                "Quiero saber más sobre ustedes",
-                "¿Qué servicios ofrecen?",
-                "Cuéntame sobre su empresa",
-                "¿Qué hacen?",
-                "¿A qué se dedican?"
-            ],
-            "responses": [
-                "Somos una plataforma dedicada a proporcionar información para amantes del arte"
-            ]
-        },
-        {
-            "tag": "historia_del_arte",
-            "patterns": [
-                "Háblame sobre la historia del arte",
-                "¿Qué es la historia del arte?",
-                "Quiero saber sobre la historia del arte",
-                "Historia del arte"
-            ],
-            "responses": [
-                "La historia del arte es el estudio de las obras de arte y su desarrollo a lo largo del tiempo.",
-                "La historia del arte abarca desde las primeras manifestaciones artísticas en la prehistoria hasta el arte contemporáneo.",
-                "Es fascinante cómo las diferentes culturas han expresado sus valores y creencias a través del arte a lo largo de los siglos."
-            ]
-        },
-        {
-            "tag": "arte_antiguo",
-            "patterns": [
-                "Cuéntame sobre el arte antiguo",
-                "¿Qué es el arte antiguo?",
-                "Quiero aprender sobre el arte antiguo",
-                "Arte antiguo"
-            ],
-            "responses": [
-                "El arte antiguo incluye las primeras formas de arte creadas por las civilizaciones antiguas, como Egipto, Mesopotamia, Grecia y Roma.",
-                "Las pirámides egipcias, los templos griegos y las esculturas romanas son ejemplos notables del arte antiguo.",
-                "El arte antiguo a menudo refleja las creencias religiosas y sociales de las civilizaciones que lo produjeron."
-            ]
-        },
-        {
-            "tag": "arte_medieval",
-            "patterns": [
-                "Háblame sobre el arte medieval",
-                "¿Qué es el arte medieval?",
-                "Quiero saber sobre el arte medieval",
-                "Arte medieval"
-            ],
-            "responses": [
-                "El arte medieval abarca el periodo desde la caída del Imperio Romano hasta el Renacimiento.",
-                "Incluye el arte bizantino, románico y gótico, con un fuerte énfasis en temas religiosos.",
-                "Las catedrales góticas y los manuscritos iluminados son ejemplos destacados del arte medieval."
-            ]
-        },
-        {
-            "tag": "renacimiento",
-            "patterns": [
-                "Cuéntame sobre el Renacimiento",
-                "¿Qué es el Renacimiento?",
-                "Quiero saber sobre el arte del Renacimiento",
-                "Arte del Renacimiento"
-            ],
-            "responses": [
-                "El Renacimiento fue un periodo de gran florecimiento cultural y artístico en Europa, que comenzó en el siglo XIV en Italia.",
-                "Este periodo se caracteriza por un renovado interés en el arte y la cultura de la antigüedad clásica.",
-                "Artistas como Leonardo da Vinci, Michelangelo y Rafael son figuras icónicas del Renacimiento."
-            ]
-        },
-        {
-            "tag": "barroco",
-            "patterns": [
-                "Háblame sobre el Barroco",
-                "¿Qué es el arte barroco?",
-                "Quiero saber sobre el arte barroco",
-                "Arte barroco"
-            ],
-            "responses": [
-                "El Barroco es un estilo artístico que se desarrolló en Europa entre el siglo XVII y principios del XVIII.",
-                "Se caracteriza por su dramatismo, ornamentación y el uso de luces y sombras.",
-                "Artistas como Caravaggio, Bernini y Rubens son representantes destacados del Barroco."
-            ]
-        },
-        {
-            "tag": "rococo",
-            "patterns": [
-                "Cuéntame sobre el Rococó",
-                "¿Qué es el arte rococó?",
-                "Quiero saber sobre el arte rococó",
-                "Arte rococó"
-            ],
-            "responses": [
-                "El Rococó es un estilo artístico que surgió en Francia a principios del siglo XVIII.",
-                "Se caracteriza por su elegancia, detalles ornamentales y temas alegres y amorosos.",
-                "Artistas como François Boucher y Jean-Honoré Fragonard son conocidos por sus obras rococó."
-            ]
-        },
-        {
-            "tag": "neoclasicismo",
-            "patterns": [
-                "Háblame sobre el Neoclasicismo",
-                "¿Qué es el neoclasicismo?",
-                "Quiero saber sobre el arte neoclásico",
-                "Arte neoclásico"
-            ],
-            "responses": [
-                "El Neoclasicismo es un movimiento artístico que surgió a mediados del siglo XVIII como una reacción contra el Rococó.",
-                "Se inspira en el arte y la cultura de la antigüedad clásica, buscando la simplicidad y la simetría.",
-                "Artistas como Jacques-Louis David y Antonio Canova son representativos del Neoclasicismo."
-            ]
-        },
-        {
-            "tag": "romanticismo",
-            "patterns": [
-                "Cuéntame sobre el Romanticismo",
-                "¿Qué es el romanticismo?",
-                "Quiero saber sobre el arte romántico",
-                "Arte romántico"
-            ],
-            "responses": [
-                "El Romanticismo es un movimiento artístico y cultural que surgió a finales del siglo XVIII y principios del XIX.",
-                "Se caracteriza por su énfasis en la emoción, la naturaleza y la individualidad.",
-                "Artistas como Caspar David Friedrich, Eugène Delacroix y Francisco de Goya son figuras importantes del Romanticismo."
-            ]
-        },
-        {
-            "tag": "realismo",
-            "patterns": [
-                "Háblame sobre el Realismo",
-                "¿Qué es el realismo?",
-                "Quiero saber sobre el arte realista",
-                "Arte realista"
-            ],
-            "responses": [
-                "El Realismo es un movimiento artístico que surgió a mediados del siglo XIX en reacción al Romanticismo.",
-                "Se enfoca en la representación precisa y detallada de la vida cotidiana y las condiciones sociales.",
-                "Artistas como Gustave Courbet y Jean-François Millet son conocidos por sus obras realistas."
-            ]
-        },
-        {
-            "tag": "impresionismo",
-            "patterns": [
-                "Cuéntame sobre el Impresionismo",
-                "¿Qué es el impresionismo?",
-                "Quiero saber sobre el arte impresionista",
-                "Arte impresionista"
-            ],
-            "responses": [
-                "El Impresionismo es un movimiento artístico que surgió en Francia a finales del siglo XIX.",
-                "Se caracteriza por su interés en captar la luz y el color de manera espontánea y directa.",
-                "Artistas como Claude Monet, Pierre-Auguste Renoir y Edgar Degas son figuras clave del Impresionismo."
-            ]
-        },
-        {
-            "tag": "postimpresionismo",
-            "patterns": [
-                "Háblame sobre el Postimpresionismo",
-                "¿Qué es el postimpresionismo?",
-                "Quiero saber sobre el arte postimpresionista",
-                "Arte postimpresionista"
-            ],
-            "responses": [
-                "El Postimpresionismo es un movimiento artístico que se desarrolló a finales del siglo XIX como una extensión del Impresionismo.",
-                "Se caracteriza por una mayor experimentación con el color, la forma y la expresión emocional.",
-                "Artistas como Vincent van Gogh, Paul Cézanne y Paul Gauguin son figuras importantes del Postimpresionismo."
-            ]
-        },
-        {
-            "tag": "arte_moderno",
-            "patterns": [
-                "Cuéntame sobre el arte moderno",
-                "¿Qué es el arte moderno?",
-                "Quiero saber sobre el arte moderno",
-                "Arte moderno"
-            ],
-            "responses": [
-                "El arte moderno abarca diversas corrientes artísticas desde finales del siglo XIX hasta mediados del siglo XX.",
-                "Se caracteriza por la ruptura con las tradiciones y la experimentación con nuevas técnicas y formas de expresión.",
-                "Movimientos como el Cubismo, el Futurismo y el Surrealismo son parte del arte moderno."
-            ]
-        },
-        {
-            "tag": "arte_contemporaneo",
-            "patterns": [
-                "Háblame sobre el arte contemporáneo",
-                "¿Qué es el arte contemporáneo?",
-                "Quiero saber sobre el arte contemporáneo",
-                "Arte contemporáneo"
-            ],
-            "responses": [
-                "El arte contemporáneo abarca las expresiones artísticas desde la segunda mitad del siglo XX hasta la actualidad.",
-                "Se caracteriza por la diversidad de estilos, técnicas y medios utilizados por los artistas.",
-                "El arte contemporáneo a menudo aborda temas sociales, políticos y culturales."
-            ]
-        }, 
-        {
-            "tag": "arte_prehistorico",
-            "patterns": [
-                "Cuéntame sobre el arte prehistórico",
-                "¿Qué es el arte prehistórico?",
-                "Quiero aprender sobre el arte prehistórico",
-                "Arte prehistórico"
-            ],
-            "responses": [
-                "El arte prehistórico incluye las primeras manifestaciones artísticas de la humanidad, como las pinturas rupestres y las esculturas de piedra.",
-                "Ejemplos destacados del arte prehistórico son las pinturas de las cuevas de Altamira y Lascaux.",
-                "Este arte refleja las creencias y la vida cotidiana de las primeras sociedades humanas."
-            ]
-        },
-        {
-            "tag": "arte_egipcio",
-            "patterns": [
-                "Háblame sobre el arte egipcio",
-                "¿Qué es el arte egipcio?",
-                "Quiero saber sobre el arte egipcio",
-                "Arte egipcio"
-            ],
-            "responses": [
-                "El arte egipcio se caracteriza por sus monumentos impresionantes como las pirámides, las esculturas colosales y los frescos funerarios.",
-                "Este arte refleja las creencias religiosas y la vida después de la muerte de la antigua civilización egipcia.",
-                "El uso de colores vivos y la representación simbólica son características importantes del arte egipcio."
-            ]
-        },
-        {
-            "tag": "arte_mesopotamico",
-            "patterns": [
-                "Cuéntame sobre el arte mesopotámico",
-                "¿Qué es el arte mesopotámico?",
-                "Quiero aprender sobre el arte mesopotámico",
-                "Arte mesopotámico"
-            ],
-            "responses": [
-                "El arte mesopotámico proviene de las civilizaciones que habitaron la región entre los ríos Tigris y Éufrates.",
-                "Se caracteriza por sus relieves en piedra, estatuas y la arquitectura de zigurats.",
-                "Este arte refleja tanto la vida cotidiana como la importancia de la religión en la sociedad mesopotámica."
-            ]
-        },
-        {
-            "tag": "arte_griego",
-            "patterns": [
-                "Háblame sobre el arte griego",
-                "¿Qué es el arte griego?",
-                "Quiero saber sobre el arte griego",
-                "Arte griego"
-            ],
-            "responses": [
-                "El arte griego se distingue por su énfasis en la proporción, el equilibrio y la belleza idealizada.",
-                "Las esculturas y la arquitectura de templos son ejemplos destacados del arte griego.",
-                "Artistas como Fidias y Praxíteles son conocidos por sus contribuciones al arte griego."
-            ]
-        },
-        {
-            "tag": "arte_romano",
-            "patterns": [
-                "Cuéntame sobre el arte romano",
-                "¿Qué es el arte romano?",
-                "Quiero saber sobre el arte romano",
-                "Arte romano"
-            ],
-            "responses": [
-                "El arte romano se caracteriza por su realismo y su énfasis en la ingeniería y la arquitectura monumental.",
-                "Las esculturas, los frescos y los edificios como el Coliseo son ejemplos importantes del arte romano.",
-                "Este arte refleja tanto la vida cotidiana como los logros militares y políticos de Roma."
-            ]
-        },
-        {
-            "tag": "arte_bizantino",
-            "patterns": [
-                "Háblame sobre el arte bizantino",
-                "¿Qué es el arte bizantino?",
-                "Quiero aprender sobre el arte bizantino",
-                "Arte bizantino"
-            ],
-            "responses": [
-                "El arte bizantino se desarrolló en el Imperio Bizantino y se caracteriza por sus mosaicos, iconos y arquitectura religiosa.",
-                "Las iglesias con cúpulas, como Santa Sofía en Estambul, son ejemplos destacados del arte bizantino.",
-                "Este arte tiene una fuerte influencia religiosa y se centra en la representación de figuras sagradas."
-            ]
-        },
-        {
-            "tag": "arte_gotico",
-            "patterns": [
-                "Cuéntame sobre el arte gótico",
-                "¿Qué es el arte gótico?",
-                "Quiero saber sobre el arte gótico",
-                "Arte gótico"
-            ],
-            "responses": [
-                "El arte gótico se desarrolló en Europa durante la Edad Media y se caracteriza por su arquitectura con arcos apuntados y vitrales.",
-                "Las catedrales góticas, como Notre-Dame en París, son ejemplos notables del arte gótico.",
-                "Este estilo refleja una búsqueda de altura y luz, con un enfoque en la espiritualidad."
-            ]
-        },
-        {
-            "tag": "cubismo",
-            "patterns": [
-                "Háblame sobre el cubismo",
-                "¿Qué es el cubismo?",
-                "Quiero saber sobre el cubismo",
-                "Arte cubista"
-            ],
-            "responses": [
-                "El cubismo es un movimiento artístico del siglo XX que se caracteriza por la fragmentación y la abstracción de las formas.",
-                "Pablo Picasso y Georges Braque son los principales exponentes del cubismo.",
-                "Este estilo busca representar múltiples perspectivas de un objeto en una sola imagen."
-            ]
-        },
-        {
-            "tag": "surrealismo",
-            "patterns": [
-                "Cuéntame sobre el surrealismo",
-                "¿Qué es el surrealismo?",
-                "Quiero saber sobre el surrealismo",
-                "Arte surrealista"
-            ],
-            "responses": [
-                "El surrealismo es un movimiento artístico del siglo XX que explora el subconsciente y los sueños.",
-                "Salvador Dalí y René Magritte son algunos de los artistas más conocidos del surrealismo.",
-                "Este estilo se caracteriza por imágenes oníricas y una lógica ilógica, desafiando la realidad."
-            ]
-        },
-        {
-            "tag": "arte_abstracto",
-            "patterns": [
-                "Háblame sobre el arte abstracto",
-                "¿Qué es el arte abstracto?",
-                "Quiero saber sobre el arte abstracto",
-                "Arte abstracto"
-            ],
-            "responses": [
-                "El arte abstracto se centra en formas y colores no representativos, alejándose de la realidad visual.",
-                "Artistas como Wassily Kandinsky y Piet Mondrian son conocidos por sus obras abstractas.",
-                "Este estilo busca evocar emociones y conceptos a través de la forma pura y el color."
-            ]
-        },
-        {
-            "tag": "pop_art",
-            "patterns": [
-                "Cuéntame sobre el pop art",
-                "¿Qué es el pop art?",
-                "Quiero saber sobre el pop art",
-                "Arte pop"
-            ],
-            "responses": [
-                "El pop art es un movimiento artístico de mediados del siglo XX que se inspira en la cultura popular y los medios de comunicación.",
-                "Andy Warhol y Roy Lichtenstein son algunos de los artistas más conocidos del pop art.",
-                "Este estilo se caracteriza por el uso de imágenes comerciales y técnicas de producción en masa."
-            ]
-        },
-        {
-            "tag": "arte_digital",
-            "patterns": [
-                "Háblame sobre el arte digital",
-                "¿Qué es el arte digital?",
-                "Quiero saber sobre el arte digital",
-                "Arte digital"
-            ],
-            "responses": [
-                "El arte digital utiliza tecnologías digitales para crear obras de arte, como gráficos por computadora y animaciones.",
-                "Este estilo incluye diversas formas como el arte generativo, la realidad virtual y las instalaciones interactivas.",
-                "El arte digital permite una gran experimentación y nuevas formas de interacción con el público."
-            ]
-        },
-        {
-            "tag": "arte_precolombino",
-            "patterns": [
-                "Háblame sobre el arte precolombino",
-                "¿Qué es el arte precolombino?",
-                "Quiero saber sobre el arte precolombino",
-                "Arte precolombino"
-            ],
-            "responses": [
-                "El arte precolombino se refiere a las expresiones artísticas de las civilizaciones indígenas de América antes de la llegada de Colón.",
-                "Incluye arte de culturas como los mayas, aztecas e incas, caracterizado por su arquitectura monumental y cerámica detallada.",
-                "Este arte refleja las creencias religiosas y las estructuras sociales de estas civilizaciones."
-            ]
-        },
-        {
-            "tag": "arte_africano",
-            "patterns": [
-                "Cuéntame sobre el arte africano",
-                "¿Qué es el arte africano?",
-                "Quiero aprender sobre el arte africano",
-                "Arte africano"
-            ],
-            "responses": [
-                "El arte africano abarca una amplia variedad de estilos y medios, incluyendo escultura, máscaras, textiles y cerámica.",
-                "Es conocido por su simbolismo y su conexión con la espiritualidad y la vida comunitaria.",
-                "Las máscaras y estatuas africanas han influido significativamente en el arte moderno y contemporáneo."
-            ]
-        },
-        {
-            "tag": "arte_oceanico",
-            "patterns": [
-                "Háblame sobre el arte oceánico",
-                "¿Qué es el arte oceánico?",
-                "Quiero saber sobre el arte oceánico",
-                "Arte oceánico"
-            ],
-            "responses": [
-                "El arte oceánico incluye las expresiones artísticas de las islas del Pacífico, incluyendo Melanesia, Micronesia y Polinesia.",
-                "Se caracteriza por su artesanía en madera, tallados y textiles, a menudo con significados religiosos y ceremoniales.",
-                "Las esculturas y objetos rituales son destacados ejemplos del arte oceánico."
-            ]
-        },
-        {
-            "tag": "arte_islamico",
-            "patterns": [
-                "Cuéntame sobre el arte islámico",
-                "¿Qué es el arte islámico?",
-                "Quiero aprender sobre el arte islámico",
-                "Arte islámico"
-            ],
-            "responses": [
-                "El arte islámico abarca una amplia gama de estilos y periodos, caracterizado por su énfasis en la decoración geométrica y caligráfica.",
-                "Incluye arquitectura como mezquitas y palacios, así como textiles, cerámica y manuscritos iluminados.",
-                "Este arte refleja las creencias y la cultura del mundo islámico."
-            ]
-        },
-        {
-            "tag": "arte_indio",
-            "patterns": [
-                "Háblame sobre el arte indio",
-                "¿Qué es el arte indio?",
-                "Quiero saber sobre el arte indio",
-                "Arte indio"
-            ],
-            "responses": [
-                "El arte indio incluye una rica variedad de estilos que van desde la antigüedad hasta la era moderna.",
-                "Se caracteriza por su espiritualidad y su conexión con las religiones hindú, budista y jainista.",
-                "Ejemplos destacados incluyen la escultura de templos, pinturas en miniatura y textiles elaborados."
-            ]
-        },
-        {
-            "tag": "arte_chino",
-            "patterns": [
-                "Cuéntame sobre el arte chino",
-                "¿Qué es el arte chino?",
-                "Quiero aprender sobre el arte chino",
-                "Arte chino"
-            ],
-            "responses": [
-                "El arte chino abarca miles de años de historia, caracterizado por su caligrafía, pintura, cerámica y escultura.",
-                "La dinastía Tang y la dinastía Ming son periodos especialmente destacados en la historia del arte chino.",
-                "Este arte refleja las filosofías del confucianismo, taoísmo y budismo."
-            ]
-        },
-        {
-            "tag": "arte_japones",
-            "patterns": [
-                "Háblame sobre el arte japonés",
-                "¿Qué es el arte japonés?",
-                "Quiero saber sobre el arte japonés",
-                "Arte japonés"
-            ],
-            "responses": [
-                "El arte japonés se distingue por su atención al detalle, su estética minimalista y su conexión con la naturaleza.",
-                "Incluye formas como la pintura ukiyo-e, la cerámica raku y los jardines zen.",
-                "La influencia del budismo zen es notable en muchas formas de arte japonés."
-            ]
-        },
-        {
-            "tag": "arte_precolombino",
-            "patterns": [
-                "Cuéntame sobre el arte precolombino",
-                "¿Qué es el arte precolombino?",
-                "Quiero aprender sobre el arte precolombino",
-                "Arte precolombino"
-            ],
-            "responses": [
-                "El arte precolombino incluye las expresiones artísticas de las civilizaciones indígenas de América antes de la llegada de los europeos.",
-                "Culturas como los mayas, aztecas e incas produjeron arquitectura monumental, cerámica detallada y textiles complejos.",
-                "Este arte refleja las creencias religiosas y las estructuras sociales de estas civilizaciones."
-            ]
-        },
-        {
-            "tag": "arte_de_la_india",
-            "patterns": [
-                "Háblame sobre el arte de la India",
-                "¿Qué es el arte de la India?",
-                "Quiero saber sobre el arte de la India",
-                "Arte de la India"
-            ],
-            "responses": [
-                "El arte de la India abarca una rica variedad de estilos que van desde la antigüedad hasta la era moderna.",
-                "Se caracteriza por su espiritualidad y su conexión con las religiones hindú, budista y jainista.",
-                "Ejemplos destacados incluyen la escultura de templos, pinturas en miniatura y textiles elaborados."
-            ]
-        },
-        {
-            "tag": "arte_gotico",
-            "patterns": [
-                "Cuéntame sobre el arte gótico",
-                "¿Qué es el arte gótico?",
-                "Quiero saber sobre el arte gótico",
-                "Arte gótico"
-            ],
-            "responses": [
-                "El arte gótico se desarrolló en Europa durante la Edad Media y se caracteriza por su arquitectura con arcos apuntados y vitrales.",
-                "Las catedrales góticas, como Notre-Dame en París, son ejemplos notables del arte gótico.",
-                "Este estilo refleja una búsqueda de altura y luz, con un enfoque en la espiritualidad."
-            ]
-        },
-        {
-            "tag": "arte_renacentista",
-            "patterns": [
-                "Háblame sobre el arte renacentista",
-                "¿Qué es el arte renacentista?",
-                "Quiero saber sobre el arte renacentista",
-                "Arte renacentista"
-            ],
-            "responses": [
-                "El arte renacentista fue un periodo de gran florecimiento cultural y artístico en Europa, que comenzó en el siglo XIV en Italia.",
-                "Se caracteriza por un renovado interés en el arte y la cultura de la antigüedad clásica.",
-                "Artistas como Leonardo da Vinci, Michelangelo y Rafael son figuras icónicas del Renacimiento."
-            ]
-        },
-        {
-            "tag": "arte_barroco",
-            "patterns": [
-                "Cuéntame sobre el arte barroco",
-                "¿Qué es el arte barroco?",
-                "Quiero saber sobre el arte barroco",
-                "Arte barroco"
-            ],
-            "responses": [
-                "El arte barroco es un estilo artístico que se desarrolló en Europa entre el siglo XVII y principios del XVIII.",
-                "Se caracteriza por su dramatismo, ornamentación y el uso de luces y sombras.",
-                "Artistas como Caravaggio, Bernini y Rubens son representantes destacados del Barroco."
-            ]
-        },
-        {
-            "tag": "arte_rococo",
-            "patterns": [
-                "Háblame sobre el arte rococó",
-                "¿Qué es el arte rococó?",
-                "Quiero saber sobre el arte rococó",
-                "Arte rococó"
-            ],
-            "responses": [
-                "El arte rococó es un estilo artístico que surgió en Francia a principios del siglo XVIII.",
-                "Se caracteriza por su elegancia, detalles ornamentales y temas alegres y amorosos.",
-                "Artistas como François Boucher y Jean-Honoré Fragonard son conocidos por sus obras rococó."
-            ]
-        },
-        {
-            "tag": "arte_neoclasico",
-            "patterns": [
-                "Cuéntame sobre el arte neoclásico",
-                "¿Qué es el arte neoclásico?",
-                "Quiero saber sobre el arte neoclásico",
-                "Arte neoclásico"
-            ],
-            "responses": [
-                "El arte neoclásico es un movimiento artístico que surgió a mediados del siglo XVIII como una reacción contra el Rococó.",
-                "Se inspira en el arte y la cultura de la antigüedad clásica, buscando la simplicidad y la simetría.",
-                "Artistas como Jacques-Louis David y Antonio Canova son representativos del Neoclasicismo."
-            ]
-        },
-        {
-            "tag": "arte_romantico",
-            "patterns": [
-                "Háblame sobre el arte romántico",
-                "¿Qué es el arte romántico?",
-                "Quiero saber sobre el arte romántico",
-                "Arte romántico"
-            ],
-            "responses": [
-                "El arte romántico es un movimiento artístico y cultural que surgió a finales del siglo XVIII y principios del XIX.",
-                "Se caracteriza por su énfasis en la emoción, la naturaleza y la individualidad.",
-                "Artistas como Caspar David Friedrich, Eugène Delacroix y Francisco de Goya son figuras importantes del Romanticismo."
-            ]
-        },
-        {
-            "tag": "arte_realista",
-            "patterns": [
-                "Cuéntame sobre el arte realista",
-                "¿Qué es el arte realista?",
-                "Quiero saber sobre el arte realista",
-                "Arte realista"
-            ],
-            "responses": [
-                "El arte realista es un movimiento artístico que surgió a mediados del siglo XIX en reacción al Romanticismo.",
-                "Se enfoca en la representación precisa y detallada de la vida cotidiana y las condiciones sociales.",
-                "Artistas como Gustave Courbet y Jean-François Millet son conocidos por sus obras realistas."
-            ]
-        },
-        {
-            "tag": "arte_impresionista",
-            "patterns": [
-                "Cuéntame sobre el arte impresionista",
-                "¿Qué es el arte impresionista?",
-                "Quiero saber sobre el arte impresionista",
-                "Arte impresionista"
-            ],
-            "responses": [
-                "El arte impresionista es un movimiento artístico que surgió en Francia a finales del siglo XIX.",
-                "Se caracteriza por su interés en captar la luz y el color de manera espontánea y directa.",
-                "Artistas como Claude Monet, Pierre-Auguste Renoir y Edgar Degas son figuras clave del Impresionismo."
-            ]
-        },
-        {
-            "tag": "arte_postimpresionista",
-            "patterns": [
-                "Háblame sobre el arte postimpresionista",
-                "¿Qué es el arte postimpresionista?",
-                "Quiero saber sobre el arte postimpresionista",
-                "Arte postimpresionista"
-            ],
-            "responses": [
-                "El arte postimpresionista es un movimiento artístico que se desarrolló a finales del siglo XIX como una extensión del Impresionismo.",
-                "Se caracteriza por una mayor experimentación con el color, la forma y la expresión emocional.",
-                "Artistas como Vincent van Gogh, Paul Cézanne y Paul Gauguin son figuras importantes del Postimpresionismo."
-            ]
-        },
-        {
-            "tag": "arte_moderno",
-            "patterns": [
-                "Cuéntame sobre el arte moderno",
-                "¿Qué es el arte moderno?",
-                "Quiero saber sobre el arte moderno",
-                "Arte moderno"
-            ],
-            "responses": [
-                "El arte moderno abarca diversas corrientes artísticas desde finales del siglo XIX hasta mediados del siglo XX.",
-                "Se caracteriza por la ruptura con las tradiciones y la experimentación con nuevas técnicas y formas de expresión.",
-                "Movimientos como el Cubismo, el Futurismo y el Surrealismo son parte del arte moderno."
-            ]
-        },
-        {
-            "tag": "arte_contemporaneo",
-            "patterns": [
-                "Háblame sobre el arte contemporáneo",
-                "¿Qué es el arte contemporáneo?",
-                "Quiero saber sobre el arte contemporáneo",
-                "Arte contemporáneo"
-            ],
-            "responses": [
-                "El arte contemporáneo abarca las expresiones artísticas desde la segunda mitad del siglo XX hasta la actualidad.",
-                "Se caracteriza por la diversidad de estilos, técnicas y medios utilizados por los artistas.",
-                "El arte contemporáneo a menudo aborda temas sociales, políticos y culturales."
-            ]
-        }
-    ]
+  "intents": [
+    {
+      "tag": "saludo",
+      "patterns": [
+        "hola",
+        "buenas",
+        "buenos dias",
+        "buenas tardes",
+        "buenas noches",
+        "hey",
+        "que tal",
+        "holaa",
+        "saludos",
+        "hola que tal",
+        "buenas alguien ahi"
+      ],
+      "responses": [
+        "¡Hola! Soy el asistente de Medilab. Puedo ayudarte a moverte por la aplicación: pedir cita, ver tu historial, entender el diagnóstico por IA...",
+        "¡Hola! ¿En qué te ayudo? Puedo explicarte cómo pedir cita, consultar tu medicación o descargar un expediente.",
+        "Buenas. Soy el asistente de Medilab. Pregúntame por citas, historial, medicación o el diagnóstico con IA."
+      ]
+    },
+    {
+      "tag": "despedida",
+      "patterns": [
+        "adios",
+        "hasta luego",
+        "chao",
+        "nos vemos",
+        "me voy",
+        "hasta pronto",
+        "bye",
+        "gracias adios",
+        "hasta la proxima"
+      ],
+      "responses": [
+        "¡Hasta luego! Cuídate.",
+        "Adiós. Si necesitas algo más, abre el chat cuando quieras.",
+        "Nos vemos. Que vaya bien."
+      ]
+    },
+    {
+      "tag": "agradecimiento",
+      "patterns": [
+        "gracias",
+        "muchas gracias",
+        "te lo agradezco",
+        "genial gracias",
+        "perfecto gracias",
+        "mil gracias",
+        "ok gracias",
+        "muy amable"
+      ],
+      "responses": [
+        "De nada. ¿Te ayudo con algo más?",
+        "Un placer. Aquí estoy si necesitas otra cosa.",
+        "A ti. Cualquier duda sobre la aplicación, pregúntame."
+      ]
+    },
+    {
+      "tag": "nombre",
+      "patterns": [
+        "como te llamas",
+        "quien eres",
+        "cual es tu nombre",
+        "eres un bot",
+        "eres una persona",
+        "eres humano",
+        "que eres"
+      ],
+      "responses": [
+        "Soy el asistente virtual de Medilab. Un programa, no una persona: te oriento sobre la aplicación, pero no sustituyo a tu médico.",
+        "Soy un bot de ayuda de Medilab. Resuelvo dudas sobre cómo usar la web; las dudas clínicas las lleva tu profesional sanitario."
+      ]
+    },
+    {
+      "tag": "que_es_medilab",
+      "patterns": [
+        "que es medilab",
+        "que es esta pagina",
+        "para que sirve esta web",
+        "de que va esto",
+        "que puedo hacer aqui",
+        "que es esta aplicacion",
+        "explicame la web",
+        "que ofrece medilab"
+      ],
+      "responses": [
+        "Medilab es una plataforma de gestión médica. Como paciente puedes pedir citas, consultar tu historial y tu medicación, y descargar tus expedientes en PDF. También incluye un diagnóstico preliminar por IA sobre imágenes médicas.",
+        "Medilab reúne en un sitio tus citas, tu historia clínica, tu medicación y un análisis preliminar de imágenes con IA. Los médicos tienen su propio panel para gestionar a sus pacientes."
+      ]
+    },
+    {
+      "tag": "ayuda",
+      "patterns": [
+        "ayuda",
+        "necesito ayuda",
+        "ayudame",
+        "no se como funciona",
+        "estoy perdido",
+        "que puedo preguntarte",
+        "opciones",
+        "menu",
+        "que sabes hacer",
+        "no entiendo nada"
+      ],
+      "responses": [
+        "Puedo ayudarte con: pedir o cancelar una cita, ver tu historial médico, consultar tu medicación, descargar un expediente en PDF, entender el diagnóstico por IA y cambiar tus datos personales. ¿Cuál te interesa?",
+        "Dime qué necesitas: citas, historial, medicación, expedientes en PDF, diagnóstico con IA o tus datos de cuenta."
+      ]
+    },
+    {
+      "tag": "pedir_cita",
+      "patterns": [
+        "como pido cita",
+        "quiero pedir una cita",
+        "necesito una cita",
+        "reservar cita",
+        "como reservo con el medico",
+        "pedir hora",
+        "solicitar consulta",
+        "quiero ver a un medico",
+        "agendar cita",
+        "como saco cita"
+      ],
+      "responses": [
+        "Entra en «Visitas» desde el menú de tu área y pulsa «Pedir cita». Eliges profesional, fecha y hora, escribes el motivo y listo.",
+        "Desde tu área de paciente: menú «Visitas» → botón «Pedir cita». Ahí seleccionas médico, fecha y motivo de la consulta.",
+        "En el menú lateral tienes «Visitas». Dentro, el botón «Pedir cita» te abre el formulario. Ojo: la fecha tiene que ser futura."
+      ]
+    },
+    {
+      "tag": "cancelar_cita",
+      "patterns": [
+        "como cancelo una cita",
+        "quiero anular mi cita",
+        "borrar cita",
+        "eliminar una visita",
+        "no puedo ir a la cita",
+        "cancelar consulta",
+        "anular visita",
+        "quitar una cita"
+      ],
+      "responses": [
+        "En «Visitas» tienes cada cita con un botón «Cancelar». Te pedirá confirmación antes de eliminarla.",
+        "Ve a «Visitas» en tu menú, localiza la cita y pulsa «Cancelar». Solo puedes cancelar las tuyas."
+      ]
+    },
+    {
+      "tag": "modificar_cita",
+      "patterns": [
+        "como cambio la fecha de mi cita",
+        "modificar cita",
+        "cambiar hora de la consulta",
+        "editar mi visita",
+        "quiero mover la cita",
+        "cambiar de medico en la cita"
+      ],
+      "responses": [
+        "En «Visitas», cada cita tiene un botón «Modificar». Desde ahí puedes cambiar el profesional, la fecha y el motivo.",
+        "Abre «Visitas» y pulsa «Modificar» en la cita que quieras cambiar."
+      ]
+    },
+    {
+      "tag": "ver_citas",
+      "patterns": [
+        "cuando es mi proxima cita",
+        "mis citas",
+        "ver mis visitas",
+        "que citas tengo",
+        "tengo alguna consulta pendiente",
+        "mis proximas consultas",
+        "cita pendiente"
+      ],
+      "responses": [
+        "En la pantalla de inicio de tu área verás tu próxima visita destacada. Para el listado completo, entra en «Visitas».",
+        "Tu próxima cita aparece en el resumen al entrar. El histórico completo está en el menú «Visitas»."
+      ]
+    },
+    {
+      "tag": "historial",
+      "patterns": [
+        "donde veo mi historial",
+        "mi historia clinica",
+        "ver expedientes",
+        "consultar mi historial medico",
+        "mis informes medicos",
+        "donde estan mis expedientes",
+        "historial medico",
+        "ver mis diagnosticos"
+      ],
+      "responses": [
+        "En el menú lateral tienes «Historial». Ahí aparecen todos tus expedientes con su fecha, especialidad y el profesional que te atendió.",
+        "Entra en «Historial» desde tu menú. Cada expediente se puede abrir para verlo completo o descargar en PDF."
+      ]
+    },
+    {
+      "tag": "descargar_pdf",
+      "patterns": [
+        "como descargo mi expediente",
+        "quiero el pdf",
+        "descargar informe",
+        "imprimir mi expediente",
+        "puedo guardar el informe",
+        "exportar historial",
+        "necesito el papel del medico",
+        "descargar expediente en pdf"
+      ],
+      "responses": [
+        "En «Historial», cada expediente tiene un botón «PDF» que te lo descarga. También puedes abrirlo y usar «Imprimir».",
+        "Abre «Historial» y pulsa «PDF» en el expediente que necesites. Se descarga como expediente_<número>.pdf."
+      ]
+    },
+    {
+      "tag": "medicacion",
+      "patterns": [
+        "que medicacion tengo",
+        "mis medicamentos",
+        "ver mi tratamiento",
+        "que pastillas tomo",
+        "donde veo mi medicacion",
+        "tratamiento actual",
+        "mis recetas",
+        "que me han recetado"
+      ],
+      "responses": [
+        "En el menú «Medicación» tienes todos tus tratamientos, con la dosis, quién te lo recetó y si sigue en curso o ya terminó.",
+        "Entra en «Medicación». Verás cada medicamento con su dosis, instrucciones y fechas de inicio y fin."
+      ]
+    },
+    {
+      "tag": "diagnostico_ia",
+      "patterns": [
+        "que es el diagnostico por ia",
+        "como funciona la inteligencia artificial",
+        "analisis de imagen",
+        "subir una radiografia",
+        "que hace la ia",
+        "diagnostico automatico",
+        "analizar mi radiografia",
+        "como uso el diagnostico ia",
+        "subir imagen medica",
+        "como funciona el diagnostico por ia",
+        "como funciona la ia",
+        "explicame el diagnostico por ia",
+        "para que sirve el diagnostico ia",
+        "como uso el analisis de imagen",
+        "quiero analizar una imagen",
+        "donde subo la radiografia",
+        "como hago un analisis con ia",
+        "el analizador de imagenes",
+        "usar la inteligencia artificial"
+      ],
+      "responses": [
+        "Desde la portada, la tarjeta «Diagnóstico con IA» te lleva al analizador. Eliges el tipo de análisis, subes la imagen y en unos segundos tienes un resultado con su porcentaje de confianza. Es orientativo: no sustituye a un médico.",
+        "El diagnóstico por IA analiza una imagen médica y devuelve un resultado preliminar con su nivel de confianza. Necesitas iniciar sesión. Recuerda que es una orientación, nunca un diagnóstico definitivo."
+      ]
+    },
+    {
+      "tag": "tipos_analisis_ia",
+      "patterns": [
+        "que analisis puede hacer la ia",
+        "que enfermedades detecta",
+        "que puede analizar",
+        "tipos de diagnostico",
+        "detecta cancer",
+        "analiza lunares",
+        "detecta neumonia",
+        "sirve para tuberculosis",
+        "detecta tumores",
+        "que enfermedades detecta la ia",
+        "que enfermedades puede detectar",
+        "que patologias analiza",
+        "que tipos de analisis hay",
+        "que puede detectar el sistema",
+        "lista de analisis disponibles",
+        "que dolencias detecta",
+        "cuantos analisis hay disponibles",
+        "que modelos de ia teneis",
+        "detecta melanoma"
+      ],
+      "responses": [
+        "Ahora mismo hay cuatro análisis: neumonía y tuberculosis (radiografía de tórax), lunares/melanoma (foto de la lesión) y tumor cerebral (resonancia magnética).",
+        "Puede analizar radiografías de tórax (neumonía y tuberculosis), fotos de lunares para melanoma y resonancias para tumor cerebral."
+      ]
+    },
+    {
+      "tag": "formato_imagen",
+      "patterns": [
+        "que formato de imagen acepta",
+        "puedo subir un pdf",
+        "cuanto puede pesar la imagen",
+        "no me deja subir la foto",
+        "error al subir imagen",
+        "que imagenes valen",
+        "peso maximo de la imagen"
+      ],
+      "responses": [
+        "Acepta imágenes JPG, PNG, WEBP o BMP, de hasta 10 MB. Los PDF no valen: tiene que ser una imagen.",
+        "El formato debe ser JPG, PNG, WEBP o BMP y no pasar de 10 MB. Si te da error, comprueba que el archivo sea realmente una imagen."
+      ]
+    },
+    {
+      "tag": "fiabilidad_ia",
+      "patterns": [
+        "es fiable la ia",
+        "puedo fiarme del resultado",
+        "es un diagnostico real",
+        "la ia se equivoca",
+        "que precision tiene",
+        "es seguro el analisis",
+        "vale como diagnostico medico",
+        "es fiable el resultado de la ia",
+        "es fiable la inteligencia artificial",
+        "me puedo fiar del analisis",
+        "que fiabilidad tiene el resultado",
+        "el resultado de la ia es correcto",
+        "confio en el diagnostico automatico",
+        "la ia acierta siempre",
+        "es de fiar el analisis de imagen",
+        "el resultado vale como diagnostico"
+      ],
+      "responses": [
+        "No es un diagnóstico médico. El modelo da una orientación preliminar con un porcentaje de confianza, y puede equivocarse. Cualquier resultado, sobre todo si sale positivo, tienes que consultarlo con tu médico.",
+        "Es una herramienta de apoyo, no un diagnóstico. Ningún resultado sustituye la valoración de un profesional sanitario. Si el resultado te preocupa, pide cita."
+      ]
+    },
+    {
+      "tag": "crear_cuenta",
+      "patterns": [
+        "como me registro",
+        "quiero crear una cuenta",
+        "darme de alta",
+        "registrarme",
+        "no tengo cuenta",
+        "como abro una cuenta",
+        "crear usuario",
+        "quiero registrarme como paciente"
+      ],
+      "responses": [
+        "Pulsa «Crear cuenta» arriba a la derecha. Necesitas nombre, apellidos, email, DNI y una contraseña de al menos 8 caracteres.",
+        "Desde el botón «Crear cuenta» de la cabecera. Rellenas tus datos personales y tu contraseña, y ya puedes iniciar sesión."
+      ]
+    },
+    {
+      "tag": "cuenta_medico",
+      "patterns": [
+        "como me registro como medico",
+        "soy doctor como entro",
+        "cuenta de profesional",
+        "alta de medico",
+        "quiero una cuenta de sanitario",
+        "soy medico",
+        "registro personal sanitario"
+      ],
+      "responses": [
+        "Las cuentas de personal sanitario no se crean solas: las da de alta administración. Es a propósito, para que nadie pueda hacerse pasar por médico y acceder a datos de pacientes. Contacta con administración.",
+        "El registro abierto es solo para pacientes. Si eres profesional sanitario, administración tiene que crearte la cuenta y asignarte tus pacientes."
+      ]
+    },
+    {
+      "tag": "problema_login",
+      "patterns": [
+        "no puedo entrar",
+        "olvide mi contraseña",
+        "he perdido la contraseña",
+        "no me deja iniciar sesion",
+        "error al entrar",
+        "mi usuario no funciona",
+        "contraseña incorrecta",
+        "recuperar contraseña",
+        "me da error el login"
+      ],
+      "responses": [
+        "Comprueba que el usuario y la contraseña sean correctos (distinguen mayúsculas). Si la has olvidado, administración puede restablecértela desde el panel interno.",
+        "Revisa mayúsculas y espacios. Si aun así no entras, pide a administración que te restablezca la contraseña."
+      ]
+    },
+    {
+      "tag": "cambiar_datos",
+      "patterns": [
+        "como cambio mis datos",
+        "actualizar mi telefono",
+        "modificar mi perfil",
+        "cambiar mi email",
+        "editar mis datos personales",
+        "actualizar direccion",
+        "cambiar contacto de emergencia",
+        "mis datos personales",
+        "como cambio mi telefono",
+        "quiero cambiar mi numero de telefono",
+        "actualizar mi numero",
+        "modificar mi telefono de contacto",
+        "cambiar mis datos de contacto",
+        "editar mi telefono",
+        "corregir mis datos",
+        "actualizar mi correo",
+        "cambiar mi domicilio"
+      ],
+      "responses": [
+        "En el menú «Mis datos» puedes actualizar tu teléfono, email, dirección, fecha de nacimiento y tu contacto de emergencia.",
+        "Entra en «Mis datos» desde el menú lateral y guarda los cambios cuando termines."
+      ]
+    },
+    {
+      "tag": "privacidad",
+      "patterns": [
+        "quien ve mis datos",
+        "mis datos son privados",
+        "es seguro",
+        "proteccion de datos",
+        "quien puede ver mi historial",
+        "seguridad de la informacion",
+        "puede verme otro paciente",
+        "mis datos estan protegidos"
+      ],
+      "responses": [
+        "Tu historia clínica solo la ven tú y los profesionales que te atienden. Ningún otro paciente puede acceder a ella, y un médico que no te atiende tampoco. Además, todos los accesos quedan registrados.",
+        "Solo tú y tu equipo médico veis tus datos. El sistema comprueba en cada petición quién eres y deja constancia de cada acceso a datos clínicos."
+      ]
+    },
+    {
+      "tag": "cerrar_sesion",
+      "patterns": [
+        "como cierro sesion",
+        "quiero salir",
+        "desconectarme",
+        "log out",
+        "cerrar mi cuenta ahora",
+        "salir de mi cuenta",
+        "cerrar sesion",
+        "quiero desconectarme de la cuenta",
+        "salir de la aplicacion",
+        "como me desconecto"
+      ],
+      "responses": [
+        "Arriba a la derecha tienes el botón «Salir».",
+        "Pulsa «Salir» en la cabecera y cerrarás la sesión."
+      ]
+    },
+    {
+      "tag": "panel_medico",
+      "patterns": [
+        "como veo a mis pacientes",
+        "panel de medico",
+        "donde estan mis pacientes",
+        "buscar un paciente",
+        "lista de pacientes",
+        "como receto medicacion",
+        "prescribir tratamiento",
+        "gestionar visitas medico"
+      ],
+      "responses": [
+        "En el panel médico tienes «Pacientes» con buscador por nombre, apellidos o DNI. Al abrir una ficha puedes ver visitas, expedientes y medicación, y prescribir desde el botón «Prescribir».",
+        "Desde «Pacientes» accedes a la ficha de cada uno. Ahí tienes sus visitas, sus expedientes y el botón para prescribirle un tratamiento."
+      ]
+    },
+    {
+      "tag": "contacto",
+      "patterns": [
+        "como contacto",
+        "telefono de contacto",
+        "atencion al paciente",
+        "email de contacto",
+        "hablar con una persona",
+        "quiero hablar con alguien",
+        "numero de telefono",
+        "cual es el telefono de contacto",
+        "dame el telefono",
+        "telefono de la clinica",
+        "como os puedo llamar",
+        "quiero el numero de contacto",
+        "datos de contacto",
+        "correo de contacto",
+        "a que email escribo",
+        "numero de atencion al paciente"
+      ],
+      "responses": [
+        "Puedes escribir a info@example.com o llamar al 639 482 715.",
+        "Atención al paciente: 639 482 715. Por correo, info@example.com."
+      ]
+    },
+    {
+      "tag": "urgencia",
+      "patterns": [
+        "es una urgencia",
+        "me duele mucho el pecho",
+        "no puedo respirar",
+        "estoy sangrando mucho",
+        "creo que es un infarto",
+        "emergencia",
+        "me estoy mareando mucho",
+        "he perdido el conocimiento",
+        "necesito ayuda urgente ahora",
+        "es una urgencia medica",
+        "necesito una ambulancia",
+        "es grave, ayuda",
+        "creo que me muero"
+      ],
+      "responses": [
+        "Si es una urgencia, llama al 112 ahora mismo o acude al servicio de urgencias más cercano. Esta aplicación no atiende emergencias.",
+        "Esto suena a urgencia: llama al 112 inmediatamente. No esperes respuesta por aquí."
+      ]
+    },
+    {
+      "tag": "sintomas",
+      "patterns": [
+        "me duele la cabeza",
+        "tengo fiebre",
+        "me encuentro mal",
+        "tengo tos",
+        "me duele la garganta",
+        "que tengo",
+        "puedes diagnosticarme",
+        "que enfermedad tengo",
+        "tengo un lunar raro",
+        "me duele el estomago"
+      ],
+      "responses": [
+        "No puedo valorar síntomas ni decirte qué tienes: no soy médico. Lo que sí puedo es ayudarte a pedir cita para que te vea un profesional. ¿Quieres?",
+        "Siento que no te encuentres bien, pero no puedo diagnosticarte. Pide cita desde «Visitas» y coméntaselo a tu médico. Si es grave o urgente, llama al 112."
+      ]
+    },
+    {
+      "tag": "consejo_medicamento",
+      "patterns": [
+        "que me tomo para el dolor",
+        "puedo tomar ibuprofeno",
+        "que medicamento me recomiendas",
+        "cuanta dosis tomo",
+        "puedo mezclar medicamentos",
+        "me salto una toma",
+        "puedo dejar el tratamiento"
+      ],
+      "responses": [
+        "No puedo recomendarte medicamentos ni cambiar dosis. Consulta con tu médico o con tu farmacéutico. En «Medicación» tienes lo que ya te han recetado, con sus instrucciones.",
+        "Eso tiene que decírtelo tu médico. Yo solo puedo enseñarte el tratamiento que ya tienes prescrito, en el menú «Medicación»."
+      ]
+    },
+    {
+      "tag": "horario",
+      "patterns": [
+        "que horario teneis",
+        "cuando abris",
+        "estais abiertos los findes",
+        "horario de atencion",
+        "a que hora cerrais"
+      ],
+      "responses": [
+        "La aplicación está disponible 24/7 para pedir citas y consultar tu historial. La atención telefónica es en horario de oficina.",
+        "La web funciona a cualquier hora. Para hablar con una persona, llama en horario de oficina al 639 482 715."
+      ]
+    },
+    {
+      "tag": "precio",
+      "patterns": [
+        "cuanto cuesta",
+        "es gratis",
+        "hay que pagar",
+        "precio de la consulta",
+        "tarifas",
+        "cuanto vale el diagnostico"
+      ],
+      "responses": [
+        "Medilab es un proyecto formativo: el uso de la plataforma no tiene coste.",
+        "No hay tarifas: esto es un proyecto académico de demostración."
+      ]
+    },
+    {
+      "tag": "desconocido",
+      "patterns": [
+        "asdfgh",
+        "no se",
+        "cualquier cosa",
+        "xxxxx",
+        "prueba",
+        "test",
+        "bla bla",
+        "cuentame sobre el renacimiento",
+        "quien pinto la gioconda",
+        "hablame de arte",
+        "que tiempo hace",
+        "cuentame un chiste",
+        "quien gano el partido",
+        "receta de tortilla",
+        "cuanto es dos mas dos",
+        "hablame de historia",
+        "que opinas de la politica",
+        "recomiendame una pelicula",
+        "donde esta paris"
+      ],
+      "responses": [
+        "No estoy seguro de haber entendido. Puedo ayudarte con citas, historial, medicación, expedientes en PDF o el diagnóstico por IA. ¿Cuál de esos?",
+        "Eso no lo sé. Prueba a preguntarme por cómo pedir cita, ver tu historial o usar el diagnóstico con IA."
+      ]
+    }
+  ]
 }
