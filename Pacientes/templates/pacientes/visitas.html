@@ -1,27 +1,60 @@
-<div>
-    <h2>Visitas</h2>
-    <button class="btn btn-primary mb-3" hx-get="{% url 'pacientes/nueva_visita' %}" hx-target="#content"
-        hx-swap="innerHTML">Crear Visita</button>
-    <table class="table table-bordered">
+{% extends 'pacientes/base_panel.html' %}
+
+{% block title %}Mis visitas · Medilab{% endblock %}
+
+{% block panel %}
+<div class="panel-head">
+    <div>
+        <h1 class="panel-title">Mis visitas</h1>
+        <p class="panel-lead">Citas solicitadas y realizadas.</p>
+    </div>
+    <a href="{% url 'pacientes/nueva_visita' %}" class="btn btn-primary">
+        <i class="bi bi-plus-lg"></i> Pedir cita
+    </a>
+</div>
+
+{% if pagina.object_list %}
+<div class="table-wrap">
+    <table class="table">
         <thead>
             <tr>
-                <th>Doctor</th>
-                <th>Fecha y Hora</th>
-                <th>Modivo</th>
-                <th>Acciones</th>
+                <th scope="col">Profesional</th>
+                <th scope="col">Fecha y hora</th>
+                <th scope="col">Motivo</th>
+                <th scope="col">Estado</th>
+                <th scope="col"><span class="visually-hidden">Acciones</span></th>
             </tr>
         </thead>
         <tbody>
-            {% for visita in visitas%}
+            {% for visita in pagina %}
             <tr>
-                <td>{{visita.medico}}</td>
-                <td>{{visita.hora_fecha}}</td>
-                <td>{{visita.descripcion_problema}}</td>
-                <td><button class="btn btn-warning btn-sm" hx-get="{% url 'pacientes/mod_visita' visita.id%}"
-                        hx-target="#content" hx-swap="innerHTML">Modificar</button></td>
+                <td>{{ visita.medico }}</td>
+                <td class="mono">{{ visita.hora_fecha|date:"d/m/Y H:i"|default:"—" }}</td>
+                <td>{{ visita.descripcion_problema|truncatewords:10 }}</td>
+                <td>
+                    <span class="chip {% if visita.estado == 'realizada' %}chip-ok{% elif visita.estado == 'cancelada' %}chip-neutro{% else %}chip-alerta{% endif %}">
+                        {{ visita.get_estado_display }}
+                    </span>
+                </td>
+                <td class="text-end text-nowrap">
+                    <a href="{% url 'pacientes/mod_visita' visita.pk %}" class="btn btn-secondary btn-sm">Modificar</a>
+                    <form action="{% url 'pacientes/del_visita' visita.pk %}" method="post" class="d-inline"
+                          onsubmit="return confirm('¿Seguro que quieres cancelar esta visita?');">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-danger btn-sm">Cancelar</button>
+                    </form>
+                </td>
             </tr>
-            {%endfor%}
-            <!-- Agregar más filas según sea necesario -->
+            {% endfor %}
         </tbody>
     </table>
 </div>
+{% include 'Hub/partials/_paginacion.html' %}
+{% else %}
+<div class="vacio">
+    <i class="bi bi-calendar-x" aria-hidden="true"></i>
+    <p>No tienes ninguna visita registrada.</p>
+    <a href="{% url 'pacientes/nueva_visita' %}" class="btn btn-primary">Pedir mi primera cita</a>
+</div>
+{% endif %}
+{% endblock %}

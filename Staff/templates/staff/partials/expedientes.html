@@ -1,41 +1,50 @@
-<div class="container mt-4">
-    <button class="btn btn-secondary mb-3" hx-get="{% url 'staff/paciente_ind' perfil.access_key %}" hx-target="#content" hx-swap="innerHTML">
-        <i class="bi bi-arrow-left"></i> Volver
-    </button>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <h3>Lista de Expedientes</h3>
-                </div>
-                <div class="card-body">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>ID del Expediente</th>
-                                <th>Fecha de Creación</th>
-                                <th>Descripción</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for expediente in expedientes %}
-                                <tr>
-                                    <td>{{ expediente.id }}</td>
-                                    <td>{{ expediente.fecha_creacion }}</td>
-                                    <td>{{ expediente.descripcion }}</td>
-                                    <td>
-                                        <a href="{% url 'ver_expediente' expediente.id %}" class="btn btn-primary btn-sm">Ver</a>
-                                        <a href="{% url 'descargar_expediente_pdf' expediente.id %}" class="btn btn-secondary btn-sm">
-                                            PDF
-                                        </a>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+{% extends 'staff/base_panel.html' %}
+
+{% block title %}Expedientes de {{ perfil.nombre_completo }} · Medilab{% endblock %}
+
+{% block panel %}
+<div class="panel-head">
+    <div>
+        <h1 class="panel-title">Expedientes</h1>
+        <p class="panel-lead">{{ perfil.nombre_completo|default:"Paciente" }}</p>
     </div>
+    <a href="{% url 'staff/paciente_ind' perfil.access_key %}" class="btn btn-secondary">&larr; Volver a la ficha</a>
 </div>
+
+{% if expedientes %}
+<div class="table-wrap">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Nº</th>
+                <th scope="col">Fecha</th>
+                <th scope="col">Especialidad</th>
+                <th scope="col">Antecedentes</th>
+                <th scope="col"><span class="visually-hidden">Acciones</span></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for expediente in expedientes %}
+            <tr>
+                <td class="mono">#{{ expediente.id }}</td>
+                <td class="mono">{{ expediente.fecha_hora|date:"d/m/Y"|default:"—" }}</td>
+                <td><span class="chip">{{ expediente.departamento }}</span></td>
+                <td>{{ expediente.antecedentes|truncatewords:12 }}</td>
+                <td class="text-end text-nowrap">
+                    <a href="{% url 'ver_expediente' expediente.id %}" class="btn btn-secondary btn-sm">Ver</a>
+                    <a href="{% url 'descargar_expediente_pdf' expediente.id %}" class="btn btn-secondary btn-sm">
+                        <i class="bi bi-download"></i> PDF
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="vacio">
+    <i class="bi bi-file-earmark-medical" aria-hidden="true"></i>
+    <p>Este paciente no tiene expedientes.</p>
+</div>
+{% endif %}
+{% endblock %}

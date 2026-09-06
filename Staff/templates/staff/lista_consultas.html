@@ -1,31 +1,74 @@
-<div>
-    <h2>Lista de Visitas</h2>
-    <div class="container mt-4">
-        <div class="row">
-            <div class="col-md-12">
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Paciente</th>
-                            <th>Fecha</th>
-                            <th>Hora</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody id="visits-table-body">
-                        {%for visita in visitas%}
-                        <tr>
-                            <td>{{visita.paciente}}</td>
-                            <td>{{visita.hora_fecha}}</td>
-                            <td>{{visita.descripcion_problema}}</td>
-                            <td><button class="btn btn-primary btn-sm"
-                                    hx-get="{% url 'staff/mod_visita' visita.id%}" hx-target="#content"
-                                    hx-swap="innerHTML">Ver</button></td>
-                        </tr>
-                        {%endfor%}
-                    </tbody>
-                </table>
-            </div>
-        </div>
+{% extends 'staff/base_panel.html' %}
+
+{% block title %}Visitas · Medilab{% endblock %}
+
+{% block panel %}
+<div class="panel-head">
+    <div>
+        <h1 class="panel-title">Visitas</h1>
+        <p class="panel-lead">{{ pagina.paginator.count }} visita{{ pagina.paginator.count|pluralize:"s" }} en tu agenda.</p>
     </div>
+    <a href="{% url 'staff/nueva_consulta' %}" class="btn btn-primary">
+        <i class="bi bi-plus-lg"></i> Nueva visita
+    </a>
 </div>
+
+<form method="get" class="mb-3">
+    <div class="d-flex gap-2 flex-wrap align-items-center">
+        <label for="id_estado" class="mb-0">Estado</label>
+        <select name="estado" id="id_estado" class="form-select" style="max-width:200px;"
+                onchange="this.form.submit()">
+            <option value="">Todos</option>
+            {% for valor, etiqueta in estados %}
+            <option value="{{ valor }}" {% if estado == valor %}selected{% endif %}>{{ etiqueta }}</option>
+            {% endfor %}
+        </select>
+        <noscript><button type="submit" class="btn btn-secondary btn-sm">Filtrar</button></noscript>
+    </div>
+</form>
+
+{% if pagina.object_list %}
+<div class="table-wrap">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Paciente</th>
+                <th scope="col">Fecha y hora</th>
+                <th scope="col">Motivo</th>
+                <th scope="col">Estado</th>
+                <th scope="col"><span class="visually-hidden">Acciones</span></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for visita in pagina %}
+            <tr>
+                <td>{{ visita.paciente }}</td>
+                <td class="mono">{{ visita.hora_fecha|date:"d/m/Y H:i"|default:"—" }}</td>
+                <td>{{ visita.descripcion_problema|truncatewords:10 }}</td>
+                <td>
+                    <span class="chip {% if visita.estado == 'realizada' %}chip-ok{% elif visita.estado == 'cancelada' %}chip-neutro{% else %}chip-alerta{% endif %}">
+                        {{ visita.get_estado_display }}
+                    </span>
+                </td>
+                <td class="text-end text-nowrap">
+                    <a href="{% url 'staff/mod_visita' visita.pk %}" class="btn btn-secondary btn-sm">Editar</a>
+                    <form action="{% url 'staff/del_consulta' visita.pk %}" method="post" class="d-inline"
+                          onsubmit="return confirm('¿Eliminar esta visita? No se puede deshacer.');">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-danger btn-sm">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% include 'Hub/partials/_paginacion.html' %}
+{% else %}
+<div class="vacio">
+    <i class="bi bi-calendar-x" aria-hidden="true"></i>
+    <p>No hay visitas{% if estado %} con ese estado{% endif %}.</p>
+    <a href="{% url 'staff/nueva_consulta' %}" class="btn btn-primary">Crear una visita</a>
+</div>
+{% endif %}
+{% endblock %}

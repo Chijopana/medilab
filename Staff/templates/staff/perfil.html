@@ -1,28 +1,37 @@
-<div class="container mt-4">
-    <h2>Perfil de Médico</h2>
-    <div class="row">
-        <div class="col-md-6">
-            <p><strong>Nombre:</strong> {{ perfil.nombre }}</p>
-            <p><strong>Apellido:</strong> {{ perfil.apellido }}</p>
-            <p><strong>DNI:</strong> {{ perfil.dni }}</p>
-            <p><strong>Email:</strong> {{ perfil.email }}</p>
-        </div>
-        <div class="col-md-6">
-            <p><strong>Teléfono:</strong> {{ perfil.telefono }}</p>
-            <p><strong>Dirección:</strong> {{ perfil.direccion }}</p>
-            <p><strong>Fecha de Nacimiento:</strong> {{ perfil.fecha_nacimiento }}</p>
-            <p><strong>Número de Seguro Social:</strong> {{ perfil.numero_seguro_social }}</p>
-        </div>
-    </div>
-    <a href="{% url 'staff/editar_perfil' %}" 
-       class="btn btn-primary btn-sm" 
-       hx-get="{% url 'staff/editar_perfil' %}" 
-       hx-target="#edit-profile-container" 
-       hx-swap="innerHTML">Editar Perfil</a>
-    <div id="edit-profile-container">
-        <!-- Aquí se cargará el formulario de edición -->
+{% extends 'staff/base_panel.html' %}
+
+{% block title %}Mi perfil · Medilab{% endblock %}
+
+{% block panel %}
+<div class="panel-head">
+    <div>
+        <h1 class="panel-title">Mi perfil</h1>
+        <p class="panel-lead">Tus datos como profesional sanitario.</p>
     </div>
 </div>
 
+<div class="card mb-4">
+    <div class="card-header"><h3>Ficha profesional</h3></div>
+    <div class="card-body">
+        <dl class="datos-grid">
+            <div class="dato"><dt>Nombre</dt><dd>{{ perfil.nombre_completo|default:"—" }}</dd></div>
+            <div class="dato"><dt>DNI</dt><dd class="mono">{{ perfil.dni }}</dd></div>
+            <div class="dato"><dt>Especialidad</dt><dd>{{ request.medico.especialidad|default:"—" }}</dd></div>
+            <div class="dato"><dt>Nº colegiado</dt><dd class="mono">{{ request.medico.numero_colegiado|default:"—" }}</dd></div>
+        </dl>
+    </div>
+</div>
 
-<script src="https://unpkg.com/htmx.org@1.7.0/dist/htmx.min.js"></script>
+<div class="card">
+    <div class="card-header"><h3>Editar mis datos</h3></div>
+    <div class="card-body">
+        <form action="{% url 'staff/perfil' %}" method="post" novalidate>
+            {% csrf_token %}
+            {% include 'Hub/partials/_form.html' with form=form %}
+            <div class="form-acciones">
+                <button type="submit" class="btn btn-primary">Guardar cambios</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

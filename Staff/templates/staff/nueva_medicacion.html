@@ -1,0 +1,25 @@
+{% extends 'staff/base_panel.html' %}
+
+{% block title %}Prescribir tratamiento · Medilab{% endblock %}
+
+{% block panel %}
+<div class="panel-head">
+    <div>
+        <h1 class="panel-title">Prescribir tratamiento</h1>
+        <p class="panel-lead">Para {{ perfil.nombre_completo|default:"el paciente" }}.</p>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form method="post" novalidate>
+            {% csrf_token %}
+            {% include 'Hub/partials/_form.html' with form=form %}
+            <div class="form-acciones">
+                <button type="submit" class="btn btn-primary">Prescribir</button>
+                <a href="{% url 'staff/medicacion' perfil.access_key %}" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

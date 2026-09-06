@@ -1,42 +1,47 @@
+{% extends 'staff/base_panel.html' %}
 
-    <div class="container mt-4">
-        <div class="row">
-            <div class="col-md-12">
-                <button class="btn btn-secondary mb-3" hx-get="{% url 'staff/paciente_ind' perfil.access_key %}" hx-target="#content" hx-swap="innerHTML">
-                    &larr; Volver
-                </button>
-                <div class="card">
-                    <div class="card-header">
-                        <h3>Lista de Visitas</h3>
-                    </div>
-                    <div class="card-body">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Nombre del Paciente</th>
-                                    <th>Fecha</th>
-                                    <th>Nombre del Doctor</th>
-                                    <th>Descripción</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for visita in visitas %}
-                                    <tr>
-                                        <td>{{ visita.paciente.perfil.nombre }}</td>
-                                        <td>{{ visita.hora_fecha }}</td>
-                                        <td>{{ visita.medico.perfil.nombre }}</td>
-                                        <td>{{ visita.descripcion_problema|truncatewords:10 }}</td>
-                                        <td>
-                                            <a href=# class="btn btn-primary btn-sm">Ver</a>
-                                            <a href=# class="btn btn-secondary btn-sm">Editar</a>
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
+{% block title %}Visitas de {{ perfil.nombre_completo }} · Medilab{% endblock %}
+
+{% block panel %}
+<div class="panel-head">
+    <div>
+        <h1 class="panel-title">Visitas</h1>
+        <p class="panel-lead">{{ perfil.nombre_completo|default:"Paciente" }}</p>
     </div>
+    <a href="{% url 'staff/paciente_ind' perfil.access_key %}" class="btn btn-secondary">&larr; Volver a la ficha</a>
+</div>
+
+{% if visitas %}
+<div class="table-wrap">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Fecha y hora</th>
+                <th scope="col">Profesional</th>
+                <th scope="col">Motivo</th>
+                <th scope="col">Estado</th>
+                <th scope="col"><span class="visually-hidden">Acciones</span></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for visita in visitas %}
+            <tr>
+                <td class="mono">{{ visita.hora_fecha|date:"d/m/Y H:i"|default:"—" }}</td>
+                <td>{{ visita.medico }}</td>
+                <td>{{ visita.descripcion_problema|truncatewords:12 }}</td>
+                <td><span class="chip">{{ visita.get_estado_display }}</span></td>
+                <td class="text-end">
+                    <a href="{% url 'staff/mod_visita' visita.pk %}" class="btn btn-secondary btn-sm">Editar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="vacio">
+    <i class="bi bi-calendar-x" aria-hidden="true"></i>
+    <p>Este paciente no tiene visitas registradas.</p>
+</div>
+{% endif %}
+{% endblock %}

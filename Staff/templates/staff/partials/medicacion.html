@@ -1,41 +1,61 @@
-<div class="container mt-4">
-    <button class="btn btn-secondary mb-3" hx-get="{% url 'staff/paciente_ind' perfil.access_key %}" hx-target="#content" hx-swap="innerHTML">
-        <i class="bi bi-arrow-left"></i> Volver
-    </button>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <h3>Lista de Medicaciones</h3>
-                </div>
-                <div class="card-body">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Nombre de la Medicina</th>
-                                <th>Fecha de Inicio</th>
-                                <th>Fecha de Finalización</th>
-                                <th>Instrucciones</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for medicacion_item in medicacion %}
-                                <tr>
-                                    <td>{{ medicacion_item.medicina }}</td>
-                                    <td>{{ medicacion_item.fecha_inicio }}</td>
-                                    <td>{{ medicacion_item.fecha_final }}</td>
-                                    <td>{{ medicacion_item.instrucciones }}</td>
-                                    <td>
-                                        <button class="btn btn-primary btn-sm">Ver</button>
-                                        <button class="btn btn-secondary btn-sm">Editar</button>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+{% extends 'staff/base_panel.html' %}
+
+{% block title %}Medicación de {{ perfil.nombre_completo }} · Medilab{% endblock %}
+
+{% block panel %}
+<div class="panel-head">
+    <div>
+        <h1 class="panel-title">Medicación</h1>
+        <p class="panel-lead">{{ perfil.nombre_completo|default:"Paciente" }}</p>
+    </div>
+    <div class="d-flex gap-2 flex-wrap">
+        <a href="{% url 'staff/nueva_medicacion' perfil.access_key %}" class="btn btn-primary">
+            <i class="bi bi-plus-lg"></i> Prescribir
+        </a>
+        <a href="{% url 'staff/paciente_ind' perfil.access_key %}" class="btn btn-secondary">&larr; Volver</a>
     </div>
 </div>
+
+{% if medicacion %}
+<div class="table-wrap">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Medicamento</th>
+                <th scope="col">Dosis</th>
+                <th scope="col">Prescrito por</th>
+                <th scope="col">Desde</th>
+                <th scope="col">Hasta</th>
+                <th scope="col">Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for tratamiento in medicacion %}
+            <tr>
+                <td>
+                    <strong>{{ tratamiento.medicina }}</strong>
+                    {% if tratamiento.instrucciones %}
+                    <div class="campo-ayuda">{{ tratamiento.instrucciones }}</div>
+                    {% endif %}
+                </td>
+                <td>{{ tratamiento.dosis|default:"—" }}</td>
+                <td>{{ tratamiento.medico }}</td>
+                <td class="mono">{{ tratamiento.fecha_inicio|date:"d/m/Y" }}</td>
+                <td class="mono">{{ tratamiento.fecha_final|date:"d/m/Y" }}</td>
+                <td>
+                    {% if tratamiento.activa %}<span class="chip chip-ok">En curso</span>
+                    {% else %}<span class="chip chip-neutro">Finalizado</span>{% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="vacio">
+    <i class="bi bi-capsule" aria-hidden="true"></i>
+    <p>Este paciente no tiene tratamientos prescritos.</p>
+    <a href="{% url 'staff/nueva_medicacion' perfil.access_key %}" class="btn btn-primary">Prescribir el primero</a>
+</div>
+{% endif %}
+{% endblock %}

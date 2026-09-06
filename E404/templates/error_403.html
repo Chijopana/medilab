@@ -1,0 +1,15 @@
+{% extends 'Hub/base.html' %}
+
+{% block title %}Acceso denegado · Medilab{% endblock %}
+
+{% block content %}
+<div class="error-page">
+    <div class="error-code">403</div>
+    <h1>Acceso denegado</h1>
+    <p>No tienes permiso para ver este contenido. Si crees que se trata de un error,
+       contacta con administración.</p>
+    <a href="{% url 'hub' %}" class="btn btn-primary">Volver al inicio</a>
+</div>
+{% endblock %}
+
+{% block chatbot %}{% endblock %}

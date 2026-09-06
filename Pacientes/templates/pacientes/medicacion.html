@@ -1,25 +1,57 @@
-<div>
-    <h2>Medicación</h2>
-    <table class="table table-bordered">
+{% extends 'pacientes/base_panel.html' %}
+
+{% block title %}Mi medicación · Medilab{% endblock %}
+
+{% block panel %}
+<div class="panel-head">
+    <div>
+        <h1 class="panel-title">Medicación</h1>
+        <p class="panel-lead">Tratamientos prescritos por tus profesionales.</p>
+    </div>
+</div>
+
+{% if medicacion %}
+<div class="table-wrap">
+    <table class="table">
         <thead>
             <tr>
-                <th>Medico</th>
-                <th>Medicamento</th>
-                <th>Fecha inicio</th>
-                <th>Fecha final</th>
-                <!-- <th>Acciones</th> -->
+                <th scope="col">Medicamento</th>
+                <th scope="col">Dosis</th>
+                <th scope="col">Prescrito por</th>
+                <th scope="col">Desde</th>
+                <th scope="col">Hasta</th>
+                <th scope="col">Estado</th>
             </tr>
         </thead>
         <tbody>
-            {%for medica in medicacion%}
+            {% for tratamiento in medicacion %}
             <tr>
-                <td>{{medica.medico}}</td>
-                <td>{{medica.medicina}}</td>
-                <td>{{medica.fecha_inicio}}</td>
-                <td>{{medica.fecha_final}}</td>
+                <td>
+                    <strong>{{ tratamiento.medicina }}</strong>
+                    {% if tratamiento.instrucciones %}
+                    <div class="campo-ayuda">{{ tratamiento.instrucciones }}</div>
+                    {% endif %}
+                </td>
+                <td>{{ tratamiento.dosis|default:"—" }}</td>
+                <td>{{ tratamiento.medico }}</td>
+                <td class="mono">{{ tratamiento.fecha_inicio|date:"d/m/Y" }}</td>
+                <td class="mono">{{ tratamiento.fecha_final|date:"d/m/Y" }}</td>
+                <td>
+                    {% if tratamiento.activa %}
+                        <span class="chip chip-ok">En curso</span>
+                    {% else %}
+                        <span class="chip chip-neutro">Finalizado</span>
+                    {% endif %}
+                </td>
             </tr>
-            {% endfor%}
-            <!-- Agregar más filas según sea necesario -->
+            {% endfor %}
         </tbody>
     </table>
 </div>
+{% else %}
+<div class="vacio">
+    <i class="bi bi-capsule" aria-hidden="true"></i>
+    <p>No tienes ningún tratamiento prescrito.</p>
+</div>
+{% endif %}
+{% endblock %}

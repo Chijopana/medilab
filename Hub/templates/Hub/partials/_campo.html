@@ -1,0 +1,10 @@
+{% comment %}
+Renderiza un campo de formulario con etiqueta, ayuda y errores.
+Uso: {% include 'Hub/partials/_campo.html' with campo=form.nombre %}
+{% endcomment %}
+<div class="campo">
+    {{ campo.label_tag }}
+    {{ campo }}
+    {% if campo.help_text %}<div class="campo-ayuda">{{ campo.help_text }}</div>{% endif %}
+    {% for error in campo.errors %}<div class="campo-error">{{ error }}</div>{% endfor %}
+</div>

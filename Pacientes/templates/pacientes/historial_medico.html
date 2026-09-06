@@ -1,9 +1,50 @@
-<div>
-    <h2>Historial</h2>
-    <ul class="list-group">
-        <li class="list-group-item">Consulta General - 15/03/2024</li>
-        <li class="list-group-item">Examen de Sangre - 20/02/2024</li>
-        <li class="list-group-item">Vacunación - 10/01/2024</li>
-        <!-- Agregar más elementos según sea necesario -->
-    </ul>
+{% extends 'pacientes/base_panel.html' %}
+
+{% block title %}Historial médico · Medilab{% endblock %}
+
+{% block panel %}
+<div class="panel-head">
+    <div>
+        <h1 class="panel-title">Historial médico</h1>
+        <p class="panel-lead">Todos los expedientes abiertos a tu nombre.</p>
+    </div>
 </div>
+
+{% if pagina.object_list %}
+<div class="table-wrap">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Fecha</th>
+                <th scope="col">Especialidad</th>
+                <th scope="col">Profesional</th>
+                <th scope="col">Antecedentes</th>
+                <th scope="col"><span class="visually-hidden">Acciones</span></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for expediente in pagina %}
+            <tr>
+                <td class="mono">{{ expediente.fecha_hora|date:"d/m/Y"|default:"—" }}</td>
+                <td><span class="chip">{{ expediente.departamento }}</span></td>
+                <td>{{ expediente.doctor }}</td>
+                <td>{{ expediente.antecedentes|truncatewords:12 }}</td>
+                <td class="text-end text-nowrap">
+                    <a href="{% url 'ver_expediente' expediente.id %}" class="btn btn-secondary btn-sm">Ver</a>
+                    <a href="{% url 'descargar_expediente_pdf' expediente.id %}" class="btn btn-secondary btn-sm">
+                        <i class="bi bi-download"></i> PDF
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% include 'Hub/partials/_paginacion.html' %}
+{% else %}
+<div class="vacio">
+    <i class="bi bi-file-earmark-medical" aria-hidden="true"></i>
+    <p>Todavía no hay expedientes en tu historial.</p>
+</div>
+{% endif %}
+{% endblock %}

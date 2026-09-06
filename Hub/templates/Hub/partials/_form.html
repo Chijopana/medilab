@@ -1,0 +1,12 @@
+{% comment %}
+Renderiza todos los campos de un formulario.
+Uso: {% include 'Hub/partials/_form.html' with form=form %}
+{% endcomment %}
+{% if form.non_field_errors %}
+<div class="alert alert-danger">
+    {% for error in form.non_field_errors %}<div>{{ error }}</div>{% endfor %}
+</div>
+{% endif %}
+{% for campo in form %}
+    {% include 'Hub/partials/_campo.html' with campo=campo %}
+{% endfor %}

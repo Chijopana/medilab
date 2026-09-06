@@ -1,33 +1,66 @@
-{% extends 'Hub/base.html' %}
-{% load static %}
+{% extends 'staff/base_panel.html' %}
 
-{% block content %}
-<div class="container mt-5 mb-5">
-    <div class="row">
-        <!-- Sidebar -->
-        <div class="col-lg-3">
-            <div class="list-group">
-                <a href="{% url 'staff/lista_pacientes' %}" class="list-group-item list-group-item-action" hx-get="{% url 'staff/lista_pacientes' %}" hx-target="#content" hx-swap="innerHTML">Lista de Pacientes</a>
-                <a href="{% url 'staff/lista_consultas' %}" class="list-group-item list-group-item-action" hx-get="{% url 'staff/lista_consultas' %}" hx-target="#content" hx-swap="innerHTML">Lista de Visitas</a>
-                <a href="{% url 'staff/inbox' %}" class="list-group-item list-group-item-action" hx-get="{% url 'staff/inbox' %}" hx-target="#content" hx-swap="innerHTML">Inbox</a>
-                <a href="{% url 'staff/perfil' %}" class="list-group-item list-group-item-action" hx-get="{% url 'staff/perfil' %}" hx-target="#content" hx-swap="innerHTML">Perfil de Médico</a>
-            </div>
-        </div>
-        <!-- Content Area -->
-        <div class="col-lg-9">
-            <div id="content">
-                <!-- Contenido que cambiará según el enlace seleccionado -->
-                <h2>Bienvenido, seleccione una opción del menú</h2>
-            </div>
-        </div>
+{% block title %}Panel médico · Medilab{% endblock %}
+
+{% block panel %}
+<div class="panel-head">
+    <div>
+        <h1 class="panel-title">Dr./Dra. {{ request.perfil.apellido|default:request.perfil.nombre|default:user.get_username }}</h1>
+        <p class="panel-lead">Resumen de tu actividad asistencial.</p>
+    </div>
+    <a href="{% url 'staff/nueva_consulta' %}" class="btn btn-primary">
+        <i class="bi bi-plus-lg"></i> Nueva visita
+    </a>
+</div>
+
+<div class="metricas">
+    <div class="metrica metrica-destacada">
+        <div class="metrica-valor">{{ total_pacientes }}</div>
+        <div class="metrica-etiqueta">Pacientes asignados</div>
+    </div>
+    <div class="metrica">
+        <div class="metrica-valor">{{ visitas_pendientes }}</div>
+        <div class="metrica-etiqueta">Visitas pendientes</div>
+    </div>
+    <div class="metrica">
+        <div class="metrica-valor">{{ total_expedientes }}</div>
+        <div class="metrica-etiqueta">Expedientes firmados</div>
     </div>
 </div>
-{% endblock %}
 
-{% block footer %}
-<footer id="footer" class="footer light-background">
-    <div class="container copyright text-center mt-4">
-        <p>© <span>Copyright</span> <strong class="px-1 sitename">Medilab</strong> <span>All Rights Reserved</span></p>
+<div class="card">
+    <div class="card-header"><h3>Próximas visitas</h3></div>
+    <div class="card-body" style="padding:0;">
+        {% if proximas_visitas %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Paciente</th>
+                    <th scope="col">Fecha y hora</th>
+                    <th scope="col">Motivo</th>
+                    <th scope="col"><span class="visually-hidden">Acciones</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for visita in proximas_visitas %}
+                <tr>
+                    <td>{{ visita.paciente }}</td>
+                    <td class="mono">{{ visita.hora_fecha|date:"d/m/Y H:i" }}</td>
+                    <td>{{ visita.descripcion_problema|truncatewords:8 }}</td>
+                    <td class="text-end">
+                        <a href="{% url 'staff/mod_visita' visita.pk %}" class="btn btn-secondary btn-sm">Abrir</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="vacio" style="border:none;">
+            <i class="bi bi-calendar-check" aria-hidden="true"></i>
+            <p>No tienes visitas programadas.</p>
+            <a href="{% url 'staff/nueva_consulta' %}" class="btn btn-primary">Crear una visita</a>
+        </div>
+        {% endif %}
     </div>
-</footer>
+</div>
 {% endblock %}

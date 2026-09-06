@@ -1,0 +1,84 @@
+{% extends 'Hub/base.html' %}
+{% load static %}
+
+{% block title %}Expediente #{{ expediente.id }} · Medilab{% endblock %}
+
+{% block content %}
+<div style="max-width:900px; margin:0 auto; padding:32px 24px 60px;">
+
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3 no-print">
+        <a href="javascript:history.back()" class="btn btn-secondary btn-sm">&larr; Volver</a>
+        <div class="d-flex gap-2">
+            <button type="button" class="btn btn-secondary btn-sm" onclick="window.print()">
+                <i class="bi bi-printer"></i> Imprimir
+            </button>
+            <a href="{% url 'descargar_expediente_pdf' expediente.id %}" class="btn btn-primary btn-sm">
+                <i class="bi bi-download"></i> Descargar PDF
+            </a>
+        </div>
+    </div>
+
+    <article class="expediente">
+        <header class="expediente-cabecera">
+            <div class="expediente-marca">
+                <img src="{% static 'img/logo.png' %}" alt="" width="28" height="28">
+                <span class="sitename">Medilab</span>
+            </div>
+            <div class="text-end">
+                <div class="mono" style="font-size:0.8rem; color:var(--ink-faint);">
+                    Expediente #{{ expediente.id }}
+                </div>
+                <div class="mono" style="font-size:0.8rem; color:var(--ink-faint);">
+                    {{ expediente.fecha_hora|date:"d/m/Y H:i"|default:"Sin fecha" }}
+                </div>
+            </div>
+        </header>
+
+        <section class="expediente-seccion">
+            <h2>Paciente</h2>
+            <dl class="datos-grid">
+                <div class="dato"><dt>Nombre</dt><dd>{{ expediente.paciente.perfil.nombre_completo|default:"—" }}</dd></div>
+                <div class="dato"><dt>DNI</dt><dd class="mono">{{ expediente.paciente.perfil.dni }}</dd></div>
+                <div class="dato"><dt>Email</dt><dd>{{ expediente.paciente.perfil.email|default:"—" }}</dd></div>
+                <div class="dato"><dt>Teléfono</dt><dd>{{ expediente.paciente.perfil.telefono|default:"—" }}</dd></div>
+                <div class="dato"><dt>Nº seguro social</dt><dd>{{ expediente.paciente.perfil.numero_seguro_social|default:"—" }}</dd></div>
+            </dl>
+        </section>
+
+        <section class="expediente-seccion">
+            <h2>Atención</h2>
+            <dl class="datos-grid">
+                <div class="dato"><dt>Profesional</dt><dd>{{ expediente.doctor.perfil.nombre_completo|default:"—" }}</dd></div>
+                <div class="dato"><dt>Especialidad</dt><dd>{{ expediente.departamento }}</dd></div>
+            </dl>
+        </section>
+
+        <section class="expediente-seccion">
+            <h2>Antecedentes</h2>
+            <div class="texto-clinico">{{ expediente.antecedentes|default:"Sin antecedentes registrados." }}</div>
+        </section>
+
+        {% if expediente.diagnostico %}
+        <section class="expediente-seccion">
+            <h2>Diagnóstico</h2>
+            <div class="texto-clinico">{{ expediente.diagnostico }}</div>
+        </section>
+        {% endif %}
+
+        {% if expediente.tratamiento %}
+        <section class="expediente-seccion">
+            <h2>Tratamiento</h2>
+            <div class="texto-clinico">{{ expediente.tratamiento }}</div>
+        </section>
+        {% endif %}
+
+        <footer class="expediente-seccion">
+            <h2>Contacto</h2>
+            <p style="font-size:0.88rem; color:var(--ink-soft); margin:0;">
+                Medilab · 639 482 715 · <a href="mailto:info@example.com">info@example.com</a>
+            </p>
+        </footer>
+    </article>
+
+</div>
+{% endblock %}

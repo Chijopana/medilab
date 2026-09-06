@@ -1,0 +1,33 @@
+{% extends 'Hub/base.html' %}
+
+{% block content %}
+<div class="panel-wrap">
+    <aside>
+        <nav class="list-group" aria-label="Secciones del panel médico">
+            <a href="{% url 'staff/lobby' %}"
+               class="list-group-item list-group-item-action {% if seccion == 'inicio' %}active{% endif %}">
+                <i class="bi bi-speedometer2" aria-hidden="true"></i> Resumen
+            </a>
+            <a href="{% url 'staff/lista_pacientes' %}"
+               class="list-group-item list-group-item-action {% if seccion == 'pacientes' %}active{% endif %}">
+                <i class="bi bi-people" aria-hidden="true"></i> Pacientes
+            </a>
+            <a href="{% url 'staff/lista_consultas' %}"
+               class="list-group-item list-group-item-action {% if seccion == 'visitas' %}active{% endif %}">
+                <i class="bi bi-calendar-week" aria-hidden="true"></i> Visitas
+            </a>
+            <a href="{% url 'staff/inbox' %}"
+               class="list-group-item list-group-item-action {% if seccion == 'inbox' %}active{% endif %}">
+                <i class="bi bi-inbox" aria-hidden="true"></i> Borradores
+            </a>
+            <a href="{% url 'staff/perfil' %}"
+               class="list-group-item list-group-item-action {% if seccion == 'perfil' %}active{% endif %}">
+                <i class="bi bi-person-badge" aria-hidden="true"></i> Mi perfil
+            </a>
+        </nav>
+    </aside>
+    <div class="panel-main">
+        {% block panel %}{% endblock %}
+    </div>
+</div>
+{% endblock %}

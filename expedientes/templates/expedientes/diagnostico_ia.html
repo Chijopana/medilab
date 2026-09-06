@@ -1,0 +1,66 @@
+{% extends 'Hub/base.html' %}
+
+{% block title %}Diagnóstico con IA · Medilab{% endblock %}
+
+{% block content %}
+<div class="auth-wrap" style="max-width:720px;">
+
+    <p class="hero-tag"><span class="hero-punto"></span> Diagnóstico con IA</p>
+    <h1 style="text-align:left;">Sube una imagen para analizar</h1>
+    <p class="auth-sub" style="text-align:left;">
+        El modelo devuelve un resultado preliminar y orientativo. No sustituye en ningún caso
+        la valoración de un profesional sanitario.
+    </p>
+
+    <div class="card">
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data" novalidate>
+                {% csrf_token %}
+
+                <div class="campo">
+                    <label for="id_especialidad">Tipo de análisis</label>
+                    <select name="especialidad" id="id_especialidad" class="form-select">
+                        {% for clave, info in especialidades.items %}
+                        <option value="{{ clave }}" {% if clave == especialidad %}selected{% endif %}>
+                            {{ info.nombre_visible }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <label for="id_imagen">Imagen</label>
+                    <input type="file" name="imagen" id="id_imagen" accept="image/*"
+                           class="form-control" required>
+                    <div class="campo-ayuda">JPG, PNG, WEBP o BMP. Máximo 10 MB.</div>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Analizar imagen</button>
+            </form>
+        </div>
+    </div>
+
+    {% if resultado %}
+    <div class="card resultado-ia {% if resultado.positivo %}positivo{% endif %}">
+        <div class="card-body">
+            <p class="mono" style="font-size:0.72rem; letter-spacing:0.06em; text-transform:uppercase; color:var(--ink-faint); margin-bottom:8px;">
+                Resultado · {{ resultado.analisis }}
+            </p>
+            <h3>{{ resultado.diagnostico }}</h3>
+            <p style="color:var(--ink-soft); margin:0;">
+                Confianza del modelo: <strong class="mono">{{ resultado.confianza }}%</strong>
+            </p>
+            <div class="barra-confianza" role="img"
+                 aria-label="Confianza del modelo: {{ resultado.confianza }} por ciento">
+                <span style="width: {{ resultado.confianza }}%;"></span>
+            </div>
+            <p class="aviso-legal">
+                Este resultado es orientativo y se ha generado automáticamente. Consúltalo
+                siempre con tu médico antes de tomar cualquier decisión sobre tu salud.
+            </p>
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}

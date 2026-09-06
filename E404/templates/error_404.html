@@ -1,11 +1,15 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página No Encontrada</title>
-</head>
-<body>
+{% extends 'Hub/base.html' %}
 
-</body>
-</html>
+{% block title %}Página no encontrada · Medilab{% endblock %}
+
+{% block content %}
+<div class="error-page">
+    <div class="error-code">404</div>
+    <h1>Esta página no existe</h1>
+    <p>Puede que el enlace esté mal escrito, que el contenido se haya movido
+       o que no tengas permiso para verlo.</p>
+    <a href="{% url 'hub' %}" class="btn btn-primary">Volver al inicio</a>
+</div>
+{% endblock %}
+
+{% block chatbot %}{% endblock %}

@@ -1,0 +1,52 @@
+{% extends 'Hub/base.html' %}
+
+{% block title %}{{ titulo }} · Medilab{% endblock %}
+
+{% block content %}
+<div style="max-width:1000px; margin:0 auto; padding:32px 24px 60px;">
+    <div class="panel-head">
+        <div>
+            <h1 class="panel-title">{{ titulo }}</h1>
+            <p class="panel-lead">{{ pagina.paginator.count }} expediente{{ pagina.paginator.count|pluralize:"s" }}.</p>
+        </div>
+    </div>
+
+    {% if pagina.object_list %}
+    <div class="table-wrap">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Nº</th>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Paciente</th>
+                    <th scope="col">Especialidad</th>
+                    <th scope="col"><span class="visually-hidden">Acciones</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for expediente in pagina %}
+                <tr>
+                    <td class="mono">#{{ expediente.id }}</td>
+                    <td class="mono">{{ expediente.fecha_hora|date:"d/m/Y"|default:"—" }}</td>
+                    <td>{{ expediente.paciente }}</td>
+                    <td><span class="chip">{{ expediente.departamento }}</span></td>
+                    <td class="text-end text-nowrap">
+                        <a href="{% url 'ver_expediente' expediente.id %}" class="btn btn-secondary btn-sm">Ver</a>
+                        <a href="{% url 'descargar_expediente_pdf' expediente.id %}" class="btn btn-secondary btn-sm">
+                            <i class="bi bi-download"></i> PDF
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% include 'Hub/partials/_paginacion.html' %}
+    {% else %}
+    <div class="vacio">
+        <i class="bi bi-file-earmark-medical" aria-hidden="true"></i>
+        <p>No hay expedientes que mostrar.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

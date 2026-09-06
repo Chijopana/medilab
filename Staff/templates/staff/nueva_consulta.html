@@ -1,0 +1,25 @@
+{% extends 'staff/base_panel.html' %}
+
+{% block title %}Nueva visita · Medilab{% endblock %}
+
+{% block panel %}
+<div class="panel-head">
+    <div>
+        <h1 class="panel-title">Nueva visita</h1>
+        <p class="panel-lead">Solo puedes citar a pacientes que tengas asignados.</p>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form method="post" novalidate>
+            {% csrf_token %}
+            {% include 'Hub/partials/_form.html' with form=form %}
+            <div class="form-acciones">
+                <button type="submit" class="btn btn-primary">Crear visita</button>
+                <a href="{% url 'staff/lista_consultas' %}" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

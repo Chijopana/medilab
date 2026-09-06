@@ -1,56 +1,67 @@
-<div>
-    <h2>Lista de Pacientes</h2>
-    <div class="container mt-4">
-        <div class="row mb-4">
-            <div class="col-md-4">
-                <input type="text" class="form-control" id="search-nombre" placeholder="Buscar por Nombre">
-            </div>
-            <div class="col-md-4">
-                <input type="text" class="form-control" id="search-apellidos" placeholder="Buscar por Apellidos">
-            </div>
-            <div class="col-md-4">
-                <input type="text" class="form-control" id="search-dni" placeholder="Buscar por DNI">
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Apellidos</th>
-                            <th>DNI</th>
-                            <th>Edad</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody id="patients-table-body">
-                        {% for paciente in pacientes %}
-                        <tr>
-                            <td>{{ paciente.perfil.nombre }}</td>
-                            <td>{{ paciente.perfil.apellido }}</td>
-                            <td>{{ paciente.perfil.dni }}</td>
-                            <td>{{ paciente.perfil.fecha_nacimiento }}</td>
-                            <td>
-                                <button class="btn btn-primary btn-sm" 
-                                        hx-get="{% url 'staff/paciente_ind' paciente.perfil.access_key %}" 
-                                        hx-target="#content" 
-                                        hx-swap="innerHTML">
-                                    Ver
-                                </button>
+{% extends 'staff/base_panel.html' %}
 
-                                <button class="btn btn-primary btn-sm" 
-                                        hx-get="{% url 'staff/paciente_ind_edit' paciente.perfil.access_key %}" 
-                                        hx-target="#content" 
-                                        hx-swap="innerHTML">
-                                    Editar
-                                </button>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
+{% block title %}Mis pacientes · Medilab{% endblock %}
+
+{% block panel %}
+<div class="panel-head">
+    <div>
+        <h1 class="panel-title">Mis pacientes</h1>
+        <p class="panel-lead">{{ pagina.paginator.count }} paciente{{ pagina.paginator.count|pluralize:"s" }} a tu cargo.</p>
     </div>
 </div>
+
+<form method="get" class="mb-3" role="search">
+    <div class="d-flex gap-2 flex-wrap">
+        <input type="search" name="q" value="{{ busqueda }}" class="form-control" style="max-width:340px;"
+               placeholder="Buscar por nombre, apellidos o DNI" aria-label="Buscar paciente">
+        <button type="submit" class="btn btn-primary">Buscar</button>
+        {% if busqueda %}
+        <a href="{% url 'staff/lista_pacientes' %}" class="btn btn-secondary">Limpiar</a>
+        {% endif %}
+    </div>
+</form>
+
+{% if pagina.object_list %}
+<div class="table-wrap">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Nombre</th>
+                <th scope="col">Apellidos</th>
+                <th scope="col">DNI</th>
+                <th scope="col">Fecha de nacimiento</th>
+                <th scope="col"><span class="visually-hidden">Acciones</span></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for paciente in pagina %}
+            <tr>
+                <td>{{ paciente.perfil.nombre|default:"—" }}</td>
+                <td>{{ paciente.perfil.apellido|default:"—" }}</td>
+                <td class="mono">{{ paciente.perfil.dni }}</td>
+                <td class="mono">{{ paciente.perfil.fecha_nacimiento|date:"d/m/Y"|default:"—" }}</td>
+                <td class="text-end text-nowrap">
+                    <a href="{% url 'staff/paciente_ind' paciente.perfil.access_key %}"
+                       class="btn btn-secondary btn-sm">Ver ficha</a>
+                    <a href="{% url 'staff/paciente_ind_edit' paciente.perfil.access_key %}"
+                       class="btn btn-secondary btn-sm">Editar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% include 'Hub/partials/_paginacion.html' %}
+{% else %}
+<div class="vacio">
+    <i class="bi bi-people" aria-hidden="true"></i>
+    {% if busqueda %}
+        <p>Ningún paciente coincide con «{{ busqueda }}».</p>
+        <a href="{% url 'staff/lista_pacientes' %}" class="btn btn-secondary">Ver todos</a>
+    {% else %}
+        <p>Todavía no tienes pacientes asignados.<br>
+           Se asignan desde el panel de administración.</p>
+    {% endif %}
+</div>
+{% endif %}
+{% endblock %}

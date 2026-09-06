@@ -1,104 +1,119 @@
-<div class="container mt-4">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <h3>Paciente</h3>
-                </div>
-                <div class="card-body">
-                    <form>
-                        <!-- <div class="paciente_boton mb-3 text-center">
-                                <button class="btn btn-primary">Guardar</button>
-                        </div> -->
+{% extends 'staff/base_panel.html' %}
 
-                        <div class="datos_personales mb-4">
-                            <div class="parte_superior mb-3">
-                                <p>Nombre: {{ perfil.pacientes }}</p>
-                                <p>Apellido: {{ perfil.apellido }}</p>
-                                <p>DNI: {{ perfil.dni }}</p>
-                            </div>
-                            <div class="parte_central">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <p>Email: {{ perfil.email }}</p>
-                                        <p>Teléfono: {{ perfil.telefono }}</p>
-                                        <p>Fecha de nacimiento: {{ perfil.fecha_nacimiento }}</p>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <p>Número del seguro social: {{ perfil.numero_seguro_social }}</p>
-                                        <p>Contacto de emergencia: {{ perfil.contacto_emergencia }}</p>
-                                        <p>Teléfono de emergencia: {{ perfil.telefono_emergencia }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+{% block title %}{{ perfil.nombre_completo|default:"Paciente" }} · Medilab{% endblock %}
 
-                        <div id="triple_seccion">
-                            <div class="botones mb-3 text-center">
-                                <button href="{% url 'staff/visitas' perfil.access_key %}" id="boton_visita" class="btn btn-secondary boton_edicion"
-                                        hx-get="{% url 'staff/visitas' perfil.access_key %}"
-                                        hx-target="#content" hx-swap="innerHTML">
-                                    Visitas
-                                </button>
-                                <button href="{% url 'staff/expedientes' perfil.access_key %}" id="boton_expediente" class="btn btn-secondary boton_edicion"
-                                        hx-get="{% url 'staff/expedientes' perfil.access_key %}"
-                                        hx-target="#content" hx-swap="innerHTML">
-                                    Expediente
-                                </button>
-                                <button href="{% url 'staff/medicacion' perfil.access_key %}" id="boton_medicacion" class="btn btn-secondary boton_edicion"
-                                        hx-get="{% url 'staff/medicacion' perfil.access_key %}"
-                                        hx-target="#content" hx-swap="innerHTML">
-                                    Medicacion
-                                </button>
-                                <a href="{% url 'staff/paciente_ind_edit' perfil.access_key %}"
-                                   class="btn btn-primary boton_edicion"
-                                   hx-get="{% url 'staff/paciente_ind_edit' perfil.access_key %}" hx-target="#content"
-                                   hx-swap="innerHTML">
-                                    Editar
-                                </a>
-                            </div>
-                    
-                    </form>
-                </div>
-            </div>
-        </div>
+{% block panel %}
+<div class="panel-head">
+    <div>
+        <h1 class="panel-title">{{ perfil.nombre_completo|default:"Paciente" }}</h1>
+        <p class="panel-lead mono">DNI {{ perfil.dni }}</p>
+    </div>
+    <div class="d-flex gap-2 flex-wrap">
+        <a href="{% url 'staff/paciente_ind_edit' perfil.access_key %}" class="btn btn-primary">
+            <i class="bi bi-pencil"></i> Editar datos
+        </a>
+        <a href="{% url 'staff/lista_pacientes' %}" class="btn btn-secondary">Volver</a>
     </div>
 </div>
 
-<script>
-    const botonVisita = document.getElementById('boton_visita');
-    const botonExpediente = document.getElementById('boton_expediente');
-    const botonMedicacion = document.getElementById('boton_medicacion');
-    const vistaVisitas = document.getElementById('visitas');
-    const vistaExpediente = document.getElementById('expedientes');
-    const vistaMedicacion = document.getElementById('medicacion');
+<div class="card mb-4">
+    <div class="card-header"><h3>Datos personales</h3></div>
+    <div class="card-body">
+        <dl class="datos-grid">
+            <div class="dato"><dt>Email</dt><dd>{{ perfil.email|default:"—" }}</dd></div>
+            <div class="dato"><dt>Teléfono</dt><dd>{{ perfil.telefono|default:"—" }}</dd></div>
+            <div class="dato"><dt>Fecha de nacimiento</dt><dd>{{ perfil.fecha_nacimiento|date:"d/m/Y"|default:"—" }}</dd></div>
+            <div class="dato"><dt>Dirección</dt><dd>{{ perfil.direccion|default:"—" }}</dd></div>
+            <div class="dato"><dt>Nº seguro social</dt><dd>{{ perfil.numero_seguro_social|default:"—" }}</dd></div>
+            <div class="dato"><dt>Contacto de emergencia</dt>
+                <dd>{{ paciente.contacto_emergencia|default:"—" }}
+                    {% if paciente.telefono_emergencia %}<br><span class="mono">{{ paciente.telefono_emergencia }}</span>{% endif %}
+                </dd>
+            </div>
+        </dl>
+    </div>
+</div>
 
-    botonVisita.addEventListener('click', () => {
-        vistaVisitas.classList.toggle('hidden', !vistaVisitas.classList.contains('hidden'));
-        vistaExpediente.classList.add('hidden');
-        vistaMedicacion.classList.add('hidden');
-    });
+<div class="card mb-4">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h3>Últimas visitas</h3>
+        <a href="{% url 'staff/visitas' perfil.access_key %}" class="btn btn-secondary btn-sm">Ver todas</a>
+    </div>
+    <div class="card-body" style="padding:0;">
+        {% if visitas %}
+        <table class="table">
+            <thead><tr><th scope="col">Fecha</th><th scope="col">Motivo</th><th scope="col">Estado</th></tr></thead>
+            <tbody>
+                {% for visita in visitas %}
+                <tr>
+                    <td class="mono">{{ visita.hora_fecha|date:"d/m/Y H:i"|default:"—" }}</td>
+                    <td>{{ visita.descripcion_problema|truncatewords:10 }}</td>
+                    <td><span class="chip">{{ visita.get_estado_display }}</span></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="vacio" style="border:none;"><p>Sin visitas registradas.</p></div>
+        {% endif %}
+    </div>
+</div>
 
-    botonExpediente.addEventListener('click', () => {
-        vistaVisitas.classList.add('hidden');
-        vistaExpediente.classList.toggle('hidden', !vistaExpediente.classList.contains('hidden'));
-        vistaMedicacion.classList.add('hidden');
-    });
+<div class="card mb-4">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h3>Expedientes recientes</h3>
+        <a href="{% url 'staff/expedientes' perfil.access_key %}" class="btn btn-secondary btn-sm">Ver todos</a>
+    </div>
+    <div class="card-body" style="padding:0;">
+        {% if expedientes %}
+        <table class="table">
+            <thead><tr><th scope="col">Fecha</th><th scope="col">Especialidad</th><th scope="col"></th></tr></thead>
+            <tbody>
+                {% for expediente in expedientes %}
+                <tr>
+                    <td class="mono">{{ expediente.fecha_hora|date:"d/m/Y"|default:"—" }}</td>
+                    <td><span class="chip">{{ expediente.departamento }}</span></td>
+                    <td class="text-end">
+                        <a href="{% url 'ver_expediente' expediente.id %}" class="btn btn-secondary btn-sm">Ver</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="vacio" style="border:none;"><p>Sin expedientes.</p></div>
+        {% endif %}
+    </div>
+</div>
 
-    botonMedicacion.addEventListener('click', () => {
-        vistaVisitas.classList.add('hidden');
-        vistaExpediente.classList.add('hidden');
-        vistaMedicacion.classList.toggle('hidden', !vistaMedicacion.classList.contains('hidden'));
-    });
-</script>
-
-<style>
-    p {
-        margin: 0;
-        padding: 0;
-    }
-
-    .hidden {
-        display: none;
-    }
-</style>
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h3>Medicación</h3>
+        <div class="d-flex gap-2">
+            <a href="{% url 'staff/nueva_medicacion' perfil.access_key %}" class="btn btn-primary btn-sm">Prescribir</a>
+            <a href="{% url 'staff/medicacion' perfil.access_key %}" class="btn btn-secondary btn-sm">Ver toda</a>
+        </div>
+    </div>
+    <div class="card-body" style="padding:0;">
+        {% if medicacion %}
+        <table class="table">
+            <thead><tr><th scope="col">Medicamento</th><th scope="col">Dosis</th><th scope="col">Estado</th></tr></thead>
+            <tbody>
+                {% for tratamiento in medicacion %}
+                <tr>
+                    <td>{{ tratamiento.medicina }}</td>
+                    <td>{{ tratamiento.dosis|default:"—" }}</td>
+                    <td>
+                        {% if tratamiento.activa %}<span class="chip chip-ok">En curso</span>
+                        {% else %}<span class="chip chip-neutro">Finalizado</span>{% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="vacio" style="border:none;"><p>Sin tratamientos prescritos.</p></div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

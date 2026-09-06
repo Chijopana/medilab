@@ -1,32 +1,63 @@
-{% extends 'Hub/base.html' %}
-{% load static %}
+{% extends 'pacientes/base_panel.html' %}
 
-{% block content %}
-<div class="container mt-5 mb-5">
-    <div class="row">
-        <!-- Sidebar -->
-        <div class="col-lg-3">
-            <div class="list-group">
-                <a href="{% url 'pacientes/perfil' %}" class="list-group-item list-group-item-action" hx-get="{% url 'pacientes/perfil' %}" hx-target="#content" hx-swap="innerHTML">Configuración</a>
-                <a href="{% url 'pacientes/historial_medico' %}" class="list-group-item list-group-item-action" hx-get="{% url 'pacientes/historial_medico' %}" hx-target="#content" hx-swap="innerHTML">Historial</a>
-                <a href="{% url 'pacientes/visitas' %}" class="list-group-item list-group-item-action" hx-get="{% url 'pacientes/visitas' %}" hx-target="#content" hx-swap="innerHTML">Visitas</a>
-                <a href="{% url 'pacientes/medicacion' %}" class="list-group-item list-group-item-action" hx-get="{% url 'pacientes/medicacion' %}" hx-target="#content" hx-swap="innerHTML">Medicación</a>
-            </div>
-        </div>
-        <!-- Content Area -->
-        <div class="col-lg-9">
-            <div id="content">
-                <h2>Bienvenido, seleccione una opción del menú</h2>
-            </div>
-        </div>
+{% block title %}Mi área · Medilab{% endblock %}
+
+{% block panel %}
+<div class="panel-head">
+    <div>
+        <h1 class="panel-title">Hola, {{ request.perfil.nombre|default:user.get_username }}</h1>
+        <p class="panel-lead">Este es el resumen de tu actividad en Medilab.</p>
+    </div>
+    <a href="{% url 'pacientes/nueva_visita' %}" class="btn btn-primary">
+        <i class="bi bi-plus-lg"></i> Pedir cita
+    </a>
+</div>
+
+<div class="metricas">
+    <div class="metrica metrica-destacada">
+        <div class="metrica-valor">{{ total_visitas }}</div>
+        <div class="metrica-etiqueta">Visitas registradas</div>
+    </div>
+    <div class="metrica">
+        <div class="metrica-valor">{{ total_expedientes }}</div>
+        <div class="metrica-etiqueta">Expedientes</div>
+    </div>
+    <div class="metrica">
+        <div class="metrica-valor">{{ medicacion_activa }}</div>
+        <div class="metrica-etiqueta">Tratamientos en curso</div>
     </div>
 </div>
-{% endblock %}
 
-{% block footer %}
-<footer id="footer" class="footer light-background">
-    <div class="container copyright text-center mt-4">
-        <p>© <span>Copyright</span> <strong class="px-1 sitename">Medilab</strong> <span>All Rights Reserved</span></p>
+<div class="card">
+    <div class="card-header"><h3>Próxima visita</h3></div>
+    <div class="card-body">
+        {% if proxima_visita %}
+            <dl class="datos-grid">
+                <div class="dato">
+                    <dt>Profesional</dt>
+                    <dd>{{ proxima_visita.medico }}</dd>
+                </div>
+                <div class="dato">
+                    <dt>Fecha</dt>
+                    <dd>{{ proxima_visita.hora_fecha|date:"j F Y, H:i" }}</dd>
+                </div>
+                <div class="dato">
+                    <dt>Estado</dt>
+                    <dd><span class="chip chip-ok">{{ proxima_visita.get_estado_display }}</span></dd>
+                </div>
+            </dl>
+            <p class="texto-clinico mt-3">{{ proxima_visita.descripcion_problema }}</p>
+            <div class="form-acciones">
+                <a href="{% url 'pacientes/mod_visita' proxima_visita.pk %}" class="btn btn-secondary btn-sm">Modificar</a>
+                <a href="{% url 'pacientes/visitas' %}" class="btn btn-secondary btn-sm">Ver todas</a>
+            </div>
+        {% else %}
+            <div class="vacio">
+                <i class="bi bi-calendar-x" aria-hidden="true"></i>
+                <p>No tienes ninguna visita programada.</p>
+                <a href="{% url 'pacientes/nueva_visita' %}" class="btn btn-primary">Pedir cita</a>
+            </div>
+        {% endif %}
     </div>
-</footer>
+</div>
 {% endblock %}

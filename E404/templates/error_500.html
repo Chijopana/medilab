@@ -1,0 +1,22 @@
+{% load static %}<!DOCTYPE html>
+<html lang="es">
+{# Esta página no extiende el layout base: si el fallo viene de un context #}
+{# processor o del propio layout, el 500 seguiría rompiéndose. #}
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error del servidor · Medilab</title>
+    <link href="{% static 'img/favicon.png' %}" rel="icon">
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/app-theme.css' %}" rel="stylesheet">
+</head>
+<body>
+    <div class="error-page">
+        <div class="error-code">500</div>
+        <h1>Algo ha fallado por nuestra parte</h1>
+        <p>El error ha quedado registrado y lo estamos revisando.
+           Vuelve a intentarlo en unos minutos.</p>
+        <a href="/" class="btn btn-primary">Volver al inicio</a>
+    </div>
+</body>
+</html>

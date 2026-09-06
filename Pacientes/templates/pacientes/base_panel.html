@@ -1,0 +1,33 @@
+{% extends 'Hub/base.html' %}
+
+{% block content %}
+<div class="panel-wrap">
+    <aside>
+        <nav class="list-group" aria-label="Secciones de mi área">
+            <a href="{% url 'pacientes/pagina_principal' %}"
+               class="list-group-item list-group-item-action {% if seccion == 'inicio' %}active{% endif %}">
+                <i class="bi bi-house" aria-hidden="true"></i> Inicio
+            </a>
+            <a href="{% url 'pacientes/historial_medico' %}"
+               class="list-group-item list-group-item-action {% if seccion == 'historial' %}active{% endif %}">
+                <i class="bi bi-file-medical" aria-hidden="true"></i> Historial
+            </a>
+            <a href="{% url 'pacientes/visitas' %}"
+               class="list-group-item list-group-item-action {% if seccion == 'visitas' %}active{% endif %}">
+                <i class="bi bi-calendar-check" aria-hidden="true"></i> Visitas
+            </a>
+            <a href="{% url 'pacientes/medicacion' %}"
+               class="list-group-item list-group-item-action {% if seccion == 'medicacion' %}active{% endif %}">
+                <i class="bi bi-capsule" aria-hidden="true"></i> Medicación
+            </a>
+            <a href="{% url 'pacientes/perfil' %}"
+               class="list-group-item list-group-item-action {% if seccion == 'perfil' %}active{% endif %}">
+                <i class="bi bi-person-gear" aria-hidden="true"></i> Mis datos
+            </a>
+        </nav>
+    </aside>
+    <div class="panel-main">
+        {% block panel %}{% endblock %}
+    </div>
+</div>
+{% endblock %}

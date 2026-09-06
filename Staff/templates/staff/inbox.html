@@ -1,49 +1,42 @@
-<div>
-    <h2>Inbox</h2>
-    <div class="container mt-4">
-        <div class="row">
-            <div class="col-md-12">
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Remitente</th>
-                            <th>Asunto</th>
-                            <th>Fecha</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody id="inbox-table-body">
-                        <!-- Aquí se insertarán los mensajes -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
+{% extends 'staff/base_panel.html' %}
+
+{% block title %}Borradores · Medilab{% endblock %}
+
+{% block panel %}
+<div class="panel-head">
+    <div>
+        <h1 class="panel-title">Expedientes pendientes</h1>
+        <p class="panel-lead">Borradores generados por el sistema, a la espera de tu revisión.</p>
     </div>
 </div>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const inbox = [
-            { remitente: "admin@example.com", asunto: "Actualización de Política", fecha: "2023-07-19" },
-            { remitente: "support@example.com", asunto: "Nuevo Mensaje de Soporte", fecha: "2023-07-18" },
-            { remitente: "info@example.com", asunto: "Bienvenido a Medilab", fecha: "2023-07-17" },
-        ];
 
-        const tableBody = document.getElementById("inbox-table-body");
-
-        function renderTable() {
-            tableBody.innerHTML = "";
-            inbox.forEach(message => {
-                const row = document.createElement("tr");
-                row.innerHTML = `
-                    <td>${message.remitente}</td>
-                    <td>${message.asunto}</td>
-                    <td>${message.fecha}</td>
-                    <td><button class="btn btn-primary btn-sm">Leer</button></td>
-                `;
-                tableBody.appendChild(row);
-            });
-        }
-
-        renderTable();
-    });
-</script>
+{% if borradores %}
+<div class="table-wrap">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Paciente</th>
+                <th scope="col">Especialidad</th>
+                <th scope="col">Fecha</th>
+                <th scope="col">Antecedentes</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for borrador in borradores %}
+            <tr>
+                <td>{{ borrador.paciente }}</td>
+                <td><span class="chip chip-alerta">{{ borrador.get_especialidad_display|default:"Sin asignar" }}</span></td>
+                <td class="mono">{{ borrador.fecha_hora|date:"d/m/Y H:i"|default:"—" }}</td>
+                <td>{{ borrador.antecedentes|truncatewords:14 }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="vacio">
+    <i class="bi bi-inbox" aria-hidden="true"></i>
+    <p>No tienes expedientes pendientes de revisar.</p>
+</div>
+{% endif %}
+{% endblock %}
