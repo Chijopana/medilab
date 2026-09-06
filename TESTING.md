@@ -1,224 +1,103 @@
-# Guía de Testing - Medilab
+# Tests
 
-## Ejecutar los Tests
+## Ejecutar
 
-### Tests Básicos
-```bash
-# Ejecutar todos los tests
-python manage.py test
-
-# Ejecutar tests de un módulo específico
-python manage.py test tests
-
-# Ejecutar un test específico
-python manage.py test tests.RegistroUsuarioTest.test_registro_usuario_exitoso
+```powershell
+python manage.py test                  # toda la suite (53 tests)
+python manage.py test Hub              # solo una app
+python manage.py test expedientes.tests.AccesoExpedienteTest
+python manage.py test -v 2             # con detalle de cada test
 ```
 
-### Tests con Verbose
-```bash
-# Ver detalles de cada test
-python manage.py test --verbosity=2
+Cobertura:
 
-# Ver más detalles
-python manage.py test -v 3
-```
-
-### Coverage (Cobertura de Tests)
-```bash
-# Instalar coverage
+```powershell
 pip install coverage
-
-# Ejecutar tests con coverage
 coverage run --source='.' manage.py test
-
-# Ver reporte
 coverage report
-
-# Generar reporte HTML
-coverage html
-# Abrir: htmlcov/index.html
+coverage html          # informe navegable en htmlcov/index.html
 ```
 
-## Qué se Prueba
+---
 
-### 1. Registro de Usuarios
-- ✓ Página de registro carga correctamente
-- ✓ Registro exitoso de nuevos usuarios
-- ✓ Validación de contraseñas que no coinciden
-- ✓ Asignación correcta a grupos
+## Qué se prueba
 
-### 2. Login
-- ✓ Página de login carga correctamente
-- ✓ Login exitoso de pacientes
-- ✓ Login exitoso de médicos
-- ✓ Redirección correcta según rol
-- ✓ Rechazo de credenciales inválidas
+La suite está escrita alrededor de una idea: **que nadie pueda leer la historia
+clínica de otra persona**. Cada bloque es una regresión de un fallo real que tenía
+el proyecto.
 
-### 3. Autorización
-- ✓ Redireccionamiento a login sin autenticación
-- ✓ Acceso a páginas protegidas con autenticación
-- ✓ Rechazo de acceso sin rol adecuado
+### `Hub/tests.py` — registro y sesión
 
-### 4. Logout
-- ✓ Cierre de sesión exitoso
-- ✓ Redirección a login después de logout
+- La página de registro carga y el alta crea User + Perfil + Paciente + grupo.
+- La contraseña se guarda cifrada, nunca en claro.
+- Se rechazan: contraseñas que no coinciden, contraseñas débiles y DNI duplicado.
+- Si el perfil no valida, **no queda un User huérfano** (el alta va en una transacción).
+- Login: paciente y médico aterrizan cada uno en su panel; credenciales malas no entran.
+- Un `?next=` que apunte fuera del sitio se ignora (open redirect).
+- Cerrar sesión exige POST; un GET devuelve 405.
 
-## Agregar Nuevos Tests
+### `Pacientes/tests.py` — aislamiento entre pacientes
 
-### Estructura de un Test
-```python
-from django.test import TestCase, Client
-from django.urls import reverse
-from django.contrib.auth.models import User, Group
-from Perfiles.models import Perfil
+- Sin sesión, el área de paciente redirige al login.
+- Un usuario sin rol, o un médico, no entran en el área de paciente.
+- Un paciente **no ve, no abre y no borra** la visita de otro paciente.
+- Borrar una visita exige POST.
 
-class MisTests(TestCase):
-    
-    def setUp(self):
-        """Se ejecuta antes de cada test"""
-        self.client = Client()
-        # Crear datos de prueba
-    
-    def test_mi_funcionalidad(self):
-        """Probar una funcionalidad específica"""
-        # Arrange - Preparar
-        # Act - Ejecutar
-        # Assert - Verificar
-        self.assertEqual(1, 1)
-    
-    def tearDown(self):
-        """Se ejecuta después de cada test"""
-        # Limpiar datos
-```
+### `Staff/tests.py` — rol y relación asistencial
 
-### Métodos de Aserción Comunes
-```python
-# Igualdad
-self.assertEqual(a, b)
-self.assertNotEqual(a, b)
+- Un paciente no entra en el panel médico.
+- Un médico ve la ficha de **sus** pacientes.
+- Otro médico recibe 404 en ficha, edición, visitas, expedientes y medicación:
+  conocer el `access_key` no basta.
+- Un médico ajeno no puede editar los datos del paciente ni prescribirle nada.
 
-# Verdadero/Falso
-self.assertTrue(x)
-self.assertFalse(x)
+### `expedientes/tests.py` — historia clínica
 
-# Contenencia
-self.assertIn(a, b)
-self.assertNotIn(a, b)
+Aquí estaba el agujero más grave: `/expedientes/<id>/` y su PDF eran públicos y se
+podía leer la historia de cualquiera probando números.
 
-# Responses HTTP
-self.assertEqual(response.status_code, 200)
-self.assertRedirects(response, url)
-self.assertContains(response, text)
-self.assertTemplateUsed(response, 'template.html')
+- Un anónimo no accede ni al expediente ni al PDF.
+- El paciente lee el suyo; otro paciente recibe 404.
+- El médico que le atiende lo lee; otro médico recibe 404.
+- El PDF se genera de verdad (empieza por `%PDF`).
+- El listado de expedientes solo muestra los propios.
+- Diagnóstico por IA: exige login, una especialidad inventada ya no provoca un 500,
+  y un fichero que no es una imagen se rechaza.
 
-# Formularios
-self.assertFormError(response, 'form', 'field', 'error')
+### `chatbot/tests.py` — el asistente
 
-# Modelos
-self.assertIsNotNone(objeto)
-self.assertIsNone(objeto)
-```
+El modelo original venía entrenado en historia del arte, así que respondía sobre
+el Renacimiento a quien preguntaba por sus citas.
 
-### Ejemplo: Test de Vista Protegida
-```python
-def test_vista_protegida_sin_login(self):
-    """Verifica que una vista protegida requiere login"""
-    response = self.client.get(reverse('pacientes/pagina_principal'))
-    
-    # Debe redirigir a login
-    self.assertEqual(response.status_code, 302)
-    self.assertIn(reverse('log_in'), response.url)
+- `intents.json` está bien formado: toda intención tiene frases y respuestas, y
+  no hay etiquetas repetidas.
+- Existen las intenciones propias de la aplicación (citas, historial, medicación,
+  diagnóstico por IA, privacidad, urgencias).
+- Ante síntomas o dudas de medicación, las respuestas derivan a un profesional;
+  la intención de urgencia menciona el 112.
+- Contrato HTTP: un GET devuelve 405, un mensaje vacío responde igualmente y uno
+  de más de 500 caracteres se rechaza con 400.
+- De punta a punta: preguntar «como pido una cita» devuelve la respuesta correcta
+  del modelo entrenado.
 
-def test_vista_protegida_con_login(self):
-    """Verifica que una vista protegida es accesible con login"""
-    self.client.login(username='paciente1', password='Test123!')
-    
-    response = self.client.get(reverse('pacientes/pagina_principal'))
-    
-    # Debe cargar correctamente
-    self.assertEqual(response.status_code, 200)
-    self.assertTemplateUsed(response, 'pacientes/pagina_principal.html')
-```
+### `expedientes/tests.py` — configuración de los modelos de IA
 
-## Test Fixtures (Datos de Prueba)
+Regresión del cuelgue de tuberculosis:
 
-### Crear un Fixture
-```bash
-# Exportar datos de la BD
-python manage.py dumpdata app.Model > fixtures/datos.json
+- Cada modelo del catálogo declara `tamano` y `escalado`.
+- Tuberculosis usa 300×300 y píxeles crudos (lleva `Rescaling(1/255)` dentro).
+- El preprocesado respeta ambos: con `crudo` no divide entre 255, con `0-1` sí.
 
-# Usar en tests
-class MisTests(TestCase):
-    fixtures = ['datos.json']
-```
+---
 
-## Pruebas de Rendimiento
+## Notas
 
-```bash
-# Medir tiempo de test
-python manage.py test --timing
-
-# Con Django Debug Toolbar
-pip install django-debug-toolbar
-```
-
-## Integración Continua (CI)
-
-### Configurar GitHub Actions
-Crear archivo: `.github/workflows/tests.yml`
-
-```yaml
-name: Tests
-
-on: [push, pull_request]
-
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    
-    services:
-      postgres:
-        image: postgres:13
-        env:
-          POSTGRES_DB: test_medilab
-          POSTGRES_USER: test
-          POSTGRES_PASSWORD: test
-    
-    steps:
-    - uses: actions/checkout@v2
-    
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.9
-    
-    - name: Install dependencies
-      run: |
-        pip install -r requirements.txt
-    
-    - name: Run tests
-      run: |
-        python manage.py test
-      env:
-        DATABASE_URL: postgresql://test:test@localhost/test_medilab
-```
-
-## Debugging de Tests
-
-```python
-# En el test, usar breakpoint
-def test_mi_test(self):
-    resultado = mi_funcion()
-    breakpoint()  # Pausa la ejecución
-    self.assertEqual(resultado, esperado)
-
-# Ejecutar con debugger
-python -m pdb manage.py test
-```
-
-## Próximos Pasos
-
-1. **Aumentar cobertura**: Objetivo mínimo 80%
-2. **Tests de integración**: Probar flujos completos
-3. **Tests de carga**: Usar locust o similar
-4. **Pruebas manuales**: Casos de uso reales
+- Los tests usan una base de datos temporal; no tocan `db.sqlite3`.
+- Durante los tests la auditoría no escribe en consola (`EJECUTANDO_TESTS` en
+  `settings.py`), para que la salida sea legible.
+- `Hub/tests.py` expone `crear_paciente()` y `crear_medico()`; las demás apps los
+  reutilizan en lugar de repetir el montaje.
+- No hacen falta los modelos de IA para pasar la suite: los tests de IA
+  comprueban la configuración y el preprocesado, no ejecutan las redes.
+- El test de punta a punta del chatbot sí carga TensorFlow, y por eso la
+  suite tarda algo más de un minuto.
