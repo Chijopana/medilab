@@ -1,25 +1,34 @@
-# Entorno virtual (NUNCA se sube, se recrea con requirements.txt)
+# Entorno virtual (nunca se sube; se recrea con requirements.txt)
 venv/
 .venv/
- 
+env/
+
 # Python
 __pycache__/
-*.pyc
-*.pyo
- 
+*.py[cod]
+*.egg-info/
+
 # Django
 db.sqlite3
+db.sqlite3-journal
 staticfiles/
 media/
- 
-# Modelos de IA (pesan mucho, se descargan con el script del README)
+
+# Modelos de IA (pesan ~284 MB; se descargan con el snippet del README)
 expedientes/modelos_ia/
- 
+
 # Logs
 logs/
- 
+*.log
+
 # Variables de entorno
 .env
- 
-# Editor
+
+# Editores y sistema
 .vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Empaquetados temporales
+*.zip
